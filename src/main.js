@@ -9,19 +9,21 @@ import '@/assets/map.css'
 import '@/assets/leaflet/leaflet.js'
 import '@/assets/sidebar/js/leaflet-sidebar.js'
 import '@/assets/leaflet/plugins/Leaflet.Control.Custom.js'
+import '@/assets/sidebar/css/search-box.css'
 import Vue from 'vue'
 import router from './router'
 import store  from './store/store.js'
 import App from './App.vue'
-window.Vue = Vue;
 Vue.config.productionTip = false
 Vue.component('osm-map', require('./components/OsmMap.vue'));
 
-new Vue({
+window.App = new Vue({
   el: '#app',
   router,
     store,
-    components : {App},
-    template: '<App/>'
+    components : {
+      'app' : App
+    },
+    template: '<app ref="main"> </app>'
 
 })

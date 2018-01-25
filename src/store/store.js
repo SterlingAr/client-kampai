@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import map_storage from './modules/map_storage';
 import app_storage from './modules/app_storage';
+import bars_storage from './modules/bars_storage';
 
 
 
@@ -18,7 +19,7 @@ const store = new Vuex.Store(
             title: 'Kampai',
         },
 
-        api_base_uri: '',
+        api_base_uri: 'https://kampai.local/',
 
         test: 'Hellow from root component.'
 
@@ -73,7 +74,8 @@ const store = new Vuex.Store(
     modules:
     {
         map_storage,
-        app_storage
+        app_storage,
+        bars_storage
 
     }
 

@@ -13,16 +13,25 @@
     export default
     {
         name: 'OsmMap',
+        beforeMount()
+        {
+
+
+        },
+
         mounted()
         {
             this.initMap();
+
+
         },
 
         methods:
         {
             ...mapActions(
             {
-                initMap: 'initMapAction'
+                initMap: 'initMapAction',
+                updateBarsAction: 'updateBarsAction'
             })
 
         },
@@ -35,6 +44,7 @@
             }),
         }
     }
+
 
 </script>
 

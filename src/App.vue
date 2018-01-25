@@ -1,6 +1,12 @@
 <template>
   <div id="app-container">
+
+
       <div id="sidebar" class="sidebar collapsed">
+          <form class="form-wrapper cf">
+              <input type="text" placeholder="Search here..." required>
+              <button type="submit">Search</button>
+          </form>
           <!-- Nav tabs -->
           <div class="sidebar-tabs">
               <ul role="tablist">
@@ -18,10 +24,15 @@
           <!-- Tab panes -->
           <div class="sidebar-content">
               <div class="sidebar-pane" id="home">
+
+
                   <h1 class="sidebar-header">
                       sidebar-v2
                       <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
                   </h1>
+
+
+
 
                   <p>A responsive sidebar for mapping libraries like <a href="http://leafletjs.com/">Leaflet</a> or <a href="http://openlayers.org/">OpenLayers</a>.</p>
 
@@ -51,19 +62,30 @@
       <osm-map></osm-map>
 
       <!--<router-view></router-view>-->
-
   </div>
 </template>
 
 <script>
 
-import {mapGetters, mapActions} from 'vuex';
+    function test()
+    {
+        alert(5);
+    }
+
+
+import {mapGetters} from 'vuex';
+import {mapActions} from 'vuex';
+
 import OsmMap from './components/OsmMap.vue';
 
 export default
 {
     name: 'App',
     components: {OsmMap},
+    //DIRTY, dirty hack...
+    mounted() {
+
+    },
 
     data ()
     {
@@ -80,11 +102,9 @@ export default
     methods:
     {
 
-        ...mapActions([
-            'changeTitle',
-            'updateBarsAction',
-            'updateBarModalAction'
-        ]),
+        ...mapActions({
+           updateBars : 'updateBarsAction'
+        }),
 
         updateKeywords: function (event)
         {
@@ -93,8 +113,9 @@ export default
 
         toggleModal: function ()
         {
-            this.showModal = true;
-        }
+            alert('stff');
+        },
+
 
     },
 
@@ -110,5 +131,7 @@ export default
 
 
 }
+
+
 </script>
 

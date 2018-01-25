@@ -177,20 +177,34 @@ const actions =
         //SIDEBAR PLUGIN
         let sidebar = L.control.sidebar('sidebar').addTo(map);
 
-        //SEARCH BOX
+        // SEARCH BOX
         L.control.custom({
             position: 'topleft',
-            content : '<form>'+
-            '    <input type="text" name="search" placeholder="Search">'+
+            content : '<form class="form-wrapper cf">'+
+            '    <input type="text" name="search" placeholder="Search" onchange="App.$refs.main.updateKeywords(event)">'+
+                '<button onclick="App.$refs.main.updateBars()" id="updateBarsButton" type="button">Search</button>'+
             '</form>',
             classes : '',
             style   :
                 {
                     position: 'absolute',
-                    left: '10px',
-                    top: '1px',
+                    left: '1px',
+                    top: '-163px',
                     width: '200px',
                 },
+            events :
+                {
+                    //very dirty hack, no judging >.<
+                    // click : function()
+                    // {
+                    //    console.log(App.$refs.main.updateBars());
+                    // },
+                    // contextmenu: function(data)
+                    // {
+                    //     console.log('wrapper div element contextmenu');
+                    //     console.log(data);
+                    // },
+                }
         })
             .addTo(map);
 
