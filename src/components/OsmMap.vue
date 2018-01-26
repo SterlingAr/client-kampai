@@ -1,8 +1,5 @@
 <template>
-
     <div id="map" class="sidebar-map"></div>
-
-
 </template>
 <script>
 
