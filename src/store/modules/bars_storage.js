@@ -100,6 +100,7 @@ const actions =
                 });
 
             }
+            // this.$root.router.push({name:'bar_list'});
 
         }
 

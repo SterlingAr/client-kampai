@@ -1,12 +1,7 @@
 <template>
   <div id="app-container">
-
-
       <div id="sidebar" class="sidebar collapsed">
-          <form class="form-wrapper cf">
-              <input type="text" placeholder="Search here..." required>
-              <button type="submit">Search</button>
-          </form>
+
           <!-- Nav tabs -->
           <div class="sidebar-tabs">
               <ul role="tablist">
@@ -25,28 +20,19 @@
           <div class="sidebar-content">
               <div class="sidebar-pane" id="home">
 
-
                   <h1 class="sidebar-header">
                       sidebar-v2
                       <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
                   </h1>
 
-
-
-
-                  <p>A responsive sidebar for mapping libraries like <a href="http://leafletjs.com/">Leaflet</a> or <a href="http://openlayers.org/">OpenLayers</a>.</p>
-
-                  <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-
-                  <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-
-                  <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-
-                  <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-              </div>
+                  <router-view name="bar-list"></router-view>
+                   </div>
 
               <div class="sidebar-pane" id="profile">
-                  <h1 class="sidebar-header">Profile<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                  <router-link :to="{name: 'profile'}">
+                      <h1 class="sidebar-header">Profile<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                  </router-link>
+                  <router-view name="user-profile"></router-view>
               </div>
 
               <div class="sidebar-pane" id="messages">
@@ -111,10 +97,14 @@ export default
             this.$store.dispatch('updateKeywordsAction', event.target.value);
         },
 
-        toggleModal: function ()
+        updateBarsAndRoute: function ()
         {
-            alert('stff');
-        },
+
+            this.updateBars();
+
+            this.$router.push({name: 'bar_list'});
+
+        }
 
 
     },
@@ -128,7 +118,6 @@ export default
                 keywords: 'currentKeywords'
             }),
     },
-
 
 }
 

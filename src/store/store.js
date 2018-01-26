@@ -19,7 +19,7 @@ const store = new Vuex.Store(
             title: 'Kampai',
         },
 
-        api_base_uri: 'https://kampai.local/',
+        api_base_uri: 'http://tiendasoutlet.es/',
 
         test: 'Hellow from root component.'
 

@@ -167,8 +167,6 @@ const actions =
                    fillOpacity: 0.8
                });
            }
-
-
         }).addTo(map);
 
 
@@ -182,7 +180,7 @@ const actions =
             position: 'topleft',
             content : '<form class="form-wrapper cf">'+
             '    <input type="text" name="search" placeholder="Search" onchange="App.$refs.main.updateKeywords(event)">'+
-                '<button onclick="App.$refs.main.updateBars()" id="updateBarsButton" type="button">Search</button>'+
+                '<button onclick="App.$refs.main.updateBarsAndRoute()" id="updateBarsButton" type="button">Search</button>'+
             '</form>',
             classes : '',
             style   :
@@ -191,19 +189,6 @@ const actions =
                     left: '1px',
                     top: '-163px',
                     width: '200px',
-                },
-            events :
-                {
-                    //very dirty hack, no judging >.<
-                    // click : function()
-                    // {
-                    //    console.log(App.$refs.main.updateBars());
-                    // },
-                    // contextmenu: function(data)
-                    // {
-                    //     console.log('wrapper div element contextmenu');
-                    //     console.log(data);
-                    // },
                 }
         })
             .addTo(map);
@@ -250,7 +235,6 @@ const actions =
         featureCollection.type = "FeatureCollection";
         featureCollection.features = featuresArray;
         commit('updateFeatureCollection',featureCollection);
-
 
         dispatch('addFeaturesToLayer',featureCollection);
 
