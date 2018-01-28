@@ -8,7 +8,7 @@ import app_storage from './modules/app_storage';
 import bars_storage from './modules/bars_storage';
 import user_storage from './modules/user_storage';
 import auth_storage from './modules/auth_storage';
-
+import bar_storage from './modules/bar_storage';
 
 
 
@@ -79,7 +79,8 @@ const store = new Vuex.Store(
         app_storage,
         bars_storage,
         user_storage,
-        auth_storage
+        auth_storage,
+        bar_storage,
     }
 
 });

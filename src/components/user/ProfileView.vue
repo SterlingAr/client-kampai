@@ -1,19 +1,66 @@
 <template>
-    <!--<div class="sidebar-pane" id="profile">-->
-    <!--<h1 class="sidebar-header">Profile<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>-->
+    <div class="col-lg-12 col-sm-12">
+        <div class="card hovercard">
+            <div class="card-background">
+                <img class="card-bkimg" alt="" src="http://lorempixel.com/100/100/people/9/">
+                <!-- http://lorempixel.com/850/280/people/9/ -->
+            </div>
+            <div class="useravatar">
+                <img alt="" src="http://lorempixel.com/100/100/people/3/">
+            </div>
+            <div class="card-info"> <span class="card-title">{{user.name}}</span>
 
-    <!--</div>-->
-    <div>
-        Nada yet.
-        {{user.name}}
+            </div>
+        </div>
+        <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
 
-        <ul v-for="bar in subscriptions">
+            <div class="btn-group" role="group">
+                <button type="button" id="following" class="btn btn-default" href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    <div class="hidden-xs">Me</div>
+                </button>
+            </div>
 
-            <li>{{bar.name}}</li>
+            <div class="btn-group" role="group">
+                <button type="button" id="favorites" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                    <div class="hidden-xs">Favorites</div>
+                </button>
+            </div>
+        </div>
 
-        </ul>
+        <div class="well">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab1">
+
+
+                </div>
+                <div class="tab-pane fade in" id="tab2">
+                    <h3>Favorites</h3>
+
+                    <ul class="list-group" v-for="bar in subscriptions">
+                        <li  class="list-group-item list-group-item-dark">
+
+                            {{bar.name}}
+
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
 
     </div>
+
+    <!--<div>-->
+        <!--Nada yet.-->
+        <!--{{user.name}}-->
+
+        <!--<ul v-for="bar in subscriptions">-->
+
+            <!--<li>{{bar.name}}</li>-->
+
+        <!--</ul>-->
+
+    <!--</div>-->
 
 </template>
 

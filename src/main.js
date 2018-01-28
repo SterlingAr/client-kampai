@@ -10,6 +10,10 @@ import '@/assets/leaflet/plugins/Leaflet.Control.Custom.js'
 import '@/assets/sidebar/css/search-box.css'
 import '@/assets/login/login.scss'
 import '@/assets/bar/modal.css'
+import '@/assets/profile/profile.css'
+import '@/assets/profile/profile.js'
+import '@/assets/leaflet/plugins/location/L.Control.Locate.min.css'
+import '@/assets/leaflet/plugins/location/L.Control.Locate.min.js'
 
 
 import Vue from 'vue'
@@ -31,6 +35,9 @@ Vue.component('register', require('./components/auth/Register.vue'));
 Vue.component('modal-view', {
     template: '#modal-view',
 })
+
+
+
 
 window.App = new Vue({
   el: '#app',

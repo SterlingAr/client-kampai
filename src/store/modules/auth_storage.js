@@ -4,7 +4,8 @@ const state =
 {
     email: '',
     password: '',
-    role: 'nouser',
+    name: '',
+    role: ['nouser'],
     token: ''
 
 }
@@ -23,6 +24,11 @@ const getters =
     currentRole: state =>
     {
         return state.role;
+    },
+
+    currentName: state =>
+    {
+        return state.name;
     }
 
 
@@ -47,6 +53,11 @@ const mutations =
     updateToken: (state,token) =>
     {
         state.token = token;
+    },
+
+    updateName: (state,name) =>
+    {
+        state.name = name;
     }
 
 
@@ -55,17 +66,16 @@ const actions =
 {
     registerAction: ({commit},rootState) =>
     {
-        axios.post('/api/auth/register' , {
+        axios.post(rootState.api_base_uri + '/api/auth/register' , {
 
-            name: this.name,
-            email: this.email,
-            password: this.password
+            name: state.name,
+            email: state.email,
+            password: state.password
 
         })
             .then((response) => {
 
                 console.log(response);
-                this.$router.push({path:'/bars'});
 
 
             })
@@ -129,6 +139,11 @@ const actions =
     updateRoleAction: ({commit},role) =>
     {
 
+    },
+
+    updateNameAction: ({commit}, name) =>
+    {
+        commit('updateName', name);
     }
 
 }

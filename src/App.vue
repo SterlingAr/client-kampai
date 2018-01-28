@@ -28,16 +28,16 @@
                       </router-link>
                   </li>
 
-                  <li v-if="role === 'nouser'">
+                  <li v-if="role.includes('nouser')">
                       <router-link role="tab"  :to="{name: 'login'}">
                           <i class="fa fa-sign-in "></i>
                       </router-link>
                   </li>
 
-                  <li v-if="role === 'nouser'">
-                      <a @click="showModal=true" role="tab">
-                          <i class="fa fa-sign-in "></i>
-                      </a>
+                  <li v-if="role.includes('admin')">
+                      <router-link role="tab"  :to="{name: 'admin'}">
+                          <i class="fa fa-lock"></i>
+                      </router-link>
                   </li>
 
 
@@ -48,11 +48,12 @@
               </ul>
 
               <ul role="tablist">
-                  <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+                  <li><a href="#"  role="tab"><i class="fa fa-gear"></i></a></li>
               </ul>
           </div>
-
           <side-bar></side-bar>
+
+          <!--<flash-view></flash-view>-->
 
       </div>
 
@@ -60,29 +61,17 @@
 
       <modal-view v-if="showModal" @close="showModal = false">
 
-          <h3 slot="header">Iruña
+          <h3 slot="header">{{bar.name}}
           <span>
-              <i class="fa fa-wifi" aria-hidden="true"></i>
-              <i class="fa fa-wheelchair-alt" aria-hidden="true"></i>
-              <i class="fa fa-cutlery" aria-hidden="true"></i>
+              <i v-if="bar.internet_access" class="fa fa-wifi" aria-hidden="true"></i>
+              <i v-if="bar.wheelchair === 'yes'" class="fa fa-wheelchair-alt" aria-hidden="true"></i>
+              <i v-if="bar.amenity === 'restaurant'" class="fa fa-cutlery" aria-hidden="true"></i>
+              <i v-if="bar.amenity === 'bar'" class="fa fa-glass" aria-hidden="true"></i>
+              <i v-if="bar.amenity === 'cafe'" class="fa fa-coffee" aria-hidden="true"></i>
           </span>
           </h3>
 
-          <!--<div slot="body">-->
-              <!--<table>-->
-                  <!--<tr>-->
-                      <!--<th>-->
-                          <!--<i class="fa fa-map-marker" aria-hidden="true"></i>                      </th>-->
-                      <!--<td>Elm street</td>-->
-                  <!--</tr>-->
-                  <!--<tr>-->
-                      <!--<th>-->
-                          <!--<i class="fa fa-rss" aria-hidden="true"></i>-->
-                      <!--</th>-->
-                      <!--<td>bacalao.es</td>-->
-                  <!--</tr>-->
-              <!--</table>-->
-          <!--</div>-->
+
 
           <div slot="body">
                   <div role="tabpanel">
@@ -95,8 +84,27 @@
                       </ul>
                       <!-- Tab panes -->
                       <div class="tab-content">
-                          <div role="tabpanel" class="tab-pane active" id="uploadTab">upload Tab</div>
-                          <div role="tabpanel" class="tab-pane" id="browseTab">browseTab</div>
+                          <div role="tabpanel" class="tab-pane active" id="uploadTab">
+
+                              <table>
+                                  <tr>
+                                      <th>
+                                          <i class="fa fa-map-marker " aria-hidden="true"></i>
+                                      </th>
+
+                                      <td>{{bar['addr:street']}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <th></th>
+                                      <td></td>
+                                  </tr>
+                              </table>
+
+                          </div>
+                          <div role="tabpanel" class="tab-pane" id="browseTab">
+                              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque beatae consectetur deserunt doloribus ipsum neque quas recusandae rem repellendus, sit! Dignissimos dolor, dolorem eligendi error fugiat id obcaecati quaerat reprehenderit.
+                          </div>
                       </div>
                   </div>
 
@@ -123,10 +131,13 @@ import OsmMap from './components/OsmMap.vue';
 import SideBar from './components/SideBar.vue';
 
 
+
+
 export default
 {
     name: 'App',
     components: {OsmMap,SideBar},
+
 
     data ()
     {
@@ -140,7 +151,8 @@ export default
     {
 
         ...mapActions({
-           updateBars : 'updateBarsAction'
+           updateBars : 'updateBarsAction',
+           updateBarDetails: 'updateBarDetailsAction'
         }),
 
         updateKeywords: function (event)
@@ -155,6 +167,13 @@ export default
 
             this.$router.push({name: 'bar_list'});
 
+        },
+
+        setBarDetails: function(details)
+        {
+            console.log(details);
+            this.updateBarDetails(details);
+            this.showModal = true;
         }
 
 
@@ -167,7 +186,8 @@ export default
                 appTitle: 'currentTitle',
                 bbox: 'currentBBOX',
                 keywords: 'currentKeywords',
-                role: 'currentRole'
+                role: 'currentRole',
+                bar: 'currentBarDetails'
             }),
     },
 

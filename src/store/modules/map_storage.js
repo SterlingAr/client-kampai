@@ -34,7 +34,8 @@ const getters =
     currentFeatureLayer: state =>
     {
         return state.featureLayer;
-    }
+    },
+
 
 }
 
@@ -61,7 +62,8 @@ const mutations =
     updateFeatureLayer: (state, payload) =>
     {
         state.featureLayer = payload;
-    }
+    },
+
 
 }
 
@@ -69,10 +71,14 @@ const mutations =
 const actions =
 {
 
-    showModal: ({commit},e) =>
+    showModal: (e) =>
     {
+        console.log(e);
+
 
     },
+
+
 
     updateBBOXAction: ({commit}) =>
     {
@@ -120,19 +126,34 @@ const actions =
         }).addTo(map);
 
 
+
         L.tileLayer(state.MAP_API_PROVIDER + '{accessToken}',mapOptions)
             .addTo(map);
 
         let dinnerIcon = L.icon({
-            iconUrl: 'https://i.imgur.com/DujcmnC.png',
-            iconSize: [32, 37],
+            iconUrl: 'https://i.imgur.com/HhV6EbI.png',
+            iconSize: [25, 28],
             iconAnchor: [16, 37],
             // popupAnchor: [0, -28]
         });
 
         let pubIcon = L.icon({
-            iconUrl: 'https://imgur.com/a/ppfBY',
-            iconSize: [32, 37],
+            iconUrl: 'https://i.imgur.com/DujcmnC.png',
+            iconSize: [25, 28],
+            iconAnchor: [16, 37],
+            // popupAnchor: [0, -28]
+        });
+
+        let cafeIcon = L.icon({
+            iconUrl: 'https://i.imgur.com/Iu61SKg.png',
+            iconSize: [25, 28],
+            iconAnchor: [16, 37],
+            // popupAnchor: [0, -28]
+        });
+
+        let fastIcon = L.icon({
+            iconUrl: 'https://i.imgur.com/vMAUoby.png',
+            iconSize: [25, 28],
             iconAnchor: [16, 37],
             // popupAnchor: [0, -28]
         });
@@ -140,19 +161,30 @@ const actions =
 
        let featureLayer =  L.geoJSON(false, {
 
-            // pointToLayer: function (feature, latlng) {
-            //     if(feature.amenity == 'bar')
-            //     {
-            //         return L.marker(latlng, {icon: pubIcon});
-            //     }
-            //     if(feature.amenity = 'restaurant')
-            //     {
-            //         return L.marker(latlng, {icon: dinnerIcon});
-            //
-            //     }
+            pointToLayer: function (feature, latlng) {
+                if(feature.amenity === 'bar')
+                {
+                    return L.marker(latlng, {icon: pubIcon});
+                }
+                if(feature.amenity === 'restaurant')
+                {
+                    return L.marker(latlng, {icon: dinnerIcon});
+
+                }
+
+                if(feature.amenity === 'cafe')
+                {
+                    return L.marker(latlng, {icon: cafeIcon});
+
+                }
+                if(feature.amenity === 'fast_food')
+                {
+                    return L.marker(latlng, {icon: fastIcon});
+
+                }
 
 
-            // },
+            },
 
            // onEachFeature: onEachFeature
 
@@ -162,16 +194,16 @@ const actions =
 
            onEachFeature: onEachFeature,
 
-           pointToLayer: function (feature, latlng) {
-               return L.circleMarker(latlng, {
-                   radius: 8,
-                   fillColor: "#ff7800",
-                   color: "#000",
-                   weight: 1,
-                   opacity: 1,
-                   fillOpacity: 0.8
-               });
-           }
+           // pointToLayer: function (feature, latlng) {
+           //     return L.circleMarker(latlng, {
+           //         radius: 8,
+           //         fillColor: "#ff7800",
+           //         color: "#000",
+           //         weight: 1,
+           //         opacity: 1,
+           //         fillOpacity: 0.8
+           //     });
+           // }
         }).addTo(map);
 
 
@@ -197,6 +229,15 @@ const actions =
                 }
         })
             .addTo(map);
+
+
+        L.control.locate(
+            {
+                position: 'bottomright',
+                setView: 'once'
+            }
+        ).addTo(map);
+
 
         commit('updateFeatureLayer', featureLayer);
 
@@ -224,7 +265,7 @@ const actions =
             let feature = new Object();
             let featureProperties = new Object();
             let featureGeometry = new Object();
-            featureProperties.popupContent =  "Establecimiento";
+            // featureProperties.popupContent =  "Establecimiento";
             featureGeometry.type = "Point";
 
             featureGeometry.coordinates = [bar.lon,bar.lat];
@@ -233,6 +274,7 @@ const actions =
             feature.properties = featureProperties;
             feature.geometry = featureGeometry;
             feature.amenity = bar.tags.amenity;
+            feature.details = bar.tags;
             featuresArray.push(feature);
 
         }
@@ -274,7 +316,8 @@ export default {
 
 function whenClicked(e)
 {
-    actions.test(e);
+    //Dirty, dirty.. hack
+    App.$refs.main.setBarDetails(e.sourceTarget.feature.details);
 }
 
 /**
@@ -284,16 +327,16 @@ function whenClicked(e)
  */
 function onEachFeature(feature, layer)
 {
-    let popupContent = "<p>I started out as a GeoJSON " +
-        feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
-
-    if (feature.properties && feature.properties.popupContent) {
-        popupContent += feature.properties.popupContent;
-    }
+    // let popupContent = "<p>I started out as a GeoJSON " +
+    //     feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
+    //
+    // if (feature.properties && feature.properties.popupContent) {
+    //     popupContent += feature.properties.popupContent;
+    // }
 
     layer.on({
         click: whenClicked
     });
 
-    layer.bindPopup(popupContent);
+    // layer.bindPopup(popupContent);
 }

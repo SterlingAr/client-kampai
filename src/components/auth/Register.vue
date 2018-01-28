@@ -4,9 +4,10 @@
         <div class="login-card">
             <h1>Register</h1><br>
             <form>
+                <input type="text" name="user" placeholder="Name" @input="updateName">
                 <input type="text" name="user" placeholder="Username" @input="updateEmail">
                 <input type="password" name="pass" placeholder="Password" @input="updatePassword">
-                <input type="button" name="login" class="login login-button" value="login" @click="loginOrFail">
+                <input type="button" name="login" class="login login-button" value="Register" @click="registerOrFail">
             </form>
 
 
@@ -36,23 +37,27 @@
                 {
                     bindEmail: 'updateEmailAction',
                     bindPassword: 'updatePasswordAction',
-                    register: 'loginAction'
+                    bindName: 'updateNameAction',
+                    register: 'registerAction'
                 }),
 
             updateEmail: function (event) {
-                console.log(event.target.value);
                 this.bindEmail(event.target.value);
 
             },
 
             updatePassword: function (event) {
-                console.log(event.target.value);
                 this.bindPassword(event.target.value);
             },
 
-            registerOrFail: function () {
-                this.login();
+            updateName: function (event)
+            {
+                this.bindName(event.target.value);
 
+            },
+
+            registerOrFail: function () {
+                this.register();
                 this.$router.push({
                     name: 'profile'
                 });

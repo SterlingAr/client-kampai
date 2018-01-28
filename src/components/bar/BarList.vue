@@ -1,28 +1,18 @@
 <template>
     <div>
-        <table class="table table-hover" data-toggle="collapse" data-target=".navbar-collapse.in" id="feature-btn">
-            <thead>
-            <tr>
-                <th>Tipo</th>
-                <th>Nombre</th>
-            </tr>
-            </thead>
-            <tbody  class="list"  v-if="bars.length">
-            <tr v-for="bar in bars">
-                <!--<router-link :to="{-->
-                            <!--name: 'bar_view',-->
-                            <!--params:{-->
-                                <!--bar: 'bar'-->
-                        <!--}}">-->
-                    <td class="fa fa-beer black"></td>
-                    <td>{{bar.tags.name}}</td>
-                <!--</router-link>-->
-            </tr>
-            </tbody>
-            <div v-else>
-                <p>Ningún bar coinicide con tu criterio de búsqueda.</p>
-            </div>
-        </table>
+        <h3 >Results</h3>
+        <ul v-if="bars.length" class="list-group" v-for="bar in bars">
+            <li  class="list-group-item list-group-item-dark">
+                <span>
+                    <i v-if="bar.tags.amenity === 'bar'" class="fa fa-beer" aria-hidden="true"></i>
+                    <i v-if="bar.tags.amenity === 'restaurant'" class="fa fa-cutlery" aria-hidden="true"></i>
+                    <i v-if="bar.amenity === 'cafe'" class="fa fa-coffee" aria-hidden="true"></i>
+
+                </span>
+                {{bar.tags.name}}
+
+            </li>
+        </ul>
     </div>
 </template>
 

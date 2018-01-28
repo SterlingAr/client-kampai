@@ -37,7 +37,7 @@ a {
 
 .form-wrapper input {
     width: 330px;
-    height: 20px;
+    /*height: 20px;*/
     padding: 10px 5px;
     float: left;
     font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';
