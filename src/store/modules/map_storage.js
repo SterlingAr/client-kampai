@@ -68,7 +68,12 @@ const mutations =
 
 const actions =
 {
-    //on call, update bbox state value .
+
+    showModal: ({commit},e) =>
+    {
+
+    },
+
     updateBBOXAction: ({commit}) =>
     {
         let s, w, n, e, mapBounds;
@@ -111,7 +116,7 @@ const actions =
         }).setView([ 43.3213337,-1.976819], 16);
 
         L.control.zoom({
-            position:'topright'
+            position:'bottomright'
         }).addTo(map);
 
 
@@ -267,6 +272,10 @@ export default {
  * Functions out of the vuex scope.
  */
 
+function whenClicked(e)
+{
+    actions.test(e);
+}
 
 /**
  *
@@ -281,6 +290,10 @@ function onEachFeature(feature, layer)
     if (feature.properties && feature.properties.popupContent) {
         popupContent += feature.properties.popupContent;
     }
+
+    layer.on({
+        click: whenClicked
+    });
 
     layer.bindPopup(popupContent);
 }

@@ -6,6 +6,9 @@ import axios from 'axios';
 import map_storage from './modules/map_storage';
 import app_storage from './modules/app_storage';
 import bars_storage from './modules/bars_storage';
+import user_storage from './modules/user_storage';
+import auth_storage from './modules/auth_storage';
+
 
 
 
@@ -21,7 +24,6 @@ const store = new Vuex.Store(
 
         api_base_uri: 'http://kampai.local/',
 
-        test: 'Hellow from root component.'
 
     },
 
@@ -75,8 +77,9 @@ const store = new Vuex.Store(
     {
         map_storage,
         app_storage,
-        bars_storage
-
+        bars_storage,
+        user_storage,
+        auth_storage
     }
 
 });

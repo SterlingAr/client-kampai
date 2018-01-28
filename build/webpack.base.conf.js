@@ -36,11 +36,7 @@ module.exports = {
         loader: 'vue-loader',
         options: vueLoaderConfig
       },
-      // {
-      //   test: /\.scss$/,
-      //   loader: 'sass-loader',
-      //   // options: vueLoaderConfig
-      // },
+
       {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -70,14 +66,14 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       },
-      //   {
-      //       test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      //       loader: "url-loader?limit=10000&mimetype=application/font-woff"
-      //   },
-      //   {
-      //       test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      //       loader: "file-loader"
-      //   },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "url-loader?limit=10000&mimetype=application/font-woff"
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader"
+      }
 
 
     ]

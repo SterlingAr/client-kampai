@@ -1,96 +1,71 @@
 
 <template>
+   <div id="login-form">
+       <div class="login-card">
+           <h1>Log-in</h1><br>
+           <form>
+               <input type="text" name="user" placeholder="Username" @input="updateEmail">
+               <input type="password" name="pass" placeholder="Password" @input="updatePassword">
+               <input type="button" name="login" class="login login-button" value="login" @click="loginOrFail">
+           </form>
 
-    <div>
-
-        <form >
-
-            <div class="form-group" :class="{'has-error': errors.has('email') }" >
-
-                <label class="control-label">Email</label>
-
-                <input v-model="email" v-validate="'required|email'" class="form-control" type="email" placeholder="Email">
-
-                <p v-show="errors.has('email')"> {{ errors.first('email')}}</p>
-
-            </div>
-
-            <div class="form-group" :class="{'has-error': errors.has('password') }" >
-
-                <label class="control-label">Password</label>
-
-                <input v-model="password" v-validate="'required|alpha'" class="form-control" type="password" placeholder="Password">
-
-                <p v-show="errors.has('email')"> {{ errors.first('email')}}</p>
-
-            </div>
-
-            <button v-on:click="login" type="submit" class="btn btn-default">Submit</button>
-
-        </form>
-
-    </div>
+           <div class="login-help">
+               <router-link :to="{name:'register'}">Register</router-link> • <a href="#">Forgot Password</a>
+           </div>
+       </div>
+   </div>
 
 </template>
 
 <script>
+
+    import {mapGetters,mapActions} from 'vuex'
+
     export default
     {
         name: 'Login',
 
         data () {
             return {
-                email: '',
-                password: '',
-                user: {
-                    name: 'Dibbler!'
-                }
+
             }
         },
 
-        mounted: function () {
-
-
-        },
 
         methods: {
 
-            login: function ()
+            // ...mapGetters({}), if needed ,put it in computed
+
+            ...mapActions(
             {
-                axios.post('/api/auth/login', {
+                bindEmail: 'updateEmailAction',
+                bindPassword: 'updatePasswordAction',
+                login: 'loginAction'
+            }),
 
-                    email: this.email,
-                    password: this.password,
+            updateEmail: function(event)
+            {
+                console.log(event.target.value);
+                this.bindEmail(event.target.value);
 
+            },
 
-                }).then((response) =>{
+            updatePassword: function(event)
+            {
+              console.log(event.target.value);
+                this.bindPassword(event.target.value);
+            },
 
-                    console.log(response);
+            loginOrFail: function()
+            {
+                this.login();
 
-                    //If
-                    if(response.status === 200)
-                    {
-                        //display 'Login success' and redirect
-
-                        this.$router.push(
-                            {
-                                name:'profile',
-                                params:
-                                    {
-                                        user: this.user
-                                    }
-                            });
-                    }
-                    // else
-                    // Display error on screen
-
-
-                }).catch((error) => {
-
-                    console.log(error);
-
-                })
+                this.$router.push({
+                    name:'profile'
+                });
             }
+
+
         }
 
     }
