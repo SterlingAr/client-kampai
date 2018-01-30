@@ -177,6 +177,7 @@ const actions =
                     return L.marker(latlng, {icon: cafeIcon});
 
                 }
+
                 if(feature.amenity === 'fast_food')
                 {
                     return L.marker(latlng, {icon: fastIcon});
@@ -222,7 +223,7 @@ const actions =
             classes : '',
             style   :
                 {
-                    position: 'absolute',
+                    position: 'relative',
                     left: '1px',
                     top: '-163px',
                     width: '200px',
