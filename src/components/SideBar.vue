@@ -12,6 +12,8 @@
 
         <router-view name="register_view"></router-view>
 
+        <router-view name="contact_view"></router-view>
+
 
 
         <!--<div class="sidebar-pane" id="home">-->

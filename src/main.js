@@ -31,6 +31,7 @@ Vue.component('side-bar-content', require('./components/SideBarContent.vue'));
 Vue.component('home', require('./components/Home.vue'));
 Vue.component('login', require('./components/auth/Login.vue'));
 Vue.component('register', require('./components/auth/Register.vue'));
+Vue.component('contact', require('./components/Contact.vue'));
 // Vue.component('modal-view', require('./components/bar/BarModalView.vue'));
 Vue.component('modal-view', {
     template: '#modal-view',

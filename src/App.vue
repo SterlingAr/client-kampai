@@ -40,6 +40,12 @@
                       </router-link>
                   </li>
 
+                  <li>
+                      <router-link role="tab" :to="{name: 'contact'}">
+                          <i class="fa fa-vcard"></i>
+                      </router-link>
+                  </li>
+
 
 
                   <!--<li class="disabled"><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>-->
