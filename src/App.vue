@@ -116,11 +116,15 @@
 
           </div>
 
-          <!--<div slot="footer">-->
-              <!--<button class="modal-default-button" @click="$emit('close')">-->
-                  <!--OK-->
-              <!--</button>-->
-          <!--</div>-->
+          <div slot="footer">
+              <button class="modal-default-button" @click="showModal=false">
+                  OK
+              </button>
+              <button class="modal-default-button" @click="plotRoute">
+                  Plot
+              </button>
+
+          </div>
 
       </modal-view>
 
@@ -158,8 +162,15 @@ export default
 
         ...mapActions({
            updateBars : 'updateBarsAction',
-           updateBarDetails: 'updateBarDetailsAction'
+           updateBarDetails: 'updateBarDetailsAction',
+            plotRouteAction:  'plotRouteAction'
         }),
+
+        plotRoute: function()
+        {
+          this.plotRouteAction();
+          this.showModal = false;
+        },
 
         updateKeywords: function (event)
         {

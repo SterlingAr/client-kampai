@@ -8,6 +8,7 @@ const state =
     featureCollection: '',
     featureLayer: '',
     barIcon: 'https://imgur.com/a/ppfBY',
+    userLocation: {}
 }
 
 
@@ -36,6 +37,11 @@ const getters =
         return state.featureLayer;
     },
 
+    currentUserLocation: state =>
+    {
+        return state.userLocation;
+    }
+
 
 }
 
@@ -43,26 +49,31 @@ const getters =
 const mutations =
 {
 
-    updateBBOX: (state, payload) =>
+    updateBBOX: (state,bbox) =>
     {
-        state.bbox = payload;
+        state.bbox = bbox;
     },
 
 
-    updateMap: (state,payload) =>
+    updateMap: (state,map) =>
     {
-        state.map = payload;
+        state.map = map;
     },
 
-    updateFeatureCollection: (state,payload) =>
+    updateFeatureCollection: (state,featureCollection) =>
     {
-        state.featureCollection = payload;
+        state.featureCollection = featureCollection;
     },
 
-    updateFeatureLayer: (state, payload) =>
+    updateFeatureLayer: (state, featureLayer) =>
     {
-        state.featureLayer = payload;
+        state.featureLayer = featureLayer;
     },
+
+    updateUserLocation: (state,userLocation) =>
+    {
+        state.userLocation = userLocation;
+    }
 
 
 }
@@ -70,14 +81,6 @@ const mutations =
 
 const actions =
 {
-
-    showModal: (e) =>
-    {
-        console.log(e);
-
-
-    },
-
 
 
     updateBBOXAction: ({commit}) =>
@@ -131,28 +134,32 @@ const actions =
             .addTo(map);
 
         let dinnerIcon = L.icon({
-            iconUrl: 'https://i.imgur.com/HhV6EbI.png',
+            iconUrl: 'static/images/dinner.png',
+            // iconUrl: 'https://i.imgur.com/HhV6EbI.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
             // popupAnchor: [0, -28]
         });
 
         let pubIcon = L.icon({
-            iconUrl: 'https://i.imgur.com/DujcmnC.png',
+            iconUrl: 'static/images/beer.png',
+            // iconUrl: 'https://i.imgur.com/DujcmnC.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
             // popupAnchor: [0, -28]
         });
 
         let cafeIcon = L.icon({
-            iconUrl: 'https://i.imgur.com/Iu61SKg.png',
+            iconUrl: 'static/images/coffee-cup.png',
+            // iconUrl: 'https://i.imgur.com/Iu61SKg.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
             // popupAnchor: [0, -28]
         });
 
         let fastIcon = L.icon({
-            iconUrl: 'https://i.imgur.com/vMAUoby.png',
+            iconUrl: 'static/images/fries.png',
+            // iconUrl: 'https://i.imgur.com/vMAUoby.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
             // popupAnchor: [0, -28]
@@ -207,10 +214,11 @@ const actions =
            // }
         }).addTo(map);
 
+       //Routing control
 
-        let marker = L.marker([51.2, 7]).addTo(map);
 
         //SIDEBAR PLUGIN
+        // let marker = L.marker([51.2, 7]).addTo(map);
         let sidebar = L.control.sidebar('sidebar').addTo(map);
 
         // SEARCH BOX
@@ -235,9 +243,28 @@ const actions =
         L.control.locate(
             {
                 position: 'bottomright',
-                setView: 'once'
+                setView: 'once',
+                icon: 'fa fa-street-view',
+                drawCircle: false,
             }
         ).addTo(map);
+
+        map.on('locationfound', function(){
+            console.log('location');
+            console.log(this.latlng);
+        });
+        //
+
+        // L.Routing.control({
+        //     waypoints: [
+        //         L.latLng(43.3242622, -1.9822356),
+        //         L.latLng(43.3243284, -1.9849168)
+        //     ],
+        //     router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
+        //         profile: 'mapbox/walking',
+        //     })
+        //
+        // }).addTo(map);
 
 
         commit('updateFeatureLayer', featureLayer);
@@ -276,6 +303,11 @@ const actions =
             feature.geometry = featureGeometry;
             feature.amenity = bar.tags.amenity;
             feature.details = bar.tags;
+            feature.details.coord = {};
+            feature.details.coord.lat  = bar.lat;
+            feature.details.coord.lon  = bar.lon;
+
+
             featuresArray.push(feature);
 
         }
@@ -299,8 +331,45 @@ const actions =
             layer.addData(featureCollection);
 
             commit('updateFeatureLayer', layer);
-
     },
+
+    plotRouteAction: ({commit,rootState},options) => //add another param options.
+    {
+        let map = state.map;
+
+        // let options = {};
+        //
+        // options.user = {};
+        console.log('current bar');
+        console.log(rootState.bar_storage.barDetails);
+        let bar = rootState.bar_storage.barDetails.coord;
+        // options.user.lat = 43.3242622;
+        //
+        // options.user.lon = -1.9822356;
+        //
+        // options.bar.lat = 43.3243284;
+        //
+        // options.bar.lon = -1.9849168;
+
+
+        L.Routing.control({
+            waypoints: [
+                // L.latLng(options.user.lat, options.user.lon),
+                // L.latLng(options.bar.lat, options.bar.lon)
+                L.latLng(bar.lat, bar.lon),
+                L.latLng(43.3243284,  -1.9849168)
+            ],
+            router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
+                profile: 'mapbox/walking',
+
+            }),
+
+        }).addTo(map);
+
+        commit('updateMap', map);
+
+
+    }
 
 }
 
@@ -328,16 +397,7 @@ function whenClicked(e)
  */
 function onEachFeature(feature, layer)
 {
-    // let popupContent = "<p>I started out as a GeoJSON " +
-    //     feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
-    //
-    // if (feature.properties && feature.properties.popupContent) {
-    //     popupContent += feature.properties.popupContent;
-    // }
-
     layer.on({
         click: whenClicked
     });
-
-    // layer.bindPopup(popupContent);
 }

@@ -89,7 +89,7 @@ export type IconName = 'address-book' |
   'id-badge' | 
   'id-card' | 
   'image' | 
-  'images' | 
+  'images' |
   'keyboard' | 
   'lemon' | 
   'life-ring' | 
@@ -557,7 +557,7 @@ export type IconName = 'address-book' |
   'id-badge' | 
   'id-card' | 
   'image' | 
-  'images' | 
+  'images' |
   'inbox' | 
   'indent' | 
   'industry' | 

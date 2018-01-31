@@ -28,7 +28,6 @@ const store = new Vuex.Store(
 
     },
 
-
     getters:
     {
         currentTitle: state =>
