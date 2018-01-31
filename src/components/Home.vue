@@ -5,11 +5,16 @@
         <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
         </h1>
         <p align="center" class="description">
-            Kampai es una aplicación que dada una o varias palabras clave y un buscador,
+            Kampai es una aplicación que dada una palabra clave y un buscador,
             te muestra los bares cercanos a ti que tienen lo que deseas beber o comer.
+            Tambien puedes buscar si ofrece las utilidades que necesites (silla de ruedas,wifi...).
+
+            Ademas aparte de eso te localiza en el mapa y luego te muestra el camino para llegar al bar que
+            has seleccionado.
         </p>
-        <div align="center">
-            <p class="contact">Consulta nuestras redes sociales</p>
+
+        <div align="center" class="fixed-bottom">
+            <p class="contact" >Consulta nuestras redes sociales</p>
             <ul>
                 <a href="http://www.youtube.com" target="_blank" class="icons"><span class="fa fa-youtube"></span> </a>
                 <a href="http://www.facebook.com" target="_blank" class="icons"><span class="fa fa-facebook"></span> </a>

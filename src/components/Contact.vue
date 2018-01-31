@@ -27,12 +27,12 @@
 
             // ...mapGetters({}), if needed ,put it in computed
 
-            ...mapActions(
-                {
-                    bindName: 'updateNameAction',
-                    bindEmail: 'updateEmailAction',
-                    contact: 'contactAction'
-                }),
+//            ...mapActions(
+//                {
+//                    bindName: 'updateNameAction',
+//                    bindEmail: 'updateEmailAction',
+//                    contact: 'contactAction'
+//                }),
 
             updateEmail: function (event) {
                 console.log(event.target.value);

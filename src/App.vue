@@ -28,15 +28,21 @@
                       </router-link>
                   </li>
 
-                  <li v-if="role.includes('nouser')">
+                  <li v-if="roles.includes('nouser')">
                       <router-link role="tab"  :to="{name: 'login'}">
                           <i class="fa fa-sign-in "></i>
                       </router-link>
                   </li>
 
-                  <li v-if="role.includes('admin')">
+                  <li v-if="roles.includes('admin')">
                       <router-link role="tab"  :to="{name: 'admin'}">
                           <i class="fa fa-lock"></i>
+                      </router-link>
+                  </li>
+
+                  <li v-if="roles.includes('admin') || roles.includes('normie') ">
+                      <router-link role="tab"  :to="{name: 'login'}">
+                          <i class="fa fa-sign-out "></i>
                       </router-link>
                   </li>
 
@@ -45,7 +51,11 @@
                           <i class="fa fa-vcard"></i>
                       </router-link>
                   </li>
-
+                  <li>
+                      <router-link role="tab" :to="{name: 'newbar'}">
+                          <i class="fa fa-plus"></i>
+                      </router-link>
+                  </li>
 
 
                   <!--<li class="disabled"><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>-->
@@ -192,7 +202,7 @@ export default
                 appTitle: 'currentTitle',
                 bbox: 'currentBBOX',
                 keywords: 'currentKeywords',
-                role: 'currentRole',
+                roles: 'currentRole',
                 bar: 'currentBarDetails'
             }),
     },
