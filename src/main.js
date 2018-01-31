@@ -14,6 +14,7 @@ import '@/assets/profile/profile.css'
 import '@/assets/profile/profile.js'
 import '@/assets/leaflet/plugins/location/L.Control.Locate.min.css'
 import '@/assets/leaflet/plugins/location/L.Control.Locate.min.js'
+import '@/assets/contact/contact.css'
 
 
 import Vue from 'vue'
