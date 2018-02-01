@@ -7,9 +7,11 @@ const state =
     map: '',
     featureCollection: '',
     featureLayer: '',
-    barIcon: 'https://imgur.com/a/ppfBY',
     locationControl: '',
-    userLocation: {}
+    routingControl: '',
+    routingProfile: '',
+    userLocation: {},
+
 }
 
 
@@ -48,6 +50,11 @@ const getters =
         return state.locationControl;
     },
 
+    currentRoutingControl: state =>
+    {
+        return state.routingControl;
+    },
+
 
 }
 
@@ -84,6 +91,11 @@ const mutations =
     updateLocationControl: (state,locationControl) =>
     {
         state.locationControl = locationControl;
+    },
+
+    updateRoutingControl: (state,routingControl) =>
+    {
+        state.routingControl = routingControl;
     }
 
 
@@ -120,7 +132,6 @@ const actions =
      */
     initMapAction: ({commit,dispatch}) =>
     {
-
         let mapOptions =
         {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -141,39 +152,33 @@ const actions =
 
 
 
+
+
         L.tileLayer(state.MAP_API_PROVIDER + '{accessToken}',mapOptions)
             .addTo(map);
 
         let dinnerIcon = L.icon({
             iconUrl: 'static/images/dinner.png',
-            // iconUrl: 'https://i.imgur.com/HhV6EbI.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
-            // popupAnchor: [0, -28]
         });
 
         let pubIcon = L.icon({
             iconUrl: 'static/images/beer.png',
-            // iconUrl: 'https://i.imgur.com/DujcmnC.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
-            // popupAnchor: [0, -28]
         });
 
         let cafeIcon = L.icon({
             iconUrl: 'static/images/coffee-cup.png',
-            // iconUrl: 'https://i.imgur.com/Iu61SKg.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
-            // popupAnchor: [0, -28]
         });
 
         let fastIcon = L.icon({
             iconUrl: 'static/images/fries.png',
-            // iconUrl: 'https://i.imgur.com/vMAUoby.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
-            // popupAnchor: [0, -28]
         });
 
 
@@ -213,19 +218,17 @@ const actions =
 
            onEachFeature: onEachFeature,
 
-           // pointToLayer: function (feature, latlng) {
-           //     return L.circleMarker(latlng, {
-           //         radius: 8,
-           //         fillColor: "#ff7800",
-           //         color: "#000",
-           //         weight: 1,
-           //         opacity: 1,
-           //         fillOpacity: 0.8
-           //     });
-           // }
+
         }).addTo(map);
 
        //Routing control
+        let routingControl = L.Routing.control({
+            router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
+                profile: 'mapbox/walking',
+            })
+        });
+        commit('updateRoutingControl', routingControl);
+        routingControl.addTo(map);
 
 
         //SIDEBAR PLUGIN
@@ -251,31 +254,24 @@ const actions =
             .addTo(map);
 
 
-        L.control.locate(
+
+
+        //
+        //create object, commit to vuex storage and add to map
+
+
+
+
+       let locationControl =  L.control.locate(
             {
                 position: 'bottomright',
                 setView: 'once',
                 icon: 'fa fa-street-view',
                 drawCircle: false,
             }
-        ).addTo(map);
-
-
-        //
-        //create object, commit to vuex storage and add to map
-
-        let locationControl = L.Routing.control({
-            // waypoints: [
-            //     L.latLng(43.3242622, -1.9822356),
-            //     L.latLng(43.3243284, -1.9849168)
-            // ],
-            router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
-                profile: 'mapbox/walking',
-            })
-        }).addTo(map);
-
+        );
         commit('updateLocationControl', locationControl);
-
+        locationControl.addTo(map);
 
         //update userLocation object in storage every time the event is triggered.
         map.on('locationfound', function(e){
@@ -352,56 +348,42 @@ const actions =
     plotRouteAction: ({commit,rootState,state},options) => //add another param options.
     {
         let map = state.map;
-
-        // let options = {};
-        //
-        // options.user = {};
-        console.log('current bar');
-        console.log(rootState.bar_storage.barDetails);
         let bar = rootState.bar_storage.barDetails.coord;
-        // options.user.lat = 43.3242622;
-        //
-        // options.user.lon = -1.9822356;
-        //
-        // options.bar.lat = 43.3243284;
-        //
-        // options.bar.lon = -1.9849168;
 
-    //L.Dom.on .. locationfound, send coordinates to function 'spliceWaypoints'
-    //change starting point using locationfound coordinates
-    //  control.spliceWaypoints(0, 1, e.latlng);
+        //Add new LocateControl, should be refactored to only update coordinates.
+        let lc = new L.Control.Locate().addTo(map);
+        lc.start();
+        // remove it otherwise we have two controlers.
+        lc.remove(map);
+
+        //create routing instance with the first profile
+        //if profile is the same, update current routing instance
+        //else, create new route with the new profile.
+        let routingControl = state.routingControl;
+
+        let profile = state.routingProfile;
+        if( profile  === '')
+        {
+          routingControl =  L.Routing.control({
+                router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
+                    profile: options.profile,
+                })
+            });
+        }
+        else if ( profile  !== '' &&  profile !== options.profile )
+        {
+            routingControl = L.Routing.control({
+                router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
+                    profile: options.profile,
+                })
+            });
+        }
 
 
-    // Using the feature's coordinates, change routing destination
-    // control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
+        //splice syntax, replace 1 element at position 0
+        routingControl.spliceWaypoints(0,1, state.userLocation);
 
-     // L.Routing.control({
-     //        // waypoints: [
-     //        //     // L.latLng(options.user.lat, options.user.lon),
-     //        //     // L.latLng(options.bar.lat, options.bar.lon)
-     //        //     L.latLng(bar.lat, bar.lon),
-     //        //     L.latLng(43.3243284,  -1.9849168)
-     //        // ],
-     //        router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
-     //            profile: 'mapbox/walking',
-     //
-     //        }),
-     //
-     //    }).addTo(map);
-
-
-
-        // control.spliceWaypoints(0, 1, e.latlng);
-        // update user location and locationControlObject.
-        // let lc = L.control.locate().addTo(map);
-
-        state.locationControl.start();
-        commit('updateLocationControl',lc);
-
-        console.log(state.userLocation);
-        console.log('location found through action');
-
-        // routing.add
+        routingControl.spliceWaypoints(1,1,bar);
 
         commit('updateMap', map);
     }

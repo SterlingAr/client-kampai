@@ -168,7 +168,11 @@ export default
 
         plotRoute: function()
         {
-          this.plotRouteAction();
+          let options = {
+              profile: 'mapbox/driving'
+          }  
+
+          this.plotRouteAction(options);
           this.showModal = false;
         },
 
