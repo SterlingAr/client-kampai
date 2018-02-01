@@ -23,7 +23,7 @@ a {
 .form-wrapper {
     box-sizing: border-box;
     width: 450px;
-    padding: 10px;
+    padding-top: 10px;
     margin: 150px auto 20px auto;
 }
 
