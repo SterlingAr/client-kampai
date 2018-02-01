@@ -46,17 +46,6 @@
                       </router-link>
                   </li>
 
-                  <li>
-                      <router-link role="tab" :to="{name: 'contact'}">
-                          <i class="fa fa-vcard"></i>
-                      </router-link>
-                  </li>
-                  <li>
-                      <router-link role="tab" :to="{name: 'newbar'}">
-                          <i class="fa fa-plus"></i>
-                      </router-link>
-                  </li>
-
 
                   <!--<li class="disabled"><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>-->
                   <!--<li><a href="https://github.com/Turbo87/sidebar-v2" role="tab" target="_blank"><i class="fa fa-github"></i></a></li>-->

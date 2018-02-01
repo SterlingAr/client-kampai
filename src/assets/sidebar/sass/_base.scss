@@ -260,6 +260,7 @@ $move-map-in-xs: true !default;
     }
 }
 .icons{
+    bottom: 1px;
     font-size: 30px;
     padding:5px;
 }
@@ -267,6 +268,9 @@ $move-map-in-xs: true !default;
     font-family: "WenQuanYi Micro Hei Mono";
     font-size: 15px;
 }
-.contact{
+.social{
     font-family: Helvetica;
+}
+.footer{
+    margin-top:150px;
 }

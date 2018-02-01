@@ -216,16 +216,15 @@ const actions =
         L.control.custom({
             position: 'topleft',
             content : '<form class="form-wrapper cf">'+
-            '    <input type="text" name="search" placeholder="Search" onchange="App.$refs.main.updateKeywords(event)">'+
-                '<button onclick="App.$refs.main.updateBarsAndRoute()" id="updateBarsButton" type="button">Search</button>'+
+            '    <input type="text" name="search" placeholder="Busca lo que desees" onchange="App.$refs.main.updateKeywords(event)">'+
+                '<button onclick="App.$refs.main.updateBarsAndRoute()" id="updateBarsButton" type="button">Buscar</button>'+
             '</form>',
             classes : '',
             style   :
                 {
-                    position: 'absolute',
+                    position: 'relative',
                     left: '1px',
-                    top: '-163px',
-                    width: '200px',
+                    top: '-160px',
                 }
         })
             .addTo(map);
