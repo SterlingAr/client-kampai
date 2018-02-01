@@ -8,6 +8,7 @@ const state =
     featureCollection: '',
     featureLayer: '',
     barIcon: 'https://imgur.com/a/ppfBY',
+    locationControl: '',
     userLocation: {}
 }
 
@@ -40,7 +41,12 @@ const getters =
     currentUserLocation: state =>
     {
         return state.userLocation;
-    }
+    },
+
+    currentLocationControl: state =>
+    {
+        return state.locationControl;
+    },
 
 
 }
@@ -73,6 +79,11 @@ const mutations =
     updateUserLocation: (state,userLocation) =>
     {
         state.userLocation = userLocation;
+    },
+
+    updateLocationControl: (state,locationControl) =>
+    {
+        state.locationControl = locationControl;
     }
 
 
@@ -249,22 +260,27 @@ const actions =
             }
         ).addTo(map);
 
-        map.on('locationfound', function(){
-            console.log('location');
-            console.log(this.latlng);
-        });
-        //
 
-        // L.Routing.control({
-        //     waypoints: [
-        //         L.latLng(43.3242622, -1.9822356),
-        //         L.latLng(43.3243284, -1.9849168)
-        //     ],
-        //     router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
-        //         profile: 'mapbox/walking',
-        //     })
         //
-        // }).addTo(map);
+        //create object, commit to vuex storage and add to map
+
+        let locationControl = L.Routing.control({
+            // waypoints: [
+            //     L.latLng(43.3242622, -1.9822356),
+            //     L.latLng(43.3243284, -1.9849168)
+            // ],
+            router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
+                profile: 'mapbox/walking',
+            })
+        }).addTo(map);
+
+        commit('updateLocationControl', locationControl);
+
+
+        //update userLocation object in storage every time the event is triggered.
+        map.on('locationfound', function(e){
+            commit('updateUserLocation', e.latlng);
+        });
 
 
         commit('updateFeatureLayer', featureLayer);
@@ -333,7 +349,7 @@ const actions =
             commit('updateFeatureLayer', layer);
     },
 
-    plotRouteAction: ({commit,rootState},options) => //add another param options.
+    plotRouteAction: ({commit,rootState,state},options) => //add another param options.
     {
         let map = state.map;
 
@@ -351,24 +367,43 @@ const actions =
         //
         // options.bar.lon = -1.9849168;
 
+    //L.Dom.on .. locationfound, send coordinates to function 'spliceWaypoints'
+    //change starting point using locationfound coordinates
+    //  control.spliceWaypoints(0, 1, e.latlng);
 
-        L.Routing.control({
-            waypoints: [
-                // L.latLng(options.user.lat, options.user.lon),
-                // L.latLng(options.bar.lat, options.bar.lon)
-                L.latLng(bar.lat, bar.lon),
-                L.latLng(43.3243284,  -1.9849168)
-            ],
-            router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
-                profile: 'mapbox/walking',
 
-            }),
+    // Using the feature's coordinates, change routing destination
+    // control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
 
-        }).addTo(map);
+     // L.Routing.control({
+     //        // waypoints: [
+     //        //     // L.latLng(options.user.lat, options.user.lon),
+     //        //     // L.latLng(options.bar.lat, options.bar.lon)
+     //        //     L.latLng(bar.lat, bar.lon),
+     //        //     L.latLng(43.3243284,  -1.9849168)
+     //        // ],
+     //        router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
+     //            profile: 'mapbox/walking',
+     //
+     //        }),
+     //
+     //    }).addTo(map);
+
+
+
+        // control.spliceWaypoints(0, 1, e.latlng);
+        // update user location and locationControlObject.
+        // let lc = L.control.locate().addTo(map);
+
+        state.locationControl.start();
+        commit('updateLocationControl',lc);
+
+        console.log(state.userLocation);
+        console.log('location found through action');
+
+        // routing.add
 
         commit('updateMap', map);
-
-
     }
 
 }
