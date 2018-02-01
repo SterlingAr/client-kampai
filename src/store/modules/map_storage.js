@@ -96,7 +96,12 @@ const mutations =
     updateRoutingControl: (state,routingControl) =>
     {
         state.routingControl = routingControl;
-    }
+    },
+    updateRoutingProfile: (state,routingProfile) =>
+    {
+        state.routingProfile = routingProfile;
+    },
+
 
 
 }
@@ -222,13 +227,13 @@ const actions =
         }).addTo(map);
 
        //Routing control
-        let routingControl = L.Routing.control({
-            router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
-                profile: 'mapbox/walking',
-            })
-        });
-        commit('updateRoutingControl', routingControl);
-        routingControl.addTo(map);
+       //  let routingControl = L.Routing.control({
+       //      router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
+       //          profile: 'mapbox/walking',
+       //      })
+       //  });
+       //  commit('updateRoutingControl', routingControl);
+       //  routingControl.addTo(map);
 
 
         //SIDEBAR PLUGIN
@@ -359,32 +364,47 @@ const actions =
         //create routing instance with the first profile
         //if profile is the same, update current routing instance
         //else, create new route with the new profile.
-        let routingControl = state.routingControl;
+        let routingControl;
 
         let profile = state.routingProfile;
-        if( profile  === '')
+
+        if( state.routingControl  === '')
         {
           routingControl =  L.Routing.control({
                 router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
                     profile: options.profile,
                 })
             });
+
+            commit('updateRoutingProfile',options.profile);
         }
-        else if ( profile  !== '' &&  profile !== options.profile )
+
+        if ( profile !== options.profile )
         {
             routingControl = L.Routing.control({
                 router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
                     profile: options.profile,
                 })
             });
+            commit('updateRoutingProfile',options.profile);
+
         }
+
+
+
+        if(profile)
+        {
+            routingControl = state.routingControl;
+        }
+
+        routingControl.addTo(map);
 
 
         //splice syntax, replace 1 element at position 0
         routingControl.spliceWaypoints(0,1, state.userLocation);
-
         routingControl.spliceWaypoints(1,1,bar);
 
+        commit('updateRoutingControl', routingControl);
         commit('updateMap', map);
     }
 

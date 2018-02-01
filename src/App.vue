@@ -120,9 +120,16 @@
               <button class="modal-default-button" @click="showModal=false">
                   OK
               </button>
-              <button class="modal-default-button" @click="plotRoute">
-                  Plot
+              <button class="modal-default-button" @click="plotRoute('mapbox/driving')">
+                  <i class="fas fa-car"></i>
               </button>
+              <button class="modal-default-button" @click="plotRoute('mapbox/walking')">
+                  <i class="fas fa-male"></i>
+              </button>
+              <button class="modal-default-button" @click="plotRoute('mapbox/cycling')">
+                    Tráfico
+              </button>
+
 
           </div>
 
@@ -166,14 +173,17 @@ export default
             plotRouteAction:  'plotRouteAction'
         }),
 
-        plotRoute: function()
+        plotRoute: function(profile)
         {
-          let options = {
-              profile: 'mapbox/driving'
-          }  
+
+            let options = {
+              profile: profile
+          }
 
           this.plotRouteAction(options);
-          this.showModal = false;
+        this.showModal = false;
+        this.updateBarDetails('');
+
         },
 
         updateKeywords: function (event)
@@ -192,9 +202,10 @@ export default
 
         setBarDetails: function(details)
         {
-            console.log(details);
             this.updateBarDetails(details);
             this.showModal = true;
+            console.log(this.showModal);
+
         }
 
 
