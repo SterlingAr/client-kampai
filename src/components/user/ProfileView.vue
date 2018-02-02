@@ -6,7 +6,7 @@
                 <!-- http://lorempixel.com/850/280/people/9/ -->
             </div>
             <div class="useravatar">
-                <img alt="" src="http://lorempixel.com/100/100/people/3/">
+                <img alt="" src="http://www.backgroundsy.com/file/large/web-app-user.jpg">
             </div>
             <div class="card-info"> <span class="card-title">{{user.name}}</span>
 
@@ -47,6 +47,11 @@
                 </div>
 
             </div>
+        </div>
+        <div class="login-card">
+            <form>
+                <input type="button" name="login" class="login login-button" value="logout" @click="loginOrFail">
+            </form>
         </div>
 
     </div>

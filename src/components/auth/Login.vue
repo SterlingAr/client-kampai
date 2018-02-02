@@ -21,13 +21,6 @@
            </div>
        </div>
 
-       <div v-if="roles.includes('admin') || roles.includes('normie') "  class="login-card">
-           <h1>Log-out</h1><br>
-           <form>
-                    <input type="button" name="login" class="login login-button" value="logout" @click="loginOrFail">
-           </form>
-       </div>
-
    </div>
 
 </template>
