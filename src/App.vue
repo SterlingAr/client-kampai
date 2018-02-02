@@ -47,6 +47,7 @@
                   </li>
 
 
+
                   <!--<li class="disabled"><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>-->
                   <!--<li><a href="https://github.com/Turbo87/sidebar-v2" role="tab" target="_blank"><i class="fa fa-github"></i></a></li>-->
             <!---->
@@ -115,11 +116,22 @@
 
           </div>
 
-          <!--<div slot="footer">-->
-              <!--<button class="modal-default-button" @click="$emit('close')">-->
-                  <!--OK-->
-              <!--</button>-->
-          <!--</div>-->
+          <div slot="footer">
+              <button class="modal-default-button" @click="showModal=false">
+                  OK
+              </button>
+              <button class="modal-default-button" @click="plotRoute('mapbox/driving')">
+                  <i class="fas fa-car"></i>
+              </button>
+              <button class="modal-default-button" @click="plotRoute('mapbox/walking')">
+                  <i class="fas fa-male"></i>
+              </button>
+              <button class="modal-default-button" @click="plotRoute('mapbox/cycling')">
+                    Tráfico
+              </button>
+
+
+          </div>
 
       </modal-view>
 
@@ -157,8 +169,22 @@ export default
 
         ...mapActions({
            updateBars : 'updateBarsAction',
-           updateBarDetails: 'updateBarDetailsAction'
+           updateBarDetails: 'updateBarDetailsAction',
+            plotRouteAction:  'plotRouteAction'
         }),
+
+        plotRoute: function(profile)
+        {
+
+            let options = {
+              profile: profile
+          }
+
+          this.plotRouteAction(options);
+        this.showModal = false;
+        this.updateBarDetails('');
+
+        },
 
         updateKeywords: function (event)
         {
@@ -176,9 +202,10 @@ export default
 
         setBarDetails: function(details)
         {
-            console.log(details);
             this.updateBarDetails(details);
             this.showModal = true;
+            console.log(this.showModal);
+
         }
 
 

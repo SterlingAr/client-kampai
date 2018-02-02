@@ -1,6 +1,8 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
+// import 'leaflet'
+
 import '@/assets/sidebar/sass/leaflet-sidebar.scss'
 import '@/assets/leaflet/leaflet.css'
 import '@/assets/map.css'
@@ -17,6 +19,8 @@ import '@/assets/leaflet/plugins/location/L.Control.Locate.min.js'
 import '@/assets/contact/contact.scss'
 import '@/assets/newbar/newbar.scss'
 
+import '@/assets/leaflet/plugins/routing/leaflet-routing-machine.css'
+import '@/assets/leaflet/plugins/routing/leaflet-routing-machine.js'
 
 import Vue from 'vue'
 import VueJWT from 'vuejs-jwt'

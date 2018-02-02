@@ -15,13 +15,10 @@ const getters =
 }
 const mutations =
 {
-
     updateBarDetails: (state,barDetails) =>
     {
         state.barDetails = barDetails;
     }
-
-
 }
 const actions =
 {

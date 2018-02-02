@@ -1,7 +1,7 @@
 
 <template>
    <div id="login-form">
-       <div class="login-card">
+       <div v-if="roles.includes('nouser')" class="login-card">
            <h1>Log-in</h1><br>
            <form>
                <input type="text" name="user" placeholder="Username" @input="updateEmail">
@@ -49,7 +49,6 @@
 
         methods: {
 
-            // ...mapGetters({}), if needed ,put it in computed
 
             ...mapActions(
             {
@@ -101,7 +100,8 @@
         {
 
             ...mapGetters({
-//                authStatus: 'currentAuthStatus',
+
+                authStatus: 'currentAuthStatus',
                 roles : 'currentRole',
             }),
 

@@ -5,6 +5,7 @@ const state =
     email: '',
     password: '',
     name: '',
+    authStatus: false,
     role: ['nouser'],
     token: ''
 
@@ -29,6 +30,11 @@ const getters =
     currentName: state =>
     {
         return state.name;
+    },
+
+    currentAuthStatus: state =>
+    {
+        return state.authStatus;
     }
 
 
@@ -58,13 +64,18 @@ const mutations =
     updateName: (state,name) =>
     {
         state.name = name;
+    },
+
+    updateAuthStatus: (state,newStatus) =>
+    {
+        state.authStatus = newStatus;
     }
 
 
 }
 const actions =
 {
-    registerAction: ({commit},rootState) =>
+    registerAction: ({commit,dispatch,rootState}) =>
     {
         axios.post(rootState.api_base_uri + '/api/auth/register' , {
 
@@ -75,12 +86,19 @@ const actions =
         })
             .then((response) => {
 
-                console.log(response);
+                /**
+                 * User created : 201 Created
+                 * User already exists: 409 Conflict.
+                 */
+                if(response.status === 201)
+                {
+                    dispatch('loginAction');
+                }
 
 
             })
             .catch((error) => {
-
+                commit('updateAuthStatus',response.status);
                 console.log(error);
             });
     },
@@ -98,32 +116,47 @@ const actions =
             console.log(response);
 
             //If
-            if(response.status === 200)
+                if(response.status === 200)
             {
-                //display 'Login success' and redirect
-                // this.$router.push(
-                //     {
-                //         name:'profile',
-                //         params:
-                //             {
-                //                 user: this.user
-                //             }
-                //     });
-                commit('updateUser',response.data.user);
-                commit('updateRole', response.data.user.role);
-                commit('updateSubscriptions',response.data.subscriptionList);
-                commit('updateToken',response.data.token);
+                commit('updateAuthStatus', response.status);
 
+                //fill necessary states for future usage
+                commit('updateToken',response.data.token);
+                commit('updateUser',response.data.user);
+                commit('updateSubscriptions',response.data.user.subscriptionList);
+                //empty form fields.
                 commit('updatePassword','');
                 commit('updateEmail','');
+
+                let roles = [];
+                response.data.user.roles.forEach(function (role)
+                {
+                    roles.push(role.name);
+                });
+
+                commit('updateRole', roles);
+
+
+
+                /**
+                 * Logged in:  200 OK
+                 * Bad credentials: 401 Unauthorized
+                 *
+                 */
             }
             // else
             // Display error on screen
         }).catch((error) => {
-
             console.log(error);
-
+            commit('updateAuthStatus', 401);
+            commit('updatePassword','');
+            commit('updateEmail','');
         })
+    },
+
+    logOutAction: ({commit}) =>
+    {
+
     },
 
     updatePasswordAction: ({commit}, password) =>
@@ -144,6 +177,11 @@ const actions =
     updateNameAction: ({commit}, name) =>
     {
         commit('updateName', name);
+    },
+
+    updateAuthStatusAction: ({commit}, status) =>
+    {
+        commit('updateAuthStatus',status);
     }
 
 }

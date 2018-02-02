@@ -7,7 +7,11 @@ const state =
     map: '',
     featureCollection: '',
     featureLayer: '',
-    barIcon: 'https://imgur.com/a/ppfBY',
+    locationControl: '',
+    routingControl: '',
+    routingProfile: '',
+    userLocation: {},
+
 }
 
 
@@ -36,6 +40,21 @@ const getters =
         return state.featureLayer;
     },
 
+    currentUserLocation: state =>
+    {
+        return state.userLocation;
+    },
+
+    currentLocationControl: state =>
+    {
+        return state.locationControl;
+    },
+
+    currentRoutingControl: state =>
+    {
+        return state.routingControl;
+    },
+
 
 }
 
@@ -43,26 +62,46 @@ const getters =
 const mutations =
 {
 
-    updateBBOX: (state, payload) =>
+    updateBBOX: (state,bbox) =>
     {
-        state.bbox = payload;
+        state.bbox = bbox;
     },
 
 
-    updateMap: (state,payload) =>
+    updateMap: (state,map) =>
     {
-        state.map = payload;
+        state.map = map;
     },
 
-    updateFeatureCollection: (state,payload) =>
+    updateFeatureCollection: (state,featureCollection) =>
     {
-        state.featureCollection = payload;
+        state.featureCollection = featureCollection;
     },
 
-    updateFeatureLayer: (state, payload) =>
+    updateFeatureLayer: (state, featureLayer) =>
     {
-        state.featureLayer = payload;
+        state.featureLayer = featureLayer;
     },
+
+    updateUserLocation: (state,userLocation) =>
+    {
+        state.userLocation = userLocation;
+    },
+
+    updateLocationControl: (state,locationControl) =>
+    {
+        state.locationControl = locationControl;
+    },
+
+    updateRoutingControl: (state,routingControl) =>
+    {
+        state.routingControl = routingControl;
+    },
+    updateRoutingProfile: (state,routingProfile) =>
+    {
+        state.routingProfile = routingProfile;
+    },
+
 
 
 }
@@ -70,14 +109,6 @@ const mutations =
 
 const actions =
 {
-
-    showModal: (e) =>
-    {
-        console.log(e);
-
-
-    },
-
 
 
     updateBBOXAction: ({commit}) =>
@@ -106,7 +137,6 @@ const actions =
      */
     initMapAction: ({commit,dispatch}) =>
     {
-
         let mapOptions =
         {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -127,35 +157,33 @@ const actions =
 
 
 
+
+
         L.tileLayer(state.MAP_API_PROVIDER + '{accessToken}',mapOptions)
             .addTo(map);
 
         let dinnerIcon = L.icon({
-            iconUrl: 'https://i.imgur.com/HhV6EbI.png',
+            iconUrl: 'static/images/dinner.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
-            // popupAnchor: [0, -28]
         });
 
         let pubIcon = L.icon({
-            iconUrl: 'https://i.imgur.com/DujcmnC.png',
+            iconUrl: 'static/images/beer.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
-            // popupAnchor: [0, -28]
         });
 
         let cafeIcon = L.icon({
-            iconUrl: 'https://i.imgur.com/Iu61SKg.png',
+            iconUrl: 'static/images/coffee-cup.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
-            // popupAnchor: [0, -28]
         });
 
         let fastIcon = L.icon({
-            iconUrl: 'https://i.imgur.com/vMAUoby.png',
+            iconUrl: 'static/images/fries.png',
             iconSize: [25, 28],
             iconAnchor: [16, 37],
-            // popupAnchor: [0, -28]
         });
 
 
@@ -177,6 +205,7 @@ const actions =
                     return L.marker(latlng, {icon: cafeIcon});
 
                 }
+
                 if(feature.amenity === 'fast_food')
                 {
                     return L.marker(latlng, {icon: fastIcon});
@@ -194,22 +223,21 @@ const actions =
 
            onEachFeature: onEachFeature,
 
-           // pointToLayer: function (feature, latlng) {
-           //     return L.circleMarker(latlng, {
-           //         radius: 8,
-           //         fillColor: "#ff7800",
-           //         color: "#000",
-           //         weight: 1,
-           //         opacity: 1,
-           //         fillOpacity: 0.8
-           //     });
-           // }
+
         }).addTo(map);
 
+       //Routing control
+       //  let routingControl = L.Routing.control({
+       //      router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
+       //          profile: 'mapbox/walking',
+       //      })
+       //  });
+       //  commit('updateRoutingControl', routingControl);
+       //  routingControl.addTo(map);
 
-        let marker = L.marker([51.2, 7]).addTo(map);
 
         //SIDEBAR PLUGIN
+        // let marker = L.marker([51.2, 7]).addTo(map);
         let sidebar = L.control.sidebar('sidebar').addTo(map);
 
         // SEARCH BOX
@@ -230,12 +258,29 @@ const actions =
             .addTo(map);
 
 
-        L.control.locate(
+
+
+        //
+        //create object, commit to vuex storage and add to map
+
+
+
+
+       let locationControl =  L.control.locate(
             {
                 position: 'bottomright',
-                setView: 'once'
+                setView: 'once',
+                icon: 'fa fa-street-view',
+                drawCircle: false,
             }
-        ).addTo(map);
+        );
+        commit('updateLocationControl', locationControl);
+        locationControl.addTo(map);
+
+        //update userLocation object in storage every time the event is triggered.
+        map.on('locationfound', function(e){
+            commit('updateUserLocation', e.latlng);
+        });
 
 
         commit('updateFeatureLayer', featureLayer);
@@ -274,6 +319,11 @@ const actions =
             feature.geometry = featureGeometry;
             feature.amenity = bar.tags.amenity;
             feature.details = bar.tags;
+            feature.details.coord = {};
+            feature.details.coord.lat  = bar.lat;
+            feature.details.coord.lon  = bar.lon;
+
+
             featuresArray.push(feature);
 
         }
@@ -297,8 +347,65 @@ const actions =
             layer.addData(featureCollection);
 
             commit('updateFeatureLayer', layer);
-
     },
+
+    plotRouteAction: ({commit,rootState,state},options) => //add another param options.
+    {
+        let map = state.map;
+        let bar = rootState.bar_storage.barDetails.coord;
+
+        //Add new LocateControl, should be refactored to only update coordinates.
+        let lc = new L.Control.Locate().addTo(map);
+        lc.start();
+        // remove it otherwise we have two controlers.
+        lc.remove(map);
+
+        //create routing instance with the first profile
+        //if profile is the same, update current routing instance
+        //else, create new route with the new profile.
+        let routingControl;
+
+        let profile = state.routingProfile;
+
+        if( state.routingControl  === '')
+        {
+          routingControl =  L.Routing.control({
+                router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
+                    profile: options.profile,
+                })
+            });
+
+            commit('updateRoutingProfile',options.profile);
+        }
+
+        if ( profile !== options.profile )
+        {
+            routingControl = L.Routing.control({
+                router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
+                    profile: options.profile,
+                })
+            });
+            commit('updateRoutingProfile',options.profile);
+
+        }
+
+
+
+        if(profile)
+        {
+            routingControl = state.routingControl;
+        }
+
+        routingControl.addTo(map);
+
+
+        //splice syntax, replace 1 element at position 0
+        routingControl.spliceWaypoints(0,1, state.userLocation);
+        routingControl.spliceWaypoints(1,1,bar);
+
+        commit('updateRoutingControl', routingControl);
+        commit('updateMap', map);
+    }
 
 }
 
@@ -326,16 +433,7 @@ function whenClicked(e)
  */
 function onEachFeature(feature, layer)
 {
-    // let popupContent = "<p>I started out as a GeoJSON " +
-    //     feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
-    //
-    // if (feature.properties && feature.properties.popupContent) {
-    //     popupContent += feature.properties.popupContent;
-    // }
-
     layer.on({
         click: whenClicked
     });
-
-    // layer.bindPopup(popupContent);
 }

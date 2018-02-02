@@ -4,11 +4,12 @@
 
         <router-view></router-view>
 
-        <router-view name="profile_view"></router-view>
 
         <router-view name="bar_list_view"></router-view>
 
         <router-view name="login_view"></router-view>
+
+        <router-view name="profile_view"></router-view>
 
         <router-view name="register_view"></router-view>
 
