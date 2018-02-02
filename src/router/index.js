@@ -8,6 +8,8 @@ import SideBarContent from '../components/SideBarContent.vue'
 import Home from '../components/Home.vue'
 import Login from '../components/auth/Login.vue'
 import Register from '../components/auth/Register.vue'
+import Contact from '../components/Contact.vue'
+import NewBar from '../components/NewBar.vue'
 // import BarModalView from '../components/bar/BarModalView.vue'
 Vue.use(Router)
 
@@ -58,6 +60,22 @@ export default new Router({
           components:
               {
                   register_view: Register,
+              },
+      },
+      {
+          path: '/contact',
+          name: 'contact',
+          components:
+              {
+                  contact_view: Contact,
+              },
+      },
+      {
+          path: '/newbar',
+          name: 'newbar',
+          components:
+              {
+                  newbar_view: NewBar,
               },
       },
 

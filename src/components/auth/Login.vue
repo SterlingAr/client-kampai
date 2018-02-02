@@ -100,6 +100,7 @@
         {
 
             ...mapGetters({
+
                 authStatus: 'currentAuthStatus',
                 roles : 'currentRole',
             }),

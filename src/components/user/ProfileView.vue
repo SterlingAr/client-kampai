@@ -30,8 +30,9 @@
         <div class="well">
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="tab1">
-
-
+                    <p>
+                        <router-link :to="{name:'newbar'}">Añade tu bar</router-link>
+                    </p>
                 </div>
                 <div class="tab-pane fade in" id="tab2">
                     <h3>Favorites</h3>
