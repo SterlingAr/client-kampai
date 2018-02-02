@@ -155,10 +155,6 @@ const actions =
             position:'bottomright'
         }).addTo(map);
 
-
-
-
-
         L.tileLayer(state.MAP_API_PROVIDER + '{accessToken}',mapOptions)
             .addTo(map);
 
@@ -226,15 +222,6 @@ const actions =
 
         }).addTo(map);
 
-       //Routing control
-       //  let routingControl = L.Routing.control({
-       //      router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
-       //          profile: 'mapbox/walking',
-       //      })
-       //  });
-       //  commit('updateRoutingControl', routingControl);
-       //  routingControl.addTo(map);
-
 
         //SIDEBAR PLUGIN
         // let marker = L.marker([51.2, 7]).addTo(map);
@@ -244,7 +231,7 @@ const actions =
         L.control.custom({
             position: 'topleft',
             content : '<form class="form-wrapper cf">'+
-            '    <input type="text" name="search" placeholder="Busca lo que desees" onchange="App.$refs.main.updateKeywords(event)">'+
+            '    <input type="text"   placeholder="Busca lo que desees" onchange="App.$refs.main.updateKeywords(event)"  onkeypress="App.$refs.main.updateBarsOnEnter(event)">'+
                 '<button onclick="App.$refs.main.updateBarsAndRoute()" id="updateBarsButton" type="button">Buscar</button>'+
             '</form>',
             classes : '',
@@ -256,14 +243,6 @@ const actions =
                 }
         })
             .addTo(map);
-
-
-
-
-        //
-        //create object, commit to vuex storage and add to map
-
-
 
 
        let locationControl =  L.control.locate(
@@ -367,15 +346,20 @@ const actions =
 
         let profile = state.routingProfile;
 
+        console.log(state.userLocation);
+        //TODO
+        //if there is no routing control, create routing control,push waypoints, update map and exit
+        //if there is and profile is the same, use current, push waypoints, update map and exit
+        //else create routing control with new profile, push waypoints and update map.hh
         if( state.routingControl  === '')
         {
           routingControl =  L.Routing.control({
                 router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
                     profile: options.profile,
+                    language:'es'
                 })
             });
 
-            commit('updateRoutingProfile',options.profile);
         }
 
         if ( profile !== options.profile )
@@ -383,12 +367,13 @@ const actions =
             routingControl = L.Routing.control({
                 router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
                     profile: options.profile,
+                    language:'es'
+
                 })
             });
             commit('updateRoutingProfile',options.profile);
 
         }
-
 
 
         if(profile)
@@ -398,14 +383,15 @@ const actions =
 
         routingControl.addTo(map);
 
-
         //splice syntax, replace 1 element at position 0
         routingControl.spliceWaypoints(0,1, state.userLocation);
         routingControl.spliceWaypoints(1,1,bar);
 
         commit('updateRoutingControl', routingControl);
         commit('updateMap', map);
-    }
+
+        }
+
 
 }
 

@@ -31,7 +31,6 @@
 
         methods: {
 
-            // ...mapGetters({}), if needed ,put it in computed
 
             ...mapActions(
                 {
@@ -41,6 +40,7 @@
                     register: 'registerAction'
                 }),
 
+            //custom methods to update storage values
             updateEmail: function (event) {
                 this.bindEmail(event.target.value);
 
@@ -58,13 +58,25 @@
 
             registerOrFail: function () {
                 this.register();
-                this.$router.push({
-                    name: 'profile'
-                });
+                if(this.authStatus === 200)
+                {
+                    this.$router.push({
+                        name: 'profile'
+                    });
+                }
+
             }
 
+        },
+        computed:
+            {
 
-        }
+                ...mapGetters({
+
+                    authStatus: 'currentAuthStatus',
+                }),
+
+            }
     }
 
 </script>

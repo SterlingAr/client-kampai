@@ -121,13 +121,16 @@
                   OK
               </button>
               <button class="modal-default-button" @click="plotRoute('mapbox/driving')">
-                  <i class="fas fa-car"></i>
+                  <i class="fa fa-car"></i>
               </button>
               <button class="modal-default-button" @click="plotRoute('mapbox/walking')">
-                  <i class="fas fa-male"></i>
+                  <i class="fa fa-male"></i>
               </button>
               <button class="modal-default-button" @click="plotRoute('mapbox/cycling')">
-                    Tráfico
+                    Bici
+              </button>
+              <button class="modal-default-button" @click="plotRoute('mapbox/driving-traffic')">
+                 Trafico
               </button>
 
 
@@ -191,13 +194,19 @@ export default
             this.$store.dispatch('updateKeywordsAction', event.target.value);
         },
 
+        updateBarsOnEnter: function (e)
+        {
+            if(e.keyCode  === 13)
+            {
+                console.log('enter pressed')
+                this.updateBarsAndRoute();
+            }
+        },
+
         updateBarsAndRoute: function ()
         {
-
             this.updateBars();
-
             this.$router.push({name: 'bar_list'});
-
         },
 
         setBarDetails: function(details)

@@ -72,35 +72,21 @@
 
             loginOrFail: function()
             {
-                this.login();
-
-                console.log(this.authStatus);
-
-                console.log('profile');
-                this.$router.push({
-                    name:'profile'
-                });
-
-            },
-
-            redirect: function ()
-            {
+                this.login()
                 if(this.authStatus === 200)
                 {
-                    console.log('profile');
                     this.$router.push({
                         name:'profile'
                     });
                 }
-
-            }
+            },
         },
 
         computed:
         {
 
-            ...mapGetters({
-
+            ...mapGetters(
+            {
                 authStatus: 'currentAuthStatus',
                 roles : 'currentRole',
             }),
