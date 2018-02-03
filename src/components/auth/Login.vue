@@ -4,7 +4,7 @@
        <div v-if="roles.includes('nouser')" class="login-card">
            <h1>Log-in</h1><br>
            <form>
-               <input type="text" name="user" placeholder="Username" @input="updateEmail">
+               <input type="text" name="user" placeholder="Email" @input="updateEmail">
                <input type="password" name="pass" placeholder="Password" @input="updatePassword">
                <input type="button" name="login" class="login login-button" value="login" @click="loginOrFail">
            </form>
@@ -70,15 +70,11 @@
                 this.bindPassword(event.target.value);
             },
 
+
             loginOrFail: function()
             {
-                this.login()
-                if(this.authStatus === 200)
-                {
-                    this.$router.push({
-                        name:'profile'
-                    });
-                }
+                this.login();
+
             },
         },
 

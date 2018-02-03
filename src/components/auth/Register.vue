@@ -58,7 +58,7 @@
 
             registerOrFail: function () {
                 this.register();
-                if(this.authStatus === 200)
+                if(this.authStatus === 201)
                 {
                     this.$router.push({
                         name: 'profile'

@@ -23,8 +23,8 @@ const store = new Vuex.Store(
         },
 
 
-        api_base_uri: 'http://kampai.local',
-        // api_base_uri: 'http://tiendasoutlet.es:8080/',
+        // api_base_uri: 'http://kampai.local',
+        api_base_uri: 'http://tiendasoutlet.es:8080/',
 
     },
 

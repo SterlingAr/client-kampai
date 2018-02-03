@@ -131,8 +131,6 @@ const actions =
                 commit('updateUser',response.data.user);
                 commit('updateSubscriptions',response.data.user.subscriptionList);
                 //empty form fields.
-                commit('updatePassword','');
-                commit('updateEmail','');
 
                 let roles = [];
                 response.data.user.roles.forEach(function (role)
@@ -142,7 +140,10 @@ const actions =
 
                 commit('updateRole', roles);
 
-
+                //chapuza... :(
+                App.$router.push({
+                    name:'profile'
+                });
 
                 /**
                  * Logged in:  200 OK

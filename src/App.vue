@@ -67,6 +67,12 @@
 
       <modal-view v-if="showModal" @close="showModal = false">
 
+          <h2 slot="actions">
+              <span>
+                <i class="fa fa-heart"></i>
+              </span>
+          </h2>
+
           <h3 slot="header">{{bar.name}}
           <span>
               <i v-if="bar.internet_access" class="fa fa-wifi" aria-hidden="true"></i>
@@ -75,12 +81,19 @@
               <i v-if="bar.amenity === 'bar'" class="fa fa-glass" aria-hidden="true"></i>
               <i v-if="bar.amenity === 'cafe'" class="fa fa-coffee" aria-hidden="true"></i>
           </span>
+
+
           </h3>
 
 
 
           <div slot="body">
-                  <div role="tabpanel">
+
+
+
+
+
+              <div role="tabpanel">
                       <!-- Nav tabs -->
                       <ul class="nav nav-tabs" role="tablist">
                           <li role="presentation" class="active"><a href="#uploadTab" aria-controls="uploadTab" role="tab" data-toggle="tab">Details</a>
@@ -89,25 +102,26 @@
                           </li>
                       </ul>
                       <!-- Tab panes -->
-                      <div class="tab-content">
+                      <div class="tab-content" >
                           <div role="tabpanel" class="tab-pane active" id="uploadTab">
 
                               <table>
                                   <tr>
-                                      <th>
-                                          <i class="fa fa-map-marker " aria-hidden="true"></i>
-                                      </th>
 
-                                      <td>{{bar['addr:street']}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <th></th>
+                                      <td v-if="bar['addr:street'] !== ''">
+                                          <span>
+                                              <i class="fa fa-map-marker fa-2x"  aria-hidden="true"></i>
+                                          </span>
+                                          {{bar['addr:street']}}
+                                      </td>
                                       <td></td>
                                   </tr>
+
+
                               </table>
 
                           </div>
+
                           <div role="tabpanel" class="tab-pane" id="browseTab">
                               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque beatae consectetur deserunt doloribus ipsum neque quas recusandae rem repellendus, sit! Dignissimos dolor, dolorem eligendi error fugiat id obcaecati quaerat reprehenderit.
                           </div>
@@ -117,21 +131,31 @@
           </div>
 
           <div slot="footer">
-              <button class="modal-default-button" @click="showModal=false">
-                  OK
+
+              <div class="pull-left">
+                  <a @click="plotRoute('mapbox/driving')">
+                      <img class="transport" src="static/icons/transport/car.svg" alt="">
+                  </a>
+
+                  <a @click="plotRoute('mapbox/walking')">
+                      <img class="transport" src="static/icons/transport/walk.svg" alt="">
+
+                  </a>
+
+
+                  <a @click="plotRoute('mapbox/cycling')">
+                      <img class="transport" src="static/icons/transport/cycle.svg" alt="">
+                  </a>
+
+                  <a @click="plotRoute('mapbox/driving-traffic')">
+                      <img class="transport" src="static/icons/transport/traffic-light.svg" alt="">
+                  </a>
+              </div>
+
+              <button class="btn btn-danger" @click="showModal=false">
+                  Close
               </button>
-              <button class="modal-default-button" @click="plotRoute('mapbox/driving')">
-                  <i class="fa fa-car"></i>
-              </button>
-              <button class="modal-default-button" @click="plotRoute('mapbox/walking')">
-                  <i class="fa fa-male"></i>
-              </button>
-              <button class="modal-default-button" @click="plotRoute('mapbox/cycling')">
-                    Bici
-              </button>
-              <button class="modal-default-button" @click="plotRoute('mapbox/driving-traffic')">
-                 Trafico
-              </button>
+
 
 
           </div>
@@ -179,13 +203,14 @@ export default
         plotRoute: function(profile)
         {
 
-            let options = {
+            let options =
+            {
               profile: profile
-          }
+            }
 
-          this.plotRouteAction(options);
-        this.showModal = false;
-        this.updateBarDetails('');
+            this.plotRouteAction(options);
+            this.showModal = false;
+            this.updateBarDetails('');
 
         },
 
