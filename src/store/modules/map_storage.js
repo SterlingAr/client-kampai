@@ -157,9 +157,16 @@ const actions =
             // commit('updateUserLocation', e.latlng);
         });
 
+        let credctrl = L.controlCredits({
+            image: "static/images/logo.png",
+            link: "https://www.flaticon.com/",
+            text: "<div>Icons made by <a href=\"http://www.freepik.com\" title=\"Freepik\">Freepik</a> from <a href=\"https://www.flaticon.com/\" title=\"Flaticon\">www.flaticon.com</a> is licensed by <a href=\"http://creativecommons.org/licenses/by/3.0/\" title=\"Creative Commons BY 3.0\" target=\"_blank\">CC 3.0 BY</a></div>"
+        }).addTo(map);
+
         L.control.zoom({
             position:'bottomright'
         }).addTo(map);
+
 
         L.tileLayer(state.MAP_API_PROVIDER + '{accessToken}',mapOptions)
             .addTo(map);
@@ -214,7 +221,6 @@ const actions =
 
                 }
 
-
             },
 
            // onEachFeature: onEachFeature
@@ -237,7 +243,7 @@ const actions =
         L.control.custom({
             position: 'topleft',
             content : '<form class="form-wrapper cf">'+
-            '    <input type="text"   placeholder="Busca lo que desees" onchange="App.$refs.main.updateKeywords(event)"  onkeypress="App.$refs.main.updateBarsOnEnter(event)">'+
+            '    <input type="text"   placeholder="e.g: pizza kebab" onchange="App.$refs.main.updateKeywords(event)"  onkeypress="App.$refs.main.updateBarsOnEnter(event)">'+
                 '<button onclick="App.$refs.main.updateBarsAndRoute()" id="updateBarsButton" type="button">Buscar</button>'+
             '</form>',
             classes : '',
@@ -374,6 +380,8 @@ const actions =
                 routingControl.addTo(state.map);
                 commit('updateRoutingProfile',options.profile);
                 commit('updateRoutingControl', routingControl);
+                dispatch('updateModalAction',false);
+
                 return;
             }
 
@@ -397,6 +405,7 @@ const actions =
             routingControl.spliceWaypoints(1,1,barLocation);
             commit('updateRoutingControl', routingControl);
 
+            dispatch('updateModalAction',false);
         });
 
     },

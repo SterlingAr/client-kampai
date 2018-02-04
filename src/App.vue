@@ -9,7 +9,7 @@
                   <!--<li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>-->
                   <li>
                       <router-link role="tab"  :to="{name: 'home'}">
-                          <i class="fa fa-home"></i>
+                          <img class="menu" src="static/icons/menu/house.svg" alt="">
                       </router-link>
                   </li>
 
@@ -17,20 +17,20 @@
                   <!--<li v-if="role === 'normie'">-->
                   <li>
                   <router-link  role="tab"  :to="{name: 'profile'}">
-                      <i class="fa fa-user"></i>
+                      <img class="menu" src="static/icons/menu/users.svg" alt="">
                   </router-link>
                   </li>
 
 
                   <li>
                       <router-link role="tab"  :to="{name: 'bar_list'}">
-                          <i class="fa fa-beer"></i>
+                          <img class="menu" src="static/icons/menu/toast.svg" alt="">
                       </router-link>
                   </li>
 
                   <li v-if="roles.includes('nouser')">
                       <router-link role="tab"  :to="{name: 'login'}">
-                          <i class="fa fa-sign-in "></i>
+                          <img class="menu" src="static/icons/menu/login.svg" alt="">
                       </router-link>
                   </li>
 
@@ -54,8 +54,10 @@
               </ul>
 
               <ul role="tablist">
-                  <li><a href="#"  role="tab"><i class="fa fa-gear"></i></a></li>
+                  <li><a @click="openDataLayer" role="tab"><i class="fa fa-gear"></i></a></li>
               </ul>
+
+
           </div>
           <side-bar></side-bar>
 
@@ -65,7 +67,7 @@
 
       <osm-map></osm-map>
 
-      <modal-view v-if="showModal" @close="showModal = false">
+      <modal-view v-if="modal" @close="modal = false">
 
           <h2 slot="actions">
               <span>
@@ -77,22 +79,13 @@
           <span>
               <i v-if="bar.internet_access" class="fa fa-wifi" aria-hidden="true"></i>
               <i v-if="bar.wheelchair === 'yes'" class="fa fa-wheelchair-alt" aria-hidden="true"></i>
-              <i v-if="bar.amenity === 'restaurant'" class="fa fa-cutlery" aria-hidden="true"></i>
-              <i v-if="bar.amenity === 'bar'" class="fa fa-glass" aria-hidden="true"></i>
-              <i v-if="bar.amenity === 'cafe'" class="fa fa-coffee" aria-hidden="true"></i>
           </span>
-
 
           </h3>
 
 
 
           <div slot="body">
-
-
-
-
-
               <div role="tabpanel">
                       <!-- Nav tabs -->
                       <ul class="nav nav-tabs" role="tablist">
@@ -109,10 +102,11 @@
                                   <tr>
 
                                       <td v-if="bar['addr:street'] !== ''">
-                                          <span>
-                                              <i class="fa fa-map-marker fa-2x"  aria-hidden="true"></i>
-                                          </span>
-                                          {{bar['addr:street']}}
+                                          <p>
+                                              <img class="map-icons " src="static/icons/map/map.svg" alt="">
+
+                                              {{bar['addr:street']}}
+                                          </p>
                                       </td>
                                       <td></td>
                                   </tr>
@@ -152,14 +146,10 @@
                   </a>
               </div>
 
-              <button class="btn btn-danger" @click="showModal=false">
+              <button class="btn btn-danger" @click="updateModal(false)">
                   Close
               </button>
-
-
-
           </div>
-
       </modal-view>
 
   </div>
@@ -197,7 +187,9 @@ export default
         ...mapActions({
            updateBars : 'updateBarsAction',
            updateBarDetails: 'updateBarDetailsAction',
-            plotRouteAction:  'plotRouteAction'
+           updateModal: 'updateModalAction',
+           plotRouteAction:  'plotRouteAction',
+            odLayer: 'openDataLayerAction'
         }),
 
         plotRoute: function(profile)
@@ -219,11 +211,13 @@ export default
             this.$store.dispatch('updateKeywordsAction', event.target.value);
         },
 
-        updateBarsOnEnter: function (e)
+        updateBarsOnEnter: function (event)
         {
-            if(e.keyCode  === 13)
+            if(event.keyCode  === 13)
             {
                 console.log('enter pressed')
+                this.$store.dispatch('updateKeywordsAction', event.target.value);
+
                 this.updateBarsAndRoute();
             }
         },
@@ -237,9 +231,15 @@ export default
         setBarDetails: function(details)
         {
             this.updateBarDetails(details);
-            this.showModal = true;
-            console.log(this.showModal);
+            this.updateModal(true);
+            console.log(this.modal);
 
+        },
+
+        openDataLayer: function ()
+        {
+            //TODO
+            this.odLayer();
         }
 
 
@@ -253,7 +253,8 @@ export default
                 bbox: 'currentBBOX',
                 keywords: 'currentKeywords',
                 roles: 'currentRole',
-                bar: 'currentBarDetails'
+                bar: 'currentBarDetails',
+                modal: 'currentModal'
             }),
     },
 
