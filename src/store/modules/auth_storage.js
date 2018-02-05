@@ -78,8 +78,6 @@ const actions =
 
     //Rellenar campos, name, email, contraseña
     //Validar que los datos están bien introducidos.
-    //
-
     registerAction: ({commit,dispatch,rootState}) =>
     {
         axios.post(rootState.api_base_uri + '/api/auth/register' , {
@@ -91,15 +89,16 @@ const actions =
 
         })
             .then((response) => {
-
                 /**
                  * User created : 201 Created
                  * User already exists: 409 Conflict.
                  */
                 if(response.status === 201) //
                 {
+                    //no need for login, later substitute the user in state.
                     dispatch('loginAction');
                 }
+
             console.log(response);
 
             })
@@ -109,7 +108,7 @@ const actions =
             });
     },
 
-    loginAction:({commit,rootState}) =>
+    loginAction:({commit,state,rootState}) =>
     {
 
         axios.post(rootState.api_base_uri + '/api/auth/login', {
@@ -126,8 +125,11 @@ const actions =
             {
                 commit('updateAuthStatus', response.status);
 
+
                 //fill necessary states for future usage
-                commit('updateToken',response.data.token);
+                let bearer_token = ' Bearer ' + response.data.token;
+
+                commit('updateToken',bearer_token);
                 commit('updateUser',response.data.user);
                 commit('updateSubscriptions',response.data.user.subscriptionList);
                 //empty form fields.

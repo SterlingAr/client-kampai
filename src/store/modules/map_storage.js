@@ -291,7 +291,7 @@ const actions =
         {
             // if(bar.tags === null || bar.tags === '')
             //     continue;
-
+            // change with {} in the future
             let feature = new Object();
             let featureProperties = new Object();
             let featureGeometry = new Object();
@@ -305,21 +305,18 @@ const actions =
             feature.geometry = featureGeometry;
             feature.amenity = bar.tags.amenity;
             feature.details = bar.tags;
+            feature.details.node = bar.id;
             feature.details.coord = {};
             feature.details.coord.lat  = bar.lat;
             feature.details.coord.lon  = bar.lon;
 
-
             featuresArray.push(feature);
-
         }
 
         featureCollection.type = "FeatureCollection";
         featureCollection.features = featuresArray;
         commit('updateFeatureCollection',featureCollection);
-
         dispatch('addFeaturesToLayer',featureCollection);
-
     },
 
     addFeaturesToLayer: ({commit}, featureCollection) =>

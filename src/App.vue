@@ -71,7 +71,7 @@
 
           <h2 slot="actions">
               <span>
-                <i class="fa fa-heart"></i>
+                <img @click="addBarToSubs(bar)" class="modal-icons pull-right" src="static/icons/modal/no_like.svg" alt="">
               </span>
           </h2>
 
@@ -82,8 +82,6 @@
           </span>
 
           </h3>
-
-
 
           <div slot="body">
               <div role="tabpanel">
@@ -97,10 +95,8 @@
                       <!-- Tab panes -->
                       <div class="tab-content" >
                           <div role="tabpanel" class="tab-pane active" id="uploadTab">
-
                               <table>
                                   <tr>
-
                                       <td v-if="bar['addr:street'] !== ''">
                                           <p>
                                               <img class="map-icons " src="static/icons/map/map.svg" alt="">
@@ -110,18 +106,13 @@
                                       </td>
                                       <td></td>
                                   </tr>
-
-
                               </table>
-
                           </div>
-
                           <div role="tabpanel" class="tab-pane" id="browseTab">
                               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque beatae consectetur deserunt doloribus ipsum neque quas recusandae rem repellendus, sit! Dignissimos dolor, dolorem eligendi error fugiat id obcaecati quaerat reprehenderit.
                           </div>
                       </div>
-                  </div>
-
+              </div>
           </div>
 
           <div slot="footer">
@@ -189,7 +180,8 @@ export default
            updateBarDetails: 'updateBarDetailsAction',
            updateModal: 'updateModalAction',
            plotRouteAction:  'plotRouteAction',
-            odLayer: 'openDataLayerAction'
+           odLayer: 'openDataLayerAction',
+           addBarToSubs: 'addBarToSubsAction'
         }),
 
         plotRoute: function(profile)

@@ -1,6 +1,6 @@
 const state =
     {
-        keywords: 'all'
+        keywords: 'pizza'
 
     }
 
