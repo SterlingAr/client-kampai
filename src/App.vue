@@ -71,7 +71,9 @@
 
           <h2 slot="actions">
               <span>
-                <img @click="addBarToSubs(bar)" class="modal-icons pull-right" src="static/icons/modal/no_like.svg" alt="">
+                <img v-if="!barInSubs(bar)" @click="addBarToSubs(bar)" class="modal-icons pull-right" src="static/icons/modal/no_like.svg" alt="">
+                <img v-if="barInSubs(bar)" @click="removeBarFromSubs(bar)" class="modal-icons pull-right" src="static/icons/modal/like.svg" alt="">
+
               </span>
           </h2>
 
@@ -155,9 +157,6 @@ import {mapActions} from 'vuex';
 import OsmMap from './components/OsmMap.vue';
 import SideBar from './components/SideBar.vue';
 
-
-
-
 export default
 {
     name: 'App',
@@ -181,11 +180,13 @@ export default
            updateModal: 'updateModalAction',
            plotRouteAction:  'plotRouteAction',
            odLayer: 'openDataLayerAction',
-           addBarToSubs: 'addBarToSubsAction'
+           addBarToSubs: 'addBarToSubsAction',
+           removeBarFromSubs: 'removeBarFromSubs'
         }),
 
         plotRoute: function(profile)
         {
+            this.showModal = false;
 
             let options =
             {
@@ -193,8 +194,7 @@ export default
             }
 
             this.plotRouteAction(options);
-            this.showModal = false;
-            this.updateBarDetails('');
+            // this.updateBarDetails('');
 
         },
 
@@ -232,6 +232,18 @@ export default
         {
             //TODO
             this.odLayer();
+        },
+
+        //checks if bar is in current user's subscriptionlist
+        barInSubs: function(bar)
+        {
+            for(let i = 0; i < this.subscriptions.length; i++)
+            {
+                if(this.subscriptions[i].node === bar.node)
+                    return true;
+
+            }
+            return false;
         }
 
 
@@ -246,7 +258,8 @@ export default
                 keywords: 'currentKeywords',
                 roles: 'currentRole',
                 bar: 'currentBarDetails',
-                modal: 'currentModal'
+                modal: 'currentModal',
+                subscriptions: 'currentSubscriptions'
             }),
     },
 

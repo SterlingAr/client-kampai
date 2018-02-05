@@ -332,78 +332,84 @@ const actions =
             commit('updateFeatureLayer', layer);
     },
 
-    locateUserPromise: ({state}) =>
+    locateUserPromise: ({commit,state}) =>
     {
         return new Promise(function(resolve,reject)
         {
             state.map.locate({setView: false, maxZoom: 16})
                 .on('locationfound',function(e){
-                    resolve(e.latlng);
+                    commit('updateUserLocation',e.latlng);
+                    // resolve(e.latlng);
                 });
         });
     },
 
-    plotRouteAction: ({commit,rootState,state,dispatch},options) => //add another param options.
+    plotAtoB: ({commit,state,rootState,dispatch},options) =>
     {
-        //create routing instance with the first profile
-        //if profile is the same, update current routing instance
-        //else, create new route with the new profile.
         let barLocation = rootState.bar_storage.barDetails.coord;
+        let routingControl;
+        let profile = state.routingProfile;
 
-        //wait for promise to return user location
-        dispatch('locateUserPromise').then((location) =>{
-
-            console.log('User location');
-            console.log(location);
-            let routingControl;
-            let profile = state.routingProfile;
-
-            /**
-             * If routing control doesn't exist, create it, commit it.
-             */
-
-            //create routingControl for the first time
-            if(state.routingControl  === '' )
-            {
-                routingControl =  L.Routing.control({
-                    router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
-                        profile: options.profile,
-                        language:'es'
-                    })
-                });
-                //splice syntax, replace 1 element at position 0
-                routingControl.spliceWaypoints(0,1, location);
-                routingControl.spliceWaypoints(1,1,barLocation);
-                routingControl.addTo(state.map);
-                commit('updateRoutingProfile',options.profile);
-                commit('updateRoutingControl', routingControl);
-                dispatch('updateModalAction',false);
-
-                return;
-            }
-
-            if(profile !== options.profile)
-            {
-                state.routingControl.remove(state.map);
-                routingControl = L.Routing.control({
-                    router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
-                        profile: options.profile,
-                        language:'es'
-                    })
-                });
-                routingControl.addTo(state.map);
-                commit('updateRoutingProfile',options.profile);
-
-            }
-
-            console.log(profile);
+        /**
+         * If routing control doesn't exist, create it, commit it.
+         */
+        //create routingControl for the first time
+        if(state.routingControl  === '' )
+        {
+            routingControl =  L.Routing.control({
+                router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
+                    profile: options.profile,
+                    language:'es'
+                })
+            });
             //splice syntax, replace 1 element at position 0
             routingControl.spliceWaypoints(0,1, state.userLocation);
             routingControl.spliceWaypoints(1,1,barLocation);
+            routingControl.addTo(state.map);
+            commit('updateRoutingProfile',options.profile);
             commit('updateRoutingControl', routingControl);
-
             dispatch('updateModalAction',false);
-        });
+            return;
+        }
+
+        if(profile !== options.profile)
+        {
+            state.routingControl.remove(state.map);
+            routingControl = L.Routing.control({
+                router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
+                    profile: options.profile,
+                    language:'es'
+                })
+            });
+            routingControl.addTo(state.map);
+            commit('updateRoutingProfile',options.profile);
+
+        }
+
+        console.log(profile);
+        //splice syntax, replace 1 element at position 0
+        routingControl.spliceWaypoints(0,1, state.userLocation);
+        routingControl.spliceWaypoints(1,1,barLocation);
+        commit('updateRoutingControl', routingControl);
+
+        dispatch('updateModalAction',false);
+    },
+
+    plotRouteAction: ({state,dispatch},options) => //add another param options.
+    {
+
+            if(state.userLocation === '')
+            {
+                dispatch('locateUserPromise').then((location) =>
+                {
+                    dispatch('plotAtoB',options);
+                });
+            }
+
+            else
+            {
+                dispatch('plotAtoB',options);
+            }
 
     },
 

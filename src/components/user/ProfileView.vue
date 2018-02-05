@@ -36,14 +36,20 @@
                 </div>
                 <div class="tab-pane fade in" id="tab2">
                     <h3>Favorites</h3>
+                    <div id="bar-items" class="list-group">
+                        <div v-for="bar in subscriptions" >
+                            <a @click="showModal(bar)" v-if="bar.name !== '' " class="list-group-item active">
+                                <img v-if="bar.amenity === 'cafe'"  class="bar-list pull-right" src="static/icons/list/coffee.svg" alt="" >
+                                <img v-if="bar.amenity === 'bar'"  class="bar-list pull-right" src="static/icons/list/beer.svg" alt="" >
+                                <img v-if="bar.amenity === 'restaurant'"  class="bar-list pull-right" src="static/icons/list/restaurant.svg" alt="" >
+                                <img v-if="bar.amenity === 'fast_food'"  class="bar-list pull-right" src="static/icons/list/hamburger.svg" alt="" >
 
-                    <ul class="list-group" v-for="bar in subscriptions">
-                        <li  class="list-group-item list-group-item-dark">
-
-                            {{bar.name}}
-
-                        </li>
-                    </ul>
+                                <h4  class="h4 list-group-item-heading">{{bar.name}}
+                                </h4>
+                                <p v-if="bar.description !== '' " class="list-group-item-text">{{bar.description}}</p>
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -51,17 +57,6 @@
 
     </div>
 
-    <!--<div>-->
-        <!--Nada yet.-->
-        <!--{{user.name}}-->
-
-        <!--<ul v-for="bar in subscriptions">-->
-
-            <!--<li>{{bar.name}}</li>-->
-
-        <!--</ul>-->
-
-    <!--</div>-->
 
 </template>
 

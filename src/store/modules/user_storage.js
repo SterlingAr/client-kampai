@@ -55,17 +55,10 @@ const actions =
     addBarToSubsAction: ({commit,state,rootState},bar) =>
     {
 
-        console.log(rootState.auth_storage.token);
-        console.log(state.user.id);
-        console.log(bar.node);
-
         axios.post(rootState.api_base_uri + '/api/auth/subscription/bar',
         {
-
-
             node: bar.node,
             user_id: state.user.id,
-
         },
 
         {
@@ -85,11 +78,29 @@ const actions =
         {
             console.log(error);
         });
+    },
 
+    removeBarFromSubs: ({commit,dispatch,state,rootState},bar) =>
+    {
+
+        axios.delete(rootState.api_base_uri + '/api/auth/subscription/bar/remove/'+bar.node+'/'+state.user.id,
+
+            {
+                headers: {
+                    Authorization: rootState.auth_storage.token,
+                },
+            }).then((response) =>
+        {
+            commit('updateSubscriptions', response.data.subscription_list);
+            console.log(response);
+
+
+        }).catch((error) =>
+        {
+            console.log(error);
+        });
 
     }
-
-
 
 }
 

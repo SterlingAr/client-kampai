@@ -81,12 +81,9 @@ const actions =
     registerAction: ({commit,dispatch,rootState}) =>
     {
         axios.post(rootState.api_base_uri + '/api/auth/register' , {
-
             name: state.name,
             email: state.email,
             password: state.password
-
-
         })
             .then((response) => {
                 /**
@@ -131,7 +128,7 @@ const actions =
 
                 commit('updateToken',bearer_token);
                 commit('updateUser',response.data.user);
-                commit('updateSubscriptions',response.data.user.subscriptionList);
+                commit('updateSubscriptions',response.data.user.subscription);
                 //empty form fields.
 
                 let roles = [];

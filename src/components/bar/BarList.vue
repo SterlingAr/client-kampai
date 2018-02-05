@@ -1,17 +1,7 @@
 <template>
     <div>
         <h3 class="h1" >Results</h3>
-        <!--<ul v-if="bars.length" class="list-group" v-for="bar in bars">-->
-            <!--<li  class="list-group-item list-group-item-dark">-->
-                <!--<span>-->
-                    <!--<i v-if="bar.tags.amenity === 'bar'" class="fa fa-beer" aria-hidden="true"></i>-->
-                    <!--<i v-if="bar.tags.amenity === 'restaurant'" class="fa fa-cutlery" aria-hidden="true"></i>-->
-                    <!--<i v-if="bar.amenity === 'cafe'" class="fa fa-coffee" aria-hidden="true"></i>-->
 
-                <!--</span>-->
-
-            <!--</li>-->
-        <!--</ul>-->
         <div id="bar-items" class="list-group">
             <div v-for="bar in bars" >
                 <a @click="showModal(bar)" v-if="bar.tags.name !== '' " class="list-group-item active">
@@ -60,7 +50,6 @@
                 barDetails.coord.lon = bar.lon;
 
                 this.barDetails(barDetails);
-
                 this.updateModal(true);
 
             },
