@@ -50,7 +50,7 @@
         </div>
         <div id="login-form">
             <form>
-                <input type="button" name="login" class="login login-button" value="logout" @click="logout(user.token)">
+                <input type="button" name="login" class="login login-button" value="logout" @click="logoutorFail()">
             </form>
         </div>
 
@@ -92,7 +92,7 @@
                 logout: 'logOutAction'
             }),
 
-            logout: function(){
+            logoutorFail: function(){
                 this.logout();
             },
 

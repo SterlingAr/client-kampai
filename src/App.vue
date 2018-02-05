@@ -40,13 +40,6 @@
                       </router-link>
                   </li>
 
-                  <li v-if="roles.includes('admin') || roles.includes('normie') ">
-                      <router-link role="tab"  :to="{name: 'login'}">
-                          <i class="fa fa-sign-out "></i>
-                      </router-link>
-                  </li>
-
-
 
                   <!--<li class="disabled"><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>-->
                   <!--<li><a href="https://github.com/Turbo87/sidebar-v2" role="tab" target="_blank"><i class="fa fa-github"></i></a></li>-->
