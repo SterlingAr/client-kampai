@@ -48,9 +48,9 @@
 
             </div>
         </div>
-        <div class="login-card">
+        <div id="login-form">
             <form>
-                <input type="button" name="login" class="login login-button" value="logout" @click="loginOrFail">
+                <input type="button" name="login" class="login login-button" value="logout" @click="logout(user.token)">
             </form>
         </div>
 
@@ -85,10 +85,16 @@
         },
 
 
+
         methods:
         {
+            ...mapActions({
+                logout: 'logOutAction'
+            }),
 
-
+            logout: function(){
+                this.logout();
+            },
 
         },
 
@@ -96,10 +102,11 @@
         {
             ...mapGetters({
                 user: 'currentUser',
-                subscriptions: 'currentSubscriptions'
-            })
+                subscriptions: 'currentSubscriptions',
 
-        }
+            }),
+
+        },
 
 
     }

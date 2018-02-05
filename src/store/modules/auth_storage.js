@@ -163,9 +163,19 @@ const actions =
         })
     },
 
-    logOutAction: ({commit}) =>
+    logOutAction: ({rootState,token}) =>
     {
+        axios.get(rootState.api_base_uri+'api/auth/logout'+token).then((response)=>{
+            console.log(response);
 
+            if(response.status===200){
+                App.$router.push({
+                    name:'home'
+                });
+            }
+        }).catch((error)=>{
+            console.log(error);
+        });
     },
 
     updatePasswordAction: ({commit}, password) =>

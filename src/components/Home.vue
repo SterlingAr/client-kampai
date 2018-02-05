@@ -5,7 +5,7 @@
         <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
         </h1>
         <p align="center" class="description">
-            Kampai es una aplicación que dada una palabra clave y un buscador,
+            Kampai es una aplicación que dada una palabra clave como(pizza, kebab),
             te muestra los bares cercanos a ti que tienen lo que deseas beber o comer.
             Tambien puedes buscar si ofrece las utilidades que necesites (silla de ruedas,wifi...).
             <br><br>
