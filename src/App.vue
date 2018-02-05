@@ -9,7 +9,7 @@
                   <!--<li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>-->
                   <li>
                       <router-link role="tab"  :to="{name: 'home'}">
-                          <i class="fa fa-home"></i>
+                          <img class="menu" src="static/icons/menu/house.svg" alt="">
                       </router-link>
                   </li>
 
@@ -17,20 +17,20 @@
                   <!--<li v-if="role === 'normie'">-->
                   <li>
                   <router-link  role="tab"  :to="{name: 'profile'}">
-                      <i class="fa fa-user"></i>
+                      <img class="menu" src="static/icons/menu/users.svg" alt="">
                   </router-link>
                   </li>
 
 
                   <li>
                       <router-link role="tab"  :to="{name: 'bar_list'}">
-                          <i class="fa fa-beer"></i>
+                          <img class="menu" src="static/icons/menu/toast.svg" alt="">
                       </router-link>
                   </li>
 
                   <li v-if="roles.includes('nouser')">
                       <router-link role="tab"  :to="{name: 'login'}">
-                          <i class="fa fa-sign-in "></i>
+                          <img class="menu" src="static/icons/menu/login.svg" alt="">
                       </router-link>
                   </li>
 
@@ -54,8 +54,10 @@
               </ul>
 
               <ul role="tablist">
-                  <li><a href="#"  role="tab"><i class="fa fa-gear"></i></a></li>
+                  <li><a @click="openDataLayer" role="tab"><i class="fa fa-gear"></i></a></li>
               </ul>
+
+
           </div>
           <side-bar></side-bar>
 
@@ -65,22 +67,26 @@
 
       <osm-map></osm-map>
 
-      <modal-view v-if="showModal" @close="showModal = false">
+      <modal-view v-if="modal" @close="modal = false">
+
+          <h2 slot="actions">
+              <span>
+                <i class="fa fa-heart"></i>
+              </span>
+          </h2>
 
           <h3 slot="header">{{bar.name}}
           <span>
               <i v-if="bar.internet_access" class="fa fa-wifi" aria-hidden="true"></i>
               <i v-if="bar.wheelchair === 'yes'" class="fa fa-wheelchair-alt" aria-hidden="true"></i>
-              <i v-if="bar.amenity === 'restaurant'" class="fa fa-cutlery" aria-hidden="true"></i>
-              <i v-if="bar.amenity === 'bar'" class="fa fa-glass" aria-hidden="true"></i>
-              <i v-if="bar.amenity === 'cafe'" class="fa fa-coffee" aria-hidden="true"></i>
           </span>
+
           </h3>
 
 
 
           <div slot="body">
-                  <div role="tabpanel">
+              <div role="tabpanel">
                       <!-- Nav tabs -->
                       <ul class="nav nav-tabs" role="tablist">
                           <li role="presentation" class="active"><a href="#uploadTab" aria-controls="uploadTab" role="tab" data-toggle="tab">Details</a>
@@ -89,25 +95,27 @@
                           </li>
                       </ul>
                       <!-- Tab panes -->
-                      <div class="tab-content">
+                      <div class="tab-content" >
                           <div role="tabpanel" class="tab-pane active" id="uploadTab">
 
                               <table>
                                   <tr>
-                                      <th>
-                                          <i class="fa fa-map-marker " aria-hidden="true"></i>
-                                      </th>
 
-                                      <td>{{bar['addr:street']}}</td>
-                                  </tr>
+                                      <td v-if="bar['addr:street'] !== ''">
+                                          <p>
+                                              <img class="map-icons " src="static/icons/map/map.svg" alt="">
 
-                                  <tr>
-                                      <th></th>
+                                              {{bar['addr:street']}}
+                                          </p>
+                                      </td>
                                       <td></td>
                                   </tr>
+
+
                               </table>
 
                           </div>
+
                           <div role="tabpanel" class="tab-pane" id="browseTab">
                               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque beatae consectetur deserunt doloribus ipsum neque quas recusandae rem repellendus, sit! Dignissimos dolor, dolorem eligendi error fugiat id obcaecati quaerat reprehenderit.
                           </div>
@@ -117,22 +125,31 @@
           </div>
 
           <div slot="footer">
-              <button class="modal-default-button" @click="showModal=false">
-                  OK
-              </button>
-              <button class="modal-default-button" @click="plotRoute('mapbox/driving')">
-                  <i class="fas fa-car"></i>
-              </button>
-              <button class="modal-default-button" @click="plotRoute('mapbox/walking')">
-                  <i class="fas fa-male"></i>
-              </button>
-              <button class="modal-default-button" @click="plotRoute('mapbox/cycling')">
-                    Tráfico
-              </button>
+
+              <div class="pull-left">
+                  <a @click="plotRoute('mapbox/driving')">
+                      <img class="transport" src="static/icons/transport/car.svg" alt="">
+                  </a>
+
+                  <a @click="plotRoute('mapbox/walking')">
+                      <img class="transport" src="static/icons/transport/walk.svg" alt="">
+
+                  </a>
 
 
+                  <a @click="plotRoute('mapbox/cycling')">
+                      <img class="transport" src="static/icons/transport/cycle.svg" alt="">
+                  </a>
+
+                  <a @click="plotRoute('mapbox/driving-traffic')">
+                      <img class="transport" src="static/icons/transport/traffic-light.svg" alt="">
+                  </a>
+              </div>
+
+              <button class="btn btn-danger" @click="updateModal(false)">
+                  Close
+              </button>
           </div>
-
       </modal-view>
 
   </div>
@@ -170,19 +187,22 @@ export default
         ...mapActions({
            updateBars : 'updateBarsAction',
            updateBarDetails: 'updateBarDetailsAction',
-            plotRouteAction:  'plotRouteAction'
+           updateModal: 'updateModalAction',
+           plotRouteAction:  'plotRouteAction',
+            odLayer: 'openDataLayerAction'
         }),
 
         plotRoute: function(profile)
         {
 
-            let options = {
+            let options =
+            {
               profile: profile
-          }
+            }
 
-          this.plotRouteAction(options);
-        this.showModal = false;
-        this.updateBarDetails('');
+            this.plotRouteAction(options);
+            this.showModal = false;
+            this.updateBarDetails('');
 
         },
 
@@ -191,21 +211,35 @@ export default
             this.$store.dispatch('updateKeywordsAction', event.target.value);
         },
 
+        updateBarsOnEnter: function (event)
+        {
+            if(event.keyCode  === 13)
+            {
+                console.log('enter pressed')
+                this.$store.dispatch('updateKeywordsAction', event.target.value);
+
+                this.updateBarsAndRoute();
+            }
+        },
+
         updateBarsAndRoute: function ()
         {
-
             this.updateBars();
-
             this.$router.push({name: 'bar_list'});
-
         },
 
         setBarDetails: function(details)
         {
             this.updateBarDetails(details);
-            this.showModal = true;
-            console.log(this.showModal);
+            this.updateModal(true);
+            console.log(this.modal);
 
+        },
+
+        openDataLayer: function ()
+        {
+            //TODO
+            this.odLayer();
         }
 
 
@@ -219,7 +253,8 @@ export default
                 bbox: 'currentBBOX',
                 keywords: 'currentKeywords',
                 roles: 'currentRole',
-                bar: 'currentBarDetails'
+                bar: 'currentBarDetails',
+                modal: 'currentModal'
             }),
     },
 

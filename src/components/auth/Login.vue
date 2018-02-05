@@ -4,7 +4,7 @@
        <div v-if="roles.includes('nouser')" class="login-card">
            <h1>Log-in</h1><br>
            <form>
-               <input type="text" name="user" placeholder="Username" @input="updateEmail">
+               <input type="text" name="user" placeholder="Email" @input="updateEmail">
                <input type="password" name="pass" placeholder="Password" @input="updatePassword">
                <input type="button" name="login" class="login login-button" value="login" @click="loginOrFail">
            </form>
@@ -63,37 +63,19 @@
                 this.bindPassword(event.target.value);
             },
 
+
             loginOrFail: function()
             {
                 this.login();
 
-                console.log(this.authStatus);
-
-                console.log('profile');
-                this.$router.push({
-                    name:'profile'
-                });
-
             },
-
-            redirect: function ()
-            {
-                if(this.authStatus === 200)
-                {
-                    console.log('profile');
-                    this.$router.push({
-                        name:'profile'
-                    });
-                }
-
-            }
         },
 
         computed:
         {
 
-            ...mapGetters({
-
+            ...mapGetters(
+            {
                 authStatus: 'currentAuthStatus',
                 roles : 'currentRole',
             }),

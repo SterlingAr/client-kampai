@@ -10,7 +10,7 @@ const state =
     locationControl: '',
     routingControl: '',
     routingProfile: '',
-    userLocation: {},
+    userLocation: '',
 
 }
 
@@ -135,7 +135,7 @@ const actions =
      * @param commit
      * @param dispatch
      */
-    initMapAction: ({commit,dispatch}) =>
+    initMapAction: ({commit,rootState,state,dispatch,}) =>
     {
         let mapOptions =
         {
@@ -151,12 +151,21 @@ const actions =
             center: [43.3213337, -1.976819],
         }).setView([ 43.3213337,-1.976819], 16);
 
+
+        map.on('locationfound', (e) => {
+            state.userLocation = e.latlng;
+            // commit('updateUserLocation', e.latlng);
+        });
+
+        let credctrl = L.controlCredits({
+            image: "static/images/logo.png",
+            link: "https://www.flaticon.com/",
+            text: "<div>Icons made by <a href=\"http://www.freepik.com\" title=\"Freepik\">Freepik</a> from <a href=\"https://www.flaticon.com/\" title=\"Flaticon\">www.flaticon.com</a> is licensed by <a href=\"http://creativecommons.org/licenses/by/3.0/\" title=\"Creative Commons BY 3.0\" target=\"_blank\">CC 3.0 BY</a></div>"
+        }).addTo(map);
+
         L.control.zoom({
             position:'bottomright'
         }).addTo(map);
-
-
-
 
 
         L.tileLayer(state.MAP_API_PROVIDER + '{accessToken}',mapOptions)
@@ -212,7 +221,6 @@ const actions =
 
                 }
 
-
             },
 
            // onEachFeature: onEachFeature
@@ -226,15 +234,6 @@ const actions =
 
         }).addTo(map);
 
-       //Routing control
-       //  let routingControl = L.Routing.control({
-       //      router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',{
-       //          profile: 'mapbox/walking',
-       //      })
-       //  });
-       //  commit('updateRoutingControl', routingControl);
-       //  routingControl.addTo(map);
-
 
         //SIDEBAR PLUGIN
         // let marker = L.marker([51.2, 7]).addTo(map);
@@ -244,7 +243,7 @@ const actions =
         L.control.custom({
             position: 'topleft',
             content : '<form class="form-wrapper cf">'+
-            '    <input type="text" name="search" placeholder="Busca lo que desees" onchange="App.$refs.main.updateKeywords(event)">'+
+            '    <input type="text"   placeholder="e.g: pizza kebab" onchange="App.$refs.main.updateKeywords(event)"  onkeypress="App.$refs.main.updateBarsOnEnter(event)">'+
                 '<button onclick="App.$refs.main.updateBarsAndRoute()" id="updateBarsButton" type="button">Buscar</button>'+
             '</form>',
             classes : '',
@@ -258,18 +257,10 @@ const actions =
             .addTo(map);
 
 
-
-
-        //
-        //create object, commit to vuex storage and add to map
-
-
-
-
        let locationControl =  L.control.locate(
             {
                 position: 'bottomright',
-                setView: 'once',
+                setView: 'false',
                 icon: 'fa fa-street-view',
                 drawCircle: false,
             }
@@ -278,13 +269,8 @@ const actions =
         locationControl.addTo(map);
 
         //update userLocation object in storage every time the event is triggered.
-        map.on('locationfound', function(e){
-            commit('updateUserLocation', e.latlng);
-        });
-
 
         commit('updateFeatureLayer', featureLayer);
-
         commit('updateMap', map);
 
     },
@@ -349,63 +335,83 @@ const actions =
             commit('updateFeatureLayer', layer);
     },
 
-    plotRouteAction: ({commit,rootState,state},options) => //add another param options.
+    locateUserPromise: ({state}) =>
     {
-        let map = state.map;
-        let bar = rootState.bar_storage.barDetails.coord;
+        return new Promise(function(resolve,reject)
+        {
+            state.map.locate({setView: false, maxZoom: 16})
+                .on('locationfound',function(e){
+                    resolve(e.latlng);
+                });
+        });
+    },
 
-        //Add new LocateControl, should be refactored to only update coordinates.
-        let lc = new L.Control.Locate().addTo(map);
-        lc.start();
-        // remove it otherwise we have two controlers.
-        lc.remove(map);
-
+    plotRouteAction: ({commit,rootState,state,dispatch},options) => //add another param options.
+    {
         //create routing instance with the first profile
         //if profile is the same, update current routing instance
         //else, create new route with the new profile.
-        let routingControl;
+        let barLocation = rootState.bar_storage.barDetails.coord;
 
-        let profile = state.routingProfile;
+        //wait for promise to return user location
+        dispatch('locateUserPromise').then((location) =>{
 
-        if( state.routingControl  === '')
-        {
-          routingControl =  L.Routing.control({
-                router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
-                    profile: options.profile,
-                })
-            });
+            console.log('User location');
+            console.log(location);
+            let routingControl;
+            let profile = state.routingProfile;
 
-            commit('updateRoutingProfile',options.profile);
-        }
+            /**
+             * If routing control doesn't exist, create it, commit it.
+             */
 
-        if ( profile !== options.profile )
-        {
-            routingControl = L.Routing.control({
-                router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
-                    profile: options.profile,
-                })
-            });
-            commit('updateRoutingProfile',options.profile);
+            //create routingControl for the first time
+            if(state.routingControl  === '' )
+            {
+                routingControl =  L.Routing.control({
+                    router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
+                        profile: options.profile,
+                        language:'es'
+                    })
+                });
+                //splice syntax, replace 1 element at position 0
+                routingControl.spliceWaypoints(0,1, location);
+                routingControl.spliceWaypoints(1,1,barLocation);
+                routingControl.addTo(state.map);
+                commit('updateRoutingProfile',options.profile);
+                commit('updateRoutingControl', routingControl);
+                dispatch('updateModalAction',false);
 
-        }
+                return;
+            }
+
+            if(profile !== options.profile)
+            {
+                state.routingControl.remove(state.map);
+                routingControl = L.Routing.control({
+                    router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
+                        profile: options.profile,
+                        language:'es'
+                    })
+                });
+                routingControl.addTo(state.map);
+                commit('updateRoutingProfile',options.profile);
+
+            }
+
+            console.log(profile);
+            //splice syntax, replace 1 element at position 0
+            routingControl.spliceWaypoints(0,1, state.userLocation);
+            routingControl.spliceWaypoints(1,1,barLocation);
+            commit('updateRoutingControl', routingControl);
+
+            dispatch('updateModalAction',false);
+        });
+
+    },
 
 
 
-        if(profile)
-        {
-            routingControl = state.routingControl;
-        }
-
-        routingControl.addTo(map);
-
-
-        //splice syntax, replace 1 element at position 0
-        routingControl.spliceWaypoints(0,1, state.userLocation);
-        routingControl.spliceWaypoints(1,1,bar);
-
-        commit('updateRoutingControl', routingControl);
-        commit('updateMap', map);
-    }
 
 }
 

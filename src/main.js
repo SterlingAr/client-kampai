@@ -18,9 +18,13 @@ import '@/assets/leaflet/plugins/location/L.Control.Locate.min.css'
 import '@/assets/leaflet/plugins/location/L.Control.Locate.min.js'
 import '@/assets/contact/contact.scss'
 import '@/assets/newbar/newbar.scss'
-
 import '@/assets/leaflet/plugins/routing/leaflet-routing-machine.css'
 import '@/assets/leaflet/plugins/routing/leaflet-routing-machine.js'
+import '@/assets/bar/icons.css'
+import '@/assets/bar/bar-list.css'
+import '@/assets/leaflet/plugins/credits/leaflet-control-credits.js'
+import '@/assets/leaflet/plugins/credits/leaflet-control-credits.css'
+
 
 import Vue from 'vue'
 import VueJWT from 'vuejs-jwt'

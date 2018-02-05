@@ -75,6 +75,11 @@ const mutations =
 }
 const actions =
 {
+
+    //Rellenar campos, name, email, contraseña
+    //Validar que los datos están bien introducidos.
+    //
+
     registerAction: ({commit,dispatch,rootState}) =>
     {
         axios.post(rootState.api_base_uri + '/api/auth/register' , {
@@ -83,6 +88,7 @@ const actions =
             email: state.email,
             password: state.password
 
+
         })
             .then((response) => {
 
@@ -90,11 +96,11 @@ const actions =
                  * User created : 201 Created
                  * User already exists: 409 Conflict.
                  */
-                if(response.status === 201)
+                if(response.status === 201) //
                 {
                     dispatch('loginAction');
                 }
-
+            console.log(response);
 
             })
             .catch((error) => {
@@ -116,7 +122,7 @@ const actions =
             console.log(response);
 
             //If
-                if(response.status === 200)
+            if(response.status === 200)
             {
                 commit('updateAuthStatus', response.status);
 
@@ -125,8 +131,6 @@ const actions =
                 commit('updateUser',response.data.user);
                 commit('updateSubscriptions',response.data.user.subscriptionList);
                 //empty form fields.
-                commit('updatePassword','');
-                commit('updateEmail','');
 
                 let roles = [];
                 response.data.user.roles.forEach(function (role)
@@ -136,7 +140,10 @@ const actions =
 
                 commit('updateRole', roles);
 
-
+                //chapuza... :(
+                App.$router.push({
+                    name:'profile'
+                });
 
                 /**
                  * Logged in:  200 OK
@@ -144,6 +151,7 @@ const actions =
                  *
                  */
             }
+
             // else
             // Display error on screen
         }).catch((error) => {
@@ -151,6 +159,7 @@ const actions =
             commit('updateAuthStatus', 401);
             commit('updatePassword','');
             commit('updateEmail','');
+            return false;
         })
     },
 

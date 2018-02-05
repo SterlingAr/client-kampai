@@ -9,7 +9,7 @@ import bars_storage from './modules/bars_storage';
 import user_storage from './modules/user_storage';
 import auth_storage from './modules/auth_storage';
 import bar_storage from './modules/bar_storage';
-
+import open_data_storage from './modules/open_data_storage';
 
 
 Vue.use(Vuex);
@@ -23,9 +23,8 @@ const store = new Vuex.Store(
         },
 
 
-        // api_base_uri: 'http://kampai.local/',
-        api_base_uri: 'http://tiendasoutlet.es:8080/',
-
+        api_base_uri: 'http://kampai.local',
+        // api_base_uri: 'http://tiendasoutlet.es:8080/',
 
     },
 
@@ -82,6 +81,7 @@ const store = new Vuex.Store(
         user_storage,
         auth_storage,
         bar_storage,
+        open_data_storage
     }
 
 });
