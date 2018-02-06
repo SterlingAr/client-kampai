@@ -2,11 +2,11 @@
     <div class="col-lg-12 col-sm-12">
         <div class="card hovercard">
             <div class="card-background">
-                <img class="card-bkimg" alt="" src="http://lorempixel.com/100/100/people/9/">
+                <img class="card-bkimg" alt="" src="https://lorempixel.com/100/100/people/9/">
                 <!-- http://lorempixel.com/850/280/people/9/ -->
             </div>
             <div class="useravatar">
-                <img alt="" src="http://lorempixel.com/100/100/people/3/">
+                <img alt="" src="https://lorempixel.com/100/100/people/3/">
             </div>
             <div class="card-info"> <span class="card-title">{{user.name}}</span>
 
@@ -38,15 +38,15 @@
                     <h3>Favorites</h3>
                     <div id="bar-items" class="list-group">
                         <div v-for="bar in subscriptions" >
-                            <a @click="showModal(bar)" v-if="bar.name !== '' " class="list-group-item active">
-                                <img v-if="bar.amenity === 'cafe'"  class="bar-list pull-right" src="static/icons/list/coffee.svg" alt="" >
-                                <img v-if="bar.amenity === 'bar'"  class="bar-list pull-right" src="static/icons/list/beer.svg" alt="" >
-                                <img v-if="bar.amenity === 'restaurant'"  class="bar-list pull-right" src="static/icons/list/restaurant.svg" alt="" >
-                                <img v-if="bar.amenity === 'fast_food'"  class="bar-list pull-right" src="static/icons/list/hamburger.svg" alt="" >
+                            <a @click="showModal(bar)" v-if="bar.tags.name !== '' " class="list-group-item active">
+                                <img v-if="bar.tags.amenity === 'cafe'"  class="bar-list pull-right" src="static/icons/list/coffee.svg" alt="" >
+                                <img v-if="bar.tags.amenity === 'bar'"  class="bar-list pull-right" src="static/icons/list/beer.svg" alt="" >
+                                <img v-if="bar.tags.amenity === 'restaurant'"  class="bar-list pull-right" src="static/icons/list/restaurant.svg" alt="" >
+                                <img v-if="bar.tags.amenity === 'fast_food'"  class="bar-list pull-right" src="static/icons/list/hamburger.svg" alt="" >
 
-                                <h4  class="h4 list-group-item-heading">{{bar.name}}
+                                <h4  class="h4 list-group-item-heading">{{bar.tags.name}}
                                 </h4>
-                                <p v-if="bar.description !== '' " class="list-group-item-text">{{bar.description}}</p>
+                                <p v-if="bar.tags.description !== '' " class="list-group-item-text">{{bar.tags.description}}</p>
                             </a>
                         </div>
                     </div>
@@ -54,7 +54,6 @@
 
             </div>
         </div>
-
     </div>
 
 
@@ -74,11 +73,28 @@
             }
         },
 
-
         methods:
         {
+            //copy paste from BarList ,should be refactored.
+            showModal: function(bar)
+            {
+                //update store object
+                let barDetails = bar.tags;
+                barDetails.coord = {};
+                barDetails.coord.lat = bar.lat;
+                barDetails.coord.lon = bar.lon;
 
+                this.barDetails(barDetails);
+                this.updateModal(true);
 
+            },
+
+            //checks if bar is in current user's subscriptionlist
+
+            ...mapActions({
+                barDetails: 'updateBarDetailsAction',
+                updateModal: 'updateModalAction',
+            })
 
         },
 
@@ -86,7 +102,9 @@
         {
             ...mapGetters({
                 user: 'currentUser',
-                subscriptions: 'currentSubscriptions'
+                subscriptions: 'currentSubscriptions',
+                modal: 'currentModal',
+
             })
 
         }

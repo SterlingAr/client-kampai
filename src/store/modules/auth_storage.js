@@ -122,15 +122,17 @@ const actions =
             {
                 commit('updateAuthStatus', response.status);
 
-
                 //fill necessary states for future usage
                 let bearer_token = ' Bearer ' + response.data.token;
 
                 commit('updateToken',bearer_token);
                 commit('updateUser',response.data.user);
-                commit('updateSubscriptions',response.data.user.subscription);
-                //empty form fields.
 
+                if(response.data.user.subscription)
+                {
+                    commit('updateSubscriptions',response.data.user.subscription.elements);
+                    //empty form fields.
+                }
                 let roles = [];
                 response.data.user.roles.forEach(function (role)
                 {

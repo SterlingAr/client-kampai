@@ -209,7 +209,6 @@ export default
             {
                 console.log('enter pressed')
                 this.$store.dispatch('updateKeywordsAction', event.target.value);
-
                 this.updateBarsAndRoute();
             }
         },
@@ -237,13 +236,12 @@ export default
         //checks if bar is in current user's subscriptionlist
         barInSubs: function(bar)
         {
-            for(let i = 0; i < this.subscriptions.length; i++)
-            {
-                if(this.subscriptions[i].node === bar.node)
-                    return true;
-
-            }
-            return false;
+                for(let i = 0; i < this.subscriptions.length; i++)
+                {
+                    if(this.subscriptions[i].id === bar.node)
+                        return true;
+                }
+                return false;
         }
 
 

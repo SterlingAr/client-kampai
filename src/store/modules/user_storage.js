@@ -5,7 +5,7 @@ const state =
     user: {
         name: 'Carrot',
     },
-    subscriptions: '',
+    subscriptions: [],
 
 }
 
@@ -67,7 +67,7 @@ const actions =
             },
         }).then((response) =>
         {
-            commit('updateSubscriptions', response.data.subscription_list);
+            commit('updateSubscriptions', response.data.subscription_list.elements);
             console.log(response);
             if(response.status === 409)
             {
@@ -91,8 +91,15 @@ const actions =
                 },
             }).then((response) =>
         {
-            commit('updateSubscriptions', response.data.subscription_list);
             console.log(response);
+
+            if(response.data.subscription_list !== undefined)
+            {
+                commit('updateSubscriptions', response.data.subscription_list);
+                console.log(response);
+
+            }
+
 
 
         }).catch((error) =>
