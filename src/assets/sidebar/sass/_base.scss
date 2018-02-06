@@ -270,10 +270,17 @@ $move-map-in-xs: true !default;
 }
 .social{
     font-family: Helvetica;
+    color: black;
+    font-size: 20px;
 }
 .footer{
     margin-top:150px;
 }
 .links{
-    color: #000;
+    color: #000000;
+    transition:font-size 0.2s;
+}
+.links:hover{
+    color: green;
+    font-size:20px;
 }

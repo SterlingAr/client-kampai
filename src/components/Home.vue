@@ -18,9 +18,9 @@
         <div align="center" class="footer">
             <p class="social" >Consulta nuestras redes sociales</p>
             <ul>
-                <a href="http://www.facebook.com" target="_blank" class="icons icon-facebook"><span class="fa fa-facebook"></span> </a>
-                <a href="http://twitter.com" target="_blank" class="icons icon-twitter"><span class="fa fa-twitter"></span> </a>
-                <a href="http://www.instagram.com" target="_blank" class="icons icon-instagram"><span class="fa fa-instagram"></span> </a>
+                <a href="http://www.facebook.com" target="_blank" class="icons"><img class="redes" src="static/icons/redes/facebook.svg"> </a>
+                <a href="http://twitter.com" target="_blank" class="icons "><img class="redes" src="static/icons/redes/twitter.svg"> </a>
+                <a href="http://www.instagram.com" target="_blank" class="icons"><img class="redes" src="static/icons/redes/instagram.svg"></a>
             </ul>
             <ul>Si tienes alguna duda <router-link :to="{name:'contact'}" class="links">Contacta con nosotros</router-link></ul>
         </div>

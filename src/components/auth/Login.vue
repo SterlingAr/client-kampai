@@ -6,7 +6,7 @@
            <form>
                <input type="text" name="user" placeholder="Email" @input="updateEmail">
                <input type="password" name="pass" placeholder="Password" @input="updatePassword">
-               <input type="button" name="login" class="login login-button" value="login" @click="loginOrFail">
+               <input type="button" name="login" class="login login-button" value="Login" @click="loginOrFail">
            </form>
 
            <div class="login-help">
