@@ -7,7 +7,7 @@
         <p align="center" class="description">
             Kampai es una aplicación que dada una palabra clave como(pizza, kebab),
             te muestra los bares cercanos a ti que tienen lo que deseas beber o comer.
-            Tambien puedes buscar si ofrece las utilidades que necesites (silla de ruedas,wifi...).
+            Tambien puedes buscar si ofrece los servicios que necesites (silla de ruedas,wifi...).
             <br><br>
             Ademas aparte de eso te localiza en el mapa y luego te muestra el camino para llegar al bar que
             has seleccionado.
