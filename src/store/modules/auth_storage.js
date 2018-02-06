@@ -164,9 +164,27 @@ const actions =
         })
     },
 
-    logOutAction: ({commit}) =>
+    logOutAction: ({rootState,commit}) =>
     {
+        axios.get(rootState.api_base_uri+'/api/auth/logout?token='+state.token).then((response)=>{
+            console.log(response);
 
+            if(response.status===200){
+                commit('updateToken',response.data.token);
+                let roles = ['nouser'];
+
+                commit('updateRole', roles);
+
+                App.$router.push({
+                    name:'home'
+                });
+
+
+            }
+        }).catch((error)=>{
+            console.log(error);
+            // console.log(rootState.api_base_uri+'/api/auth/logout?token='+state.token);
+        });
     },
 
     updatePasswordAction: ({commit}, password) =>

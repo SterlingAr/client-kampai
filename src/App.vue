@@ -13,18 +13,15 @@
                       </router-link>
                   </li>
 
-
-                  <!--<li v-if="role === 'normie'">-->
-                  <li>
-                  <router-link  role="tab"  :to="{name: 'profile'}">
-                      <img class="menu" src="static/icons/menu/users.svg" alt="">
-                  </router-link>
-                  </li>
-
-
                   <li>
                       <router-link role="tab"  :to="{name: 'bar_list'}">
                           <img class="menu" src="static/icons/menu/toast.svg" alt="">
+                      </router-link>
+                  </li>
+
+                  <li v-if="roles.includes('normie')">
+                      <router-link  role="tab"  :to="{name: 'profile'}">
+                          <img class="menu" src="static/icons/menu/users.svg" alt="">
                       </router-link>
                   </li>
 
@@ -34,18 +31,11 @@
                       </router-link>
                   </li>
 
-                  <li v-if="roles.includes('admin')">
-                      <router-link role="tab"  :to="{name: 'admin'}">
-                          <i class="fa fa-lock"></i>
-                      </router-link>
-                  </li>
-
-                  <li v-if="roles.includes('admin') || roles.includes('normie') ">
-                      <router-link role="tab"  :to="{name: 'login'}">
-                          <i class="fa fa-sign-out "></i>
-                      </router-link>
-                  </li>
-
+                  <!--<li v-if="roles.includes('admin')">-->
+                      <!--<router-link role="tab"  :to="{name: 'admin'}">-->
+                          <!--<i class="fa fa-lock"></i>-->
+                      <!--</router-link>-->
+                  <!--</li>-->
 
 
                   <!--<li class="disabled"><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>-->

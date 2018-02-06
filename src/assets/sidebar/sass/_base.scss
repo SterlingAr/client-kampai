@@ -18,7 +18,7 @@ $tab-transition: 80ms !default;
 $header-fg: $tab-active-fg !default;
 $header-bg: $tab-active-bg !default;
 
-$content-bg: rgba(255, 255, 255, 0.95) !default;
+$content-bg: #fff !default;
 $content-padding-vertical: 10px !default;
 $content-padding-horizontal: 20px !default;
 
@@ -26,7 +26,7 @@ $move-map-in-xs: true !default;
 
 .sidebar {
     position: absolute;
-
+    background-color: #449d44;
     top: 0;
     bottom: 0;
     width: $width-xs;
@@ -79,7 +79,7 @@ $move-map-in-xs: true !default;
     top: 0;
     bottom: 0;
     height: 100%;
-
+    background-color: #449d44;
     .sidebar-left & {
         left: 0;
     }
@@ -273,4 +273,7 @@ $move-map-in-xs: true !default;
 }
 .footer{
     margin-top:150px;
+}
+.links{
+    color: #000;
 }

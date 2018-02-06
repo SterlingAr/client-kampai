@@ -6,8 +6,10 @@
                 <!-- http://lorempixel.com/850/280/people/9/ -->
             </div>
             <div class="useravatar">
+
                 <img alt="" src="https://lorempixel.com/100/100/people/3/">
-            </div>
+
+</div>
             <div class="card-info"> <span class="card-title">{{user.name}}</span>
 
             </div>
@@ -54,6 +56,12 @@
 
             </div>
         </div>
+        <div id="login-form">
+            <form>
+                <input type="button" name="login" class="login login-button" value="logout" @click="logoutorFail()">
+            </form>
+        </div>
+
     </div>
 
 
@@ -73,6 +81,17 @@
             }
         },
 
+
+
+        methods:
+        {
+            ...mapActions({
+                logout: 'logOutAction'
+            }),
+
+            logoutorFail: function(){
+                this.logout();
+            },
         methods:
         {
             //copy paste from BarList ,should be refactored.
@@ -103,11 +122,11 @@
             ...mapGetters({
                 user: 'currentUser',
                 subscriptions: 'currentSubscriptions',
-                modal: 'currentModal',
-
             })
 
-        }
+            }),
+
+        },
 
 
     }

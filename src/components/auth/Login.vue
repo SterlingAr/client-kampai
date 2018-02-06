@@ -10,22 +10,15 @@
            </form>
 
            <div class="login-help">
-               <router-link :to="{name:'register'}">Register</router-link> • <a href="#">Forgot Password</a>
+               <router-link :to="{name:'register'}">Register</router-link>
            </div>
-           <div v-if="authStatus === 200">
-               <h1>Login succeeded</h1>
-           </div>
+           <!--<div v-if="authStatus === 200">-->
+               <!--<h1>Login succeeded</h1>-->
+           <!--</div>-->
 
-           <div v-if="authStatus === 401">
-               <h1>Login failed</h1>
-           </div>
-       </div>
-
-       <div v-if="roles.includes('admin') || roles.includes('normie') "  class="login-card">
-           <h1>Log-out</h1><br>
-           <form>
-                    <input type="button" name="login" class="login login-button" value="logout" @click="loginOrFail">
-           </form>
+           <!--<div v-if="authStatus === 401">-->
+               <!--<h1>Login failed</h1>-->
+           <!--</div>-->
        </div>
 
    </div>
