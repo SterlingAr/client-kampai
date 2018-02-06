@@ -5,7 +5,7 @@
             <h1>Register</h1><br>
             <form>
                 <input type="text" name="user" placeholder="Name" @input="updateName">
-                <input type="text" name="user" placeholder="Username" @input="updateEmail">
+                <input type="text" name="user" placeholder="Email" @input="updateEmail">
                 <input type="password" name="pass" placeholder="Password" @input="updatePassword">
                 <input type="button" name="login" class="login login-button" value="Register" @click="registerOrFail">
             </form>
