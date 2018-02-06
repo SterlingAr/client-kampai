@@ -123,9 +123,9 @@ const actions =
                 commit('updateAuthStatus', response.status);
 
                 //fill necessary states for future usage
-                let bearer_token = ' Bearer ' + response.data.token;
+                // let bearer_token = ' Bearer ' + response.data.token;
 
-                commit('updateToken',bearer_token);
+                commit('updateToken',response.data.token);
                 commit('updateUser',response.data.user);
 
                 if(response.data.user.subscription)
@@ -170,10 +170,14 @@ const actions =
             console.log(response);
 
             if(response.status===200){
-                commit('updateToken',response.data.token);
+
+                commit('updateToken', '');
+
                 let roles = ['nouser'];
 
                 commit('updateRole', roles);
+
+                commit('updateUser','');
 
                 App.$router.push({
                     name:'home'

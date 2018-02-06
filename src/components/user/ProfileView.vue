@@ -84,52 +84,46 @@
 
 
         methods:
-        {
-            ...mapActions({
-                logout: 'logOutAction'
-            }),
-
-            logoutorFail: function(){
-                this.logout();
-            },
-        methods:
-        {
-            //copy paste from BarList ,should be refactored.
-            showModal: function(bar)
             {
-                //update store object
-                let barDetails = bar.tags;
-                barDetails.coord = {};
-                barDetails.coord.lat = bar.lat;
-                barDetails.coord.lon = bar.lon;
+                ...mapActions({
+                    logout: 'logOutAction'
+                }),
 
-                this.barDetails(barDetails);
-                this.updateModal(true);
+                logoutorFail: function () {
+                    this.logout();
+                },
+
+                //copy paste from BarList ,should be refactored.
+                showModal: function (bar) {
+                    //update store object
+                    let barDetails = bar.tags;
+                    barDetails.coord = {};
+                    barDetails.coord.lat = bar.lat;
+                    barDetails.coord.lon = bar.lon;
+
+                    this.barDetails(barDetails);
+                    this.updateModal(true);
+
+                },
+
+                //checks if bar is in current user's subscriptionlist
+
+                ...mapActions({
+                    barDetails: 'updateBarDetailsAction',
+                    updateModal: 'updateModalAction',
+                })
 
             },
 
-            //checks if bar is in current user's subscriptionlist
+            computed:
+            {
+                ...mapGetters({
+                    user: 'currentUser',
+                    subscriptions: 'currentSubscriptions',
+                }),
 
-            ...mapActions({
-                barDetails: 'updateBarDetailsAction',
-                updateModal: 'updateModalAction',
-            })
-
-        },
-
-        computed:
-        {
-            ...mapGetters({
-                user: 'currentUser',
-                subscriptions: 'currentSubscriptions',
-            })
-
-            }),
-
-        },
-
+            }
 
     }
-
 
 </script>

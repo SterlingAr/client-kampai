@@ -63,7 +63,7 @@ const actions =
 
         {
             headers: {
-                Authorization: rootState.auth_storage.token,
+                Authorization: ' Bearer ' + rootState.auth_storage.token,
             },
         }).then((response) =>
         {
@@ -87,7 +87,7 @@ const actions =
 
             {
                 headers: {
-                    Authorization: rootState.auth_storage.token,
+                    Authorization: ' Bearer ' + rootState.auth_storage.token,
                 },
             }).then((response) =>
         {
