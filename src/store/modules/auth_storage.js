@@ -78,28 +78,24 @@ const actions =
 
     //Rellenar campos, name, email, contraseña
     //Validar que los datos están bien introducidos.
-    //
-
     registerAction: ({commit,dispatch,rootState}) =>
     {
         axios.post(rootState.api_base_uri + '/api/auth/register' , {
-
             name: state.name,
             email: state.email,
             password: state.password
-
-
         })
             .then((response) => {
-
                 /**
                  * User created : 201 Created
                  * User already exists: 409 Conflict.
                  */
                 if(response.status === 201) //
                 {
+                    //no need for login, later substitute the user in state.
                     dispatch('loginAction');
                 }
+
             console.log(response);
 
             })
@@ -109,7 +105,7 @@ const actions =
             });
     },
 
-    loginAction:({commit,rootState}) =>
+    loginAction:({commit,state,rootState}) =>
     {
 
         axios.post(rootState.api_base_uri + '/api/auth/login', {
@@ -127,11 +123,16 @@ const actions =
                 commit('updateAuthStatus', response.status);
 
                 //fill necessary states for future usage
-                commit('updateToken',response.data.token);
-                commit('updateUser',response.data.user);
-                commit('updateSubscriptions',response.data.user.subscriptionList);
-                //empty form fields.
+                let bearer_token = ' Bearer ' + response.data.token;
 
+                commit('updateToken',bearer_token);
+                commit('updateUser',response.data.user);
+
+                if(response.data.user.subscription)
+                {
+                    commit('updateSubscriptions',response.data.user.subscription.elements);
+                    //empty form fields.
+                }
                 let roles = [];
                 response.data.user.roles.forEach(function (role)
                 {

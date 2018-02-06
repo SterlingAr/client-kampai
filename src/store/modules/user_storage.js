@@ -1,9 +1,11 @@
+import axios from 'axios';
+
 const state =
 {
     user: {
         name: 'Carrot',
     },
-    subscriptions: '',
+    subscriptions: [],
 
 }
 
@@ -48,9 +50,64 @@ const actions =
     updateSubsAction: ({commit}, subs) =>
     {
 
+    },
+
+    addBarToSubsAction: ({commit,state,rootState},bar) =>
+    {
+
+        axios.post(rootState.api_base_uri + '/api/auth/subscription/bar',
+        {
+            node: bar.node,
+            user_id: state.user.id,
+        },
+
+        {
+            headers: {
+                Authorization: rootState.auth_storage.token,
+            },
+        }).then((response) =>
+        {
+            commit('updateSubscriptions', response.data.subscription_list.elements);
+            console.log(response);
+            if(response.status === 409)
+            {
+
+            }
+
+        }).catch((error) =>
+        {
+            console.log(error);
+        });
+    },
+
+    removeBarFromSubs: ({commit,dispatch,state,rootState},bar) =>
+    {
+
+        axios.delete(rootState.api_base_uri + '/api/auth/subscription/bar/remove/'+bar.node+'/'+state.user.id,
+
+            {
+                headers: {
+                    Authorization: rootState.auth_storage.token,
+                },
+            }).then((response) =>
+        {
+            console.log(response);
+
+            if(response.data.subscription_list !== undefined)
+            {
+                commit('updateSubscriptions', response.data.subscription_list);
+                console.log(response);
+
+            }
+
+
+
+        }).catch((error) =>
+        {
+            console.log(error);
+        });
+
     }
-
-
 
 }
 

@@ -52,14 +52,11 @@
 
             updateEmail: function(event)
             {
-                console.log(event.target.value);
                 this.bindEmail(event.target.value);
-
             },
 
             updatePassword: function(event)
             {
-              console.log(event.target.value);
                 this.bindPassword(event.target.value);
             },
 
@@ -67,7 +64,6 @@
             loginOrFail: function()
             {
                 this.login();
-
             },
         },
 
@@ -81,7 +77,6 @@
             }),
 
         }
-
     }
 
 

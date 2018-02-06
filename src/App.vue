@@ -61,7 +61,9 @@
 
           <h2 slot="actions">
               <span>
-                <i class="fa fa-heart"></i>
+                <img v-if="!barInSubs(bar)" @click="addBarToSubs(bar)" class="modal-icons pull-right" src="static/icons/modal/no_like.svg" alt="">
+                <img v-if="barInSubs(bar)" @click="removeBarFromSubs(bar)" class="modal-icons pull-right" src="static/icons/modal/like.svg" alt="">
+
               </span>
           </h2>
 
@@ -72,8 +74,6 @@
           </span>
 
           </h3>
-
-
 
           <div slot="body">
               <div role="tabpanel">
@@ -87,10 +87,8 @@
                       <!-- Tab panes -->
                       <div class="tab-content" >
                           <div role="tabpanel" class="tab-pane active" id="uploadTab">
-
                               <table>
                                   <tr>
-
                                       <td v-if="bar['addr:street'] !== ''">
                                           <p>
                                               <img class="map-icons " src="static/icons/map/map.svg" alt="">
@@ -100,18 +98,13 @@
                                       </td>
                                       <td></td>
                                   </tr>
-
-
                               </table>
-
                           </div>
-
                           <div role="tabpanel" class="tab-pane" id="browseTab">
                               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque beatae consectetur deserunt doloribus ipsum neque quas recusandae rem repellendus, sit! Dignissimos dolor, dolorem eligendi error fugiat id obcaecati quaerat reprehenderit.
                           </div>
                       </div>
-                  </div>
-
+              </div>
           </div>
 
           <div slot="footer">
@@ -154,9 +147,6 @@ import {mapActions} from 'vuex';
 import OsmMap from './components/OsmMap.vue';
 import SideBar from './components/SideBar.vue';
 
-
-
-
 export default
 {
     name: 'App',
@@ -179,11 +169,14 @@ export default
            updateBarDetails: 'updateBarDetailsAction',
            updateModal: 'updateModalAction',
            plotRouteAction:  'plotRouteAction',
-            odLayer: 'openDataLayerAction'
+           odLayer: 'openDataLayerAction',
+           addBarToSubs: 'addBarToSubsAction',
+           removeBarFromSubs: 'removeBarFromSubs'
         }),
 
         plotRoute: function(profile)
         {
+            this.showModal = false;
 
             let options =
             {
@@ -191,8 +184,7 @@ export default
             }
 
             this.plotRouteAction(options);
-            this.showModal = false;
-            this.updateBarDetails('');
+            // this.updateBarDetails('');
 
         },
 
@@ -207,7 +199,6 @@ export default
             {
                 console.log('enter pressed')
                 this.$store.dispatch('updateKeywordsAction', event.target.value);
-
                 this.updateBarsAndRoute();
             }
         },
@@ -230,6 +221,17 @@ export default
         {
             //TODO
             this.odLayer();
+        },
+
+        //checks if bar is in current user's subscriptionlist
+        barInSubs: function(bar)
+        {
+                for(let i = 0; i < this.subscriptions.length; i++)
+                {
+                    if(this.subscriptions[i].id === bar.node)
+                        return true;
+                }
+                return false;
         }
 
 
@@ -244,7 +246,8 @@ export default
                 keywords: 'currentKeywords',
                 roles: 'currentRole',
                 bar: 'currentBarDetails',
-                modal: 'currentModal'
+                modal: 'currentModal',
+                subscriptions: 'currentSubscriptions'
             }),
     },
 
