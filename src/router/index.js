@@ -10,6 +10,7 @@ import Login from '../components/auth/Login.vue'
 import Register from '../components/auth/Register.vue'
 import Contact from '../components/Contact.vue'
 import NewBar from '../components/NewBar.vue'
+import Admin from '../components/Admin.vue'
 // import BarModalView from '../components/bar/BarModalView.vue'
 Vue.use(Router)
 
@@ -78,6 +79,14 @@ export default new Router({
                   newbar_view: NewBar,
               },
       },
+      // {
+      //     path: '/admin',
+      //     name: 'admin',
+      //     components:
+      //         {
+      //             admin_view: Admin,
+      //         },
+      // },
 
 
 

@@ -43,6 +43,7 @@ Vue.component('login', require('./components/auth/Login.vue'));
 Vue.component('register', require('./components/auth/Register.vue'));
 Vue.component('contact', require('./components/Contact.vue'));
 Vue.component('newbar', require('./components/NewBar.vue'));
+Vue.component('admin', require('./components/Admin.vue'));
 // Vue.component('modal-view', require('./components/bar/BarModalView.vue'));
 Vue.component('modal-view', {
     template: '#modal-view',
