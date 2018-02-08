@@ -1,21 +1,22 @@
-# sidebar
+# Client deploy steps
 
-> A Vue.js project
+__Nuts & bolts__ 
 
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
+git clone https://github.com/SterlingAr/client-kampai.git
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+#install dependencies
+npm install --save
+#run in memory for development
+npm run dev
+#build project for production, files stored at dist/ and can only be served through http.
+npm run build
+```
+__In src/store/store.js change:__
+
+>         api_base_uri: 'https://api.your-local-server.com/',
+
+
+__Note:__
+
+This project works in conjunction with [Kampai](https://github.com/SterlingAr/kampai)
