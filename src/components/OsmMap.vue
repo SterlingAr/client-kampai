@@ -1,21 +1,47 @@
 <template>
-
-<div>
-    <h1>Test</h1>
     <div id="map" class="sidebar-map"></div>
-    <h5>Import works</h5>
-</div>
-
-
 </template>
 <script>
 
 
+    import {mapGetters} from 'vuex';
+    import {mapActions} from 'vuex';
+
     export default
     {
-        name: 'OsmMap'
+        name: 'OsmMap',
+        beforeMount()
+        {
 
+
+        },
+
+        mounted()
+        {
+            this.initMap();
+
+
+        },
+
+        methods:
+        {
+            ...mapActions(
+            {
+                initMap: 'initMapAction',
+                updateBarsAction: 'updateBarsAction'
+            })
+
+        },
+
+        computed:
+        {
+            ...mapGetters(
+            {
+                map: 'currentMap'
+            }),
+        }
     }
+
 
 </script>
 

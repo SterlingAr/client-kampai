@@ -3,7 +3,7 @@ body {
     margin: 0;
 }
 
-html, body, #map {
+html, body, #map, #app-container {
     height: 100%;
     font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
@@ -12,3 +12,4 @@ html, body, #map {
     font-style: italic;
     color: red;
 }
+

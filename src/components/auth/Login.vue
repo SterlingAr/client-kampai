@@ -1,0 +1,83 @@
+
+<template>
+   <div id="login-form">
+       <div v-if="roles.includes('nouser')" class="login-card">
+           <h1>Log-in</h1><br>
+           <form>
+               <input type="text" name="user" placeholder="Email" @input="updateEmail">
+               <input type="password" name="pass" placeholder="Password" @input="updatePassword">
+               <input type="button" name="login" class="login login-button" value="Login" @click="loginOrFail">
+           </form>
+
+           <div class="login-help">
+               <router-link :to="{name:'register'}">Register</router-link>
+           </div>
+           <div v-if="authStatus === 200">
+               <h1>Login succeeded</h1>
+           </div>
+
+           <div v-if="authStatus === 401">
+               <h1>Login failed</h1>
+           </div>
+       </div>
+
+   </div>
+
+</template>
+
+<script>
+
+    import {mapGetters,mapActions} from 'vuex'
+
+    export default
+    {
+        name: 'Login',
+
+        data () {
+            return {
+
+            }
+        },
+
+
+        methods: {
+
+
+            ...mapActions(
+            {
+                bindEmail: 'updateEmailAction',
+                bindPassword: 'updatePasswordAction',
+                login: 'loginAction'
+            }),
+
+            updateEmail: function(event)
+            {
+                this.bindEmail(event.target.value);
+            },
+
+            updatePassword: function(event)
+            {
+                this.bindPassword(event.target.value);
+            },
+
+
+            loginOrFail: function()
+            {
+                this.login();
+            },
+        },
+
+        computed:
+        {
+
+            ...mapGetters(
+            {
+                authStatus: 'currentAuthStatus',
+                roles : 'currentRole',
+            }),
+
+        }
+    }
+
+
+</script>

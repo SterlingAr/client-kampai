@@ -1,0 +1,13 @@
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #e9493d !important;
+    border-color:#fffcd9 !important;
+}
+
+#bar-items > a
+{
+}
+
+a.list-group-item.active {
+    padding: 2% !important;
+
+}
