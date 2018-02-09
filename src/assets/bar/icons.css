@@ -10,6 +10,12 @@
     height: 22px;
 }
 
+.close-icon
+{
+    width: 23px;
+    height: 24px;
+}
+
 .bar-list
 {
     width: 28px;
@@ -27,7 +33,27 @@
 {
     width: 28px;
     height: 34px;
+
+
 }
+
+.no-like:hover
+{
+    transition: 0.7s;
+    -webkit-transform: rotateZ(-30deg);
+    -ms-transform: rotateZ(-30deg);
+    transform: rotateZ(-30deg);
+}
+
+.like::before
+{
+    transition: 0.7s;
+    -webkit-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    transform: scale(0.8);
+}
+
+
 .redes {
     width: 30px;
     height: 30px;

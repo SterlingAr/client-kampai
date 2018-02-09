@@ -2,15 +2,29 @@
 
     <div id="login-form">
         <div class="login-card">
-            <h1>Register</h1><br>
+            <h1>Registro</h1><br>
             <form>
-                <input type="text" name="user" placeholder="Name" @input="updateName">
-                <input type="text" name="user" placeholder="Email" @input="updateEmail">
-                <input type="password" name="pass" placeholder="Password" @input="updatePassword">
-                <input type="button" name="login" class="login login-button" value="Register" @click="registerOrFail">
+                <input v-validate="{required: true,alpha:true}" type="text" name="name" placeholder="Nombre" @input="updateName">
+                <input v-validate="{required: true, email:true}" type="text" name="email" placeholder="Email" @input="updateEmail">
+                <input v-validate="{required: true, min:6, max:15}"  type="password" name="password" placeholder="Contraseña" @input="updatePassword">
+                <input type="button" name="login" class="login login-button" value="Crear cuenta" @click="registerOrFail">
             </form>
+        </div>
+
+        <div v-if="errors.any()">
+
+            <div v-show="errors.has('name')" :class="errorIn"  class="alert alert-danger">
+                <strong>ERROR</strong> {{ errors.first('name') }}
+            </div>
 
 
+            <div v-show="errors.has('email')" :class="errorIn"  class="alert alert-danger">
+                <strong>ERROR</strong> {{ errors.first('email') }}
+            </div>
+
+            <div v-show="errors.has('password')" :class="errorIn" class="alert alert-danger">
+                <strong>ERROR</strong> {{ errors.first('password') }}
+            </div>
         </div>
     </div>
 
@@ -25,7 +39,10 @@
         name: 'Register',
 
         data() {
-            return {}
+            return {
+                errorIn: 'animated slideInRight',
+
+            }
         },
 
 

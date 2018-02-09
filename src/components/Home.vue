@@ -2,7 +2,11 @@
     <div class="sidebar-pane" >
         <h1 class="sidebar-header">
             Kampai
-        <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+        <span class="sidebar-close">
+            <a @click="menuAction(false)">
+                <img  class="close-icon" src="static/icons/menu/close.svg" alt="">
+            </a>
+        </span>
         </h1>
         <p class="description text-justify">
             Kampai es una aplicación que dada una palabra clave como(pizza, kebab),
@@ -29,11 +33,45 @@
 
 
 <script>
+    import {mapActions} from 'vuex';
 
     export default
     {
         name:'Home',
 
+        data ()
+        {
+            return {
+                close: false,
+                rollOut: 'animated rollOut',
+                rollIn: 'animated rollIn'
+            }
+        },
+
+        methods:
+            {
+                ...mapActions({
+                    menuAction: 'menuAction'
+                }),
+
+                closeMenuWithAnimation: function()
+                {
+                    this.close = true;
+                    this.menuAction(false);
+
+                },
+
+            },
+
+        computed:
+            {
+
+                closeButtonAnimation: function ()
+                {
+                    return this.close ? this.rollOut : this.rollIn;
+                }
+
+            }
 
     }
 

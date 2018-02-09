@@ -2,22 +2,42 @@
 <template>
    <div id="login-form">
        <div v-if="roles.includes('nouser')" class="login-card">
-           <h1>Log-in</h1><br>
+           <h1>Entrar</h1><br>
            <form>
-               <input type="text" name="user" placeholder="Email" @input="updateEmail">
-               <input type="password" name="pass" placeholder="Password" @input="updatePassword">
+               <input v-validate="{required: true, email:true}"   type="text" name="email" placeholder="Email" @input="updateEmail">
+               <input v-validate="{required: true, min:6, max:15}" type="password" name="password" placeholder="Password" @input="updatePassword">
                <input type="button" name="login" class="login login-button" value="Login" @click="loginOrFail">
            </form>
 
            <div class="login-help">
-               <router-link :to="{name:'register'}">Register</router-link>
-           </div>
-           <div v-if="authStatus === 200">
-               <h1>Login succeeded</h1>
+               <router-link :to="{name:'register'}">¿No tienes cuenta? Registrate gratis! </router-link>
            </div>
 
-           <div v-if="authStatus === 401">
-               <h1>Login failed</h1>
+       </div>
+
+       <div v-if="authStatus === 200">
+
+           <div class="alert alert-success">
+               <strong>Redireccionando...</strong>
+           </div>
+
+       </div>
+
+       <div v-if="authStatus === 401">
+
+           <div class="alert alert-danger">
+               <strong>Credenciales erróneas</strong> Verifique su usuario y contraseña.
+           </div>
+
+       </div>
+
+       <div v-if="errors.any()">
+           <div v-show="errors.has('email')" :class="errorIn"  class="alert alert-danger">
+               <strong>ERROR</strong> {{ errors.first('email') }}
+           </div>
+
+           <div v-show="errors.has('password')" :class="errorIn"  class="alert alert-danger">
+               <strong>ERROR</strong> {{ errors.first('password') }}
            </div>
        </div>
 
@@ -35,7 +55,7 @@
 
         data () {
             return {
-
+                errorIn: 'animated slideInRight',
             }
         },
 
@@ -75,6 +95,8 @@
                 authStatus: 'currentAuthStatus',
                 roles : 'currentRole',
             }),
+
+
 
         }
     }

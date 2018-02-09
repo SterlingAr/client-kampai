@@ -218,7 +218,7 @@ $move-map-in-xs: true !default;
     line-height: $tab-size;
     font-size: $tab-font-size * 1.2;
     color: $header-fg;
-    background-color: $header-bg;
+    //background-color: $header-bg;
 
     .sidebar-right & {
         padding-left: $tab-size;

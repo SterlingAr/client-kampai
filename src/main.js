@@ -24,13 +24,16 @@ import '@/assets/bar/icons.css'
 import '@/assets/bar/bar-list.css'
 import '@/assets/leaflet/plugins/credits/leaflet-control-credits.js'
 import '@/assets/leaflet/plugins/credits/leaflet-control-credits.css'
-
+import 'animate.css'
+import 'leaflet-easybutton'
 
 import Vue from 'vue'
 import VueJWT from 'vuejs-jwt'
 import router from './router'
 import store  from './store/store.js'
 import App from './App.vue'
+import VeeValidate from 'vee-validate';
+
 
 // Vue.use(VueJWT,options)
 Vue.config.productionTip = false
@@ -49,7 +52,12 @@ Vue.component('modal-view', {
     template: '#modal-view',
 })
 
+Vue.component('bar-claim-view', {
+    template: '#bar-claim-view',
+})
 
+
+Vue.use(VeeValidate);
 
 
 window.App = new Vue({

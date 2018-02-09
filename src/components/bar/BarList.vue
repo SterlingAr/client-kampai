@@ -1,10 +1,11 @@
 <template>
     <div>
+
         <h3 class="h1" >Results</h3>
 
         <div id="bar-items" class="list-group">
-            <div v-for="bar in bars" >
-                <a @click="showModal(bar)" v-if="bar.tags.name !== '' " class="list-group-item active">
+            <div v-for="bar in bars"  class="animated fadeInLeft">
+                <a @click="showModal(bar)" v-if="bar.tags.name !== '' "  class="list-group-item active">
                     <img v-if="bar.tags.amenity === 'cafe'"  class="bar-list pull-right" src="static/icons/list/coffee.svg" alt="" >
                     <img v-if="bar.tags.amenity === 'bar'"  class="bar-list pull-right" src="static/icons/list/beer.svg" alt="" >
                     <img v-if="bar.tags.amenity === 'restaurant'"  class="bar-list pull-right" src="static/icons/list/restaurant.svg" alt="" >
@@ -36,6 +37,8 @@
         data () {
             return {
 
+                active: false,
+
             }
         },
 
@@ -44,19 +47,22 @@
             showModal: function(bar)
             {
                 //update store object
+                this.updateModal(true);
+                this.active = true;
                 let barDetails = bar.tags;
                 barDetails.coord = {};
                 barDetails.coord.lat = bar.lat;
                 barDetails.coord.lon = bar.lon;
 
+                this.menuAction(false);
                 this.barDetails(barDetails);
-                this.updateModal(true);
 
             },
 
             ...mapActions({
                 barDetails: 'updateBarDetailsAction',
-                updateModal: 'updateModalAction'
+                updateModal: 'updateModalAction',
+                menuAction: 'menuAction',
             })
 
         },
@@ -65,7 +71,8 @@
 
             ...mapGetters({
                 bars: 'currentBars',
-            })
+            }),
+
         }
     }
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div id="app-container">
-      <div id="sidebar" class="sidebar collapsed">
+      <!-- Change menu value in storage every time i need toggle the menu-->
+      <div id="sidebar" v-bind:class="menuClass">
 
           <!-- Nav tabs -->
           <div class="sidebar-tabs">
@@ -31,6 +32,13 @@
                       </router-link>
                   </li>
 
+
+                  <li>
+                      <a href="#" @click="claimModal(true)">
+                          <img class="menu" src="static/icons/dev/compass.svg" alt="">
+                      </a>
+                  </li>
+
                   <!--<li v-if="roles.includes('admin')">-->
                       <!--<router-link role="tab"  :to="{name: 'admin'}">-->
                           <!--<i class="fa fa-lock"></i>-->
@@ -57,12 +65,12 @@
 
       <osm-map></osm-map>
 
-      <modal-view v-if="modal" @close="modal = false">
+      <modal-view v-bind:class="modalAnimation" v-if="modal" @close="modal = false">
 
           <h2 slot="actions">
               <span>
-                <img v-if="!barInSubs(bar)" @click="addBarToSubs(bar)" class="modal-icons pull-right" src="static/icons/modal/no_like.svg" alt="">
-                <img v-if="barInSubs(bar)" @click="removeBarFromSubs(bar)" class="modal-icons pull-right" src="static/icons/modal/like.svg" alt="">
+                <img v-if="!barInSubs(bar)" @click="addBarToSubs(bar)" :class="{'animated pulse infinite': true}" class="modal-icons no-like pull-right" src="static/icons/modal/no_like.svg" alt="">
+                <img v-if="barInSubs(bar)" @click="removeBarFromSubs(bar)" :class="{'animated tada': true}" class="modal-icons like pull-right" src="static/icons/modal/like.svg" alt="">
 
               </span>
           </h2>
@@ -135,14 +143,50 @@
           </div>
       </modal-view>
 
+
+      <modal-view v-if="claimModalStatus" @close="claimModal = false">
+
+          <div slot="body" v-if="claimSent === false">
+              <div slot="header">
+                  <h1>Reclamar establecimiento</h1><br>
+              </div>
+              <div id="newbar-form">
+                  <div class="newbar-content">
+                      <form v-if="claimSent === false">
+                          <label>Nombre:</label><br>
+                          <input type="text" name="nombre" placeholder="Name"><br>
+                          <label>Direccion:</label><br>
+                          <input type="text" name="direccion" placeholder="Direction"><br>
+                          <label>Number:</label><br>
+                          <input type="number" placeholder="Number" name="number"><br>
+                          <label for="exampleInputFile">Documentación</label>
+                          <input type="file" id="exampleInputFile">
+                          <br>
+                          <input @click="claimSent = true" type="button" class="newbar newbar-button" value="Añadir bar" name="newbar">
+                      </form>
+                  </div>
+              </div>
+          </div>
+
+          <div v-if="claimSent" slot="body">
+              <div >
+                  <h1>Solicitud enviada</h1>
+                  <p>
+                      En un plazo máximo de 48 horas recibirás un email con la respuesta a tu solicitud.
+                  </p>
+                  <input @click="claimModal(false)" type="button" class="newbar newbar-button" value="Cerrar" name="newbar">
+
+              </div>
+          </div>
+      </modal-view>
+
   </div>
 </template>
 
 <script>
 
 
-import {mapGetters} from 'vuex';
-import {mapActions} from 'vuex';
+import {mapGetters,mapActions} from 'vuex';
 
 import OsmMap from './components/OsmMap.vue';
 import SideBar from './components/SideBar.vue';
@@ -156,11 +200,14 @@ export default
     data ()
     {
         return {
-
-            showModal : false
-
+            claimSent: false,
+            collapsedMenuClass: 'sidebar collapsed sidebar-left leaflet-touch',
+            notCollapsedMenuClass: 'sidebar sidebar-left leaflet-touch',
+            lightSpeedIn: 'animated lightSpeedIn',
+            lightSpeedOut: 'animated lightSpeedOut'
         }
     },
+
     methods:
     {
 
@@ -171,12 +218,16 @@ export default
            plotRouteAction:  'plotRouteAction',
            odLayer: 'openDataLayerAction',
            addBarToSubs: 'addBarToSubsAction',
-           removeBarFromSubs: 'removeBarFromSubs'
+           removeBarFromSubs: 'removeBarFromSubs',
+           claimModal: 'claimModalAction',
+           menuAction: 'menuAction'
         }),
 
         plotRoute: function(profile)
         {
-            this.showModal = false;
+            this.menuAction(false);
+
+            this.updateModal(false);
 
             let options =
             {
@@ -185,6 +236,7 @@ export default
 
             this.plotRouteAction(options);
             // this.updateBarDetails('');
+
 
         },
 
@@ -200,6 +252,8 @@ export default
                 console.log('enter pressed')
                 this.$store.dispatch('updateKeywordsAction', event.target.value);
                 this.updateBarsAndRoute();
+                this.menuAction(true);
+
             }
         },
 
@@ -207,13 +261,14 @@ export default
         {
             this.updateBars();
             this.$router.push({name: 'bar_list'});
+            this.menuAction(true);
         },
 
         setBarDetails: function(details)
         {
             this.updateBarDetails(details);
             this.updateModal(true);
-            console.log(this.modal);
+            this.menuAction(true);
 
         },
 
@@ -247,8 +302,22 @@ export default
                 roles: 'currentRole',
                 bar: 'currentBarDetails',
                 modal: 'currentModal',
-                subscriptions: 'currentSubscriptions'
+                claimModalStatus: 'currentClaimModal',
+                subscriptions: 'currentSubscriptions',
+                menuStatus: 'currentMenu'
             }),
+
+
+        menuClass: function ()
+        {
+            return this.menuStatus ? this.notCollapsedMenuClass : this.collapsedMenuClass;
+        },
+
+        modalAnimation: function ()
+        {
+            return this.modal ? this.lightSpeedIn : this.lightSpeedOut;
+        }
+
     },
 
 }
