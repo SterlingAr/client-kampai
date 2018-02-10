@@ -2,8 +2,11 @@ const state =
 {
     barDetails: '',
     modal: false,
+    isBarInUserList: false,
+
 
 }
+
 const getters =
 {
     currentBarDetails: state =>
@@ -14,6 +17,11 @@ const getters =
     currentModal: state =>
     {
         return state.modal;
+    },
+
+    currentIsBarInUserList: state =>
+    {
+        return state.isBarInUserList;
     }
 
 }
@@ -27,8 +35,14 @@ const mutations =
     updateModal: (state,modal) =>
     {
         state.modal = modal;
+    },
+
+    updateIfBarInUserList: (state,bool) =>
+    {
+        state.isBarInUserList = bool;
     }
 }
+
 const actions =
 {
     updateBarDetailsAction: ({commit}, barDetails) =>
@@ -36,13 +50,36 @@ const actions =
         commit('updateBarDetails', barDetails);
     },
 
-    updateModalAction: ({commit},modal) =>
+    updateModalAction: ({commit,dispatch},modal) =>
     {
+        dispatch('isBarInUserListAction');
         commit('updateModal',modal);
+    },
+
+    isBarInUserListAction: ({commit,rootState,state}) =>
+    {
+        let userSubList = rootState.user_storage.subscriptions;
+        if(userSubList.length > 0)
+        {
+            for(let i = 0; i < userSubList.length; i++)
+            {
+                if(userSubList[i].id === state.barDetails.node)
+                {
+
+                    commit('updateIfBarInUserList', true);
+                    return;
+                }
+            }
+            commit('updateIfBarInUserList', false);
+        }
+
+    },
+
+    updateHeartStatus: ({commit},bool) =>
+    {
+        commit('updateIfBarInUserList', bool);
     }
 }
-
-
 
 export default {
     state,

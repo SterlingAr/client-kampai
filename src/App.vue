@@ -20,7 +20,7 @@
                       </router-link>
                   </li>
 
-                  <li v-if="roles.includes('normie')">
+                  <li v-if="roles.includes('normie') || roles.includes('owner') || roles.includes('admin')">
                       <router-link  role="tab"  :to="{name: 'profile'}">
                           <img class="menu" src="static/icons/menu/users.svg" alt="">
                       </router-link>
@@ -69,8 +69,8 @@
 
           <h2 slot="actions">
               <span>
-                <img v-if="!barInSubs(bar)" @click="addBarToSubs(bar)" :class="{'animated pulse infinite': true}" class="modal-icons no-like pull-right" src="static/icons/modal/no_like.svg" alt="">
-                <img v-if="barInSubs(bar)" @click="removeBarFromSubs(bar)" :class="{'animated tada': true}" class="modal-icons like pull-right" src="static/icons/modal/like.svg" alt="">
+                <img v-if="!isFavOrNot" @click="addBarToSubsIfLoggedIn(bar)" :class="{'animated pulse infinite': true}" class="modal-icons no-like pull-right" src="static/icons/modal/no_like.svg" alt="">
+                <img v-if="isFavOrNot" @click="removeBarFromSubs(bar)" :class="{'animated flip': true}" class="modal-icons like pull-right" src="static/icons/modal/like.svg" alt="">
 
               </span>
           </h2>
@@ -78,6 +78,7 @@
           <h3 slot="header">{{bar.name}}
           <span>
               <i v-if="bar.internet_access" class="fa fa-wifi" aria-hidden="true"></i>
+
               <i v-if="bar.wheelchair === 'yes'" class="fa fa-wheelchair-alt" aria-hidden="true"></i>
           </span>
 
@@ -96,15 +97,47 @@
                       <div class="tab-content" >
                           <div role="tabpanel" class="tab-pane active" id="uploadTab">
                               <table>
-                                  <tr>
-                                      <td v-if="bar['addr:street'] !== ''">
+                                  <tr v-if="bar['addr:street']">
+                                      <td>
                                           <p>
-                                              <img class="map-icons " src="static/icons/map/map.svg" alt="">
+                                              <img class="map-icons " src="static/icons/map/map.svg" alt="address">
 
-                                              {{bar['addr:street']}}
+                                              {{bar['addr:street']}} <span v-if="bar['addr:housenumber']">{{bar['addr:housenumber']}}</span>
                                           </p>
                                       </td>
-                                      <td></td>
+                                  </tr>
+
+                                  <tr v-if="bar['contact:facebook']">
+                                      <td >
+                                          <p>
+                                              <img class="map-icons " src="static/icons/modal/facebook.svg" alt="facebook">
+
+                                              <a v-bind:href="linkFB">
+                                                  Me gusta!.
+                                              </a>
+
+                                          </p>
+                                      </td>
+                                  </tr>
+                                  <tr v-if="bar.website">
+                                      <td >
+                                          <p>
+                                              <img class="map-icons " src="static/icons/modal/website.svg" alt="website">
+                                              <a v-bind:href="linkWS">
+                                                  Visita nuestra página web.
+                                              </a>
+                                          </p>
+                                      </td>
+                                  </tr>
+                                  <tr v-if="bar.phone">
+                                      <td >
+                                          <p>
+                                              <img class="map-icons animated hinge infinite " src="static/icons/modal/phone.svg" alt="phone">
+                                              <a  v-bind:href="tlf">
+                                                  Llámanos
+                                              </a>
+                                          </p>
+                                      </td>
                                   </tr>
                               </table>
                           </div>
@@ -203,6 +236,7 @@ export default
             claimSent: false,
             collapsedMenuClass: 'sidebar collapsed sidebar-left leaflet-touch',
             notCollapsedMenuClass: 'sidebar sidebar-left leaflet-touch',
+            currentMenuClass: '',
             lightSpeedIn: 'animated lightSpeedIn',
             lightSpeedOut: 'animated lightSpeedOut'
         }
@@ -222,6 +256,24 @@ export default
            claimModal: 'claimModalAction',
            menuAction: 'menuAction'
         }),
+
+        addBarToSubsIfLoggedIn: function (bar)
+        {
+            if(this.user !== '')
+            {
+                this.addBarToSubs(bar);
+                return;
+            }
+
+            this.updateModal(false);
+
+            this.$router.push({
+                name:'login',
+                params: {
+                    loginRequired: true
+                }
+            });
+        },
 
         plotRoute: function(profile)
         {
@@ -278,16 +330,6 @@ export default
             this.odLayer();
         },
 
-        //checks if bar is in current user's subscriptionlist
-        barInSubs: function(bar)
-        {
-                for(let i = 0; i < this.subscriptions.length; i++)
-                {
-                    if(this.subscriptions[i].id === bar.node)
-                        return true;
-                }
-                return false;
-        }
 
 
     },
@@ -304,8 +346,11 @@ export default
                 modal: 'currentModal',
                 claimModalStatus: 'currentClaimModal',
                 subscriptions: 'currentSubscriptions',
-                menuStatus: 'currentMenu'
+                menuStatus: 'currentMenu',
+                isFavOrNot: 'currentIsBarInUserList',
+                user: 'currentUser'
             }),
+
 
 
         menuClass: function ()
@@ -316,7 +361,15 @@ export default
         modalAnimation: function ()
         {
             return this.modal ? this.lightSpeedIn : this.lightSpeedOut;
-        }
+        },
+
+        //Social network links.
+        linkFB: function(){ return this.bar['contact:facebook'];},
+        linkWS: function(){ return this.bar.website;},
+        tlf: function(){return 'tel:'+this.bar.phone;},
+        
+
+
 
     },
 

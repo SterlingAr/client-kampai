@@ -2,10 +2,9 @@ import axios from 'axios';
 
 const state =
 {
-    user: {
-        name: 'Carrot',
-    },
+    user: '',
     subscriptions: [],
+
 
 }
 
@@ -19,7 +18,8 @@ const getters =
     currentSubscriptions: state =>
     {
         return state.subscriptions;
-    }
+    },
+
 
 
 }
@@ -52,8 +52,9 @@ const actions =
 
     },
 
-    addBarToSubsAction: ({commit,state,rootState},bar) =>
+    addBarToSubsAction: ({commit,state,rootState,dispatch},bar) =>
     {
+
 
         axios.post(rootState.api_base_uri + '/api/auth/subscription/bar',
         {
@@ -67,6 +68,9 @@ const actions =
             },
         }).then((response) =>
         {
+            //set isBarInUserList to false in order for the heart to change.
+            dispatch('updateHeartStatus',true);
+
             commit('updateSubscriptions', response.data.subscription_list.elements);
             console.log(response);
             if(response.status === 409)
@@ -83,6 +87,8 @@ const actions =
     removeBarFromSubs: ({commit,dispatch,state,rootState},bar) =>
     {
 
+
+
         axios.delete(rootState.api_base_uri + '/api/auth/subscription/bar/remove/'+bar.node+'/'+state.user.id,
 
             {
@@ -95,9 +101,10 @@ const actions =
 
             if(response.data.subscription_list !== undefined)
             {
-                commit('updateSubscriptions', response.data.subscription_list);
-                console.log(response);
+                dispatch('updateHeartStatus',false);
 
+                commit('updateSubscriptions', response.data.subscription_list.elements);
+                console.log(response);
             }
 
 

@@ -54,6 +54,9 @@ export default new Router({
               {
                   login_view: Login,
               },
+          props: {
+              login_view: true
+          }
       },
       {
           path: '/register',

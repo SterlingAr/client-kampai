@@ -1,9 +1,8 @@
 <template>
-    <div class="col-lg-12 col-sm-12">
+    <div class="col-lg-12 col-sm-12 animated fadeInLeft">
         <div class="card hovercard">
             <div class="card-background">
                 <img class="card-bkimg" alt="" src="https://lorempixel.com/100/100/people/9/">
-                <!-- http://lorempixel.com/850/280/people/9/ -->
             </div>
             <div class="useravatar">
 
@@ -63,8 +62,6 @@
         </div>
 
     </div>
-
-
 </template>
 
 <script>
@@ -85,35 +82,36 @@
 
         methods:
             {
-                ...mapActions({
-                    logout: 'logOutAction'
-                }),
 
                 logoutorFail: function () {
                     this.logout();
                 },
 
-                //copy paste from BarList ,should be refactored.
+                // copy paste from BarList ,should be refactored.
                 showModal: function (bar) {
                     //update store object
                     let barDetails = bar.tags;
                     barDetails.coord = {};
                     barDetails.coord.lat = bar.lat;
                     barDetails.coord.lon = bar.lon;
-
+                    barDetails.node = bar.id;
                     this.barDetails(barDetails);
                     this.updateModal(true);
 
                 },
 
+
                 //checks if bar is in current user's subscriptionlist
 
                 ...mapActions({
+                    logout: 'logOutAction',
                     barDetails: 'updateBarDetailsAction',
                     updateModal: 'updateModalAction',
                 })
 
             },
+
+
 
             computed:
             {

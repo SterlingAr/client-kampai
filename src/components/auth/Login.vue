@@ -15,18 +15,25 @@
 
        </div>
 
-       <div v-if="authStatus === 200">
+       <div  v-if="authStatus === 200">
 
-           <div class="alert alert-success">
+           <div class="alert alert-success animated bounceOutRight">
                <strong>Redireccionando...</strong>
            </div>
 
        </div>
 
-       <div v-if="authStatus === 401">
+       <div :class="errorIn" v-if="authStatus === 401">
 
            <div class="alert alert-danger">
                <strong>Credenciales erróneas</strong> Verifique su usuario y contraseña.
+           </div>
+
+       </div>
+       <div v-if="loginRequired">
+
+           <div class="alert alert-danger" :class="errorIn" >
+               <strong>Es necesario iniciar sesión</strong>
            </div>
 
        </div>
@@ -96,9 +103,10 @@
                 roles : 'currentRole',
             }),
 
+        },
 
+        props: ['loginRequired']
 
-        }
     }
 
 

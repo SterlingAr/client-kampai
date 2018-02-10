@@ -3,7 +3,7 @@
         <h1 class="sidebar-header">
             Kampai
         <span class="sidebar-close">
-            <a @click="menuAction(false)">
+            <a @click="closeMenuWithAnimation">
                 <img  class="close-icon" src="static/icons/menu/close.svg" alt="">
             </a>
         </span>
