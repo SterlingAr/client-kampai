@@ -1,7 +1,7 @@
 <template>
   <div id="app-container">
       <!-- Change menu value in storage every time i need toggle the menu-->
-      <div id="sidebar" v-bind:class="menuClass">
+      <div id="sidebar"  clasS="animated fadeInLeft sidebar  sidebar-left leaflet-touch collapsed">
 
           <!-- Nav tabs -->
           <div class="sidebar-tabs">
@@ -254,11 +254,8 @@ export default
     {
         return {
             claimSent: false,
-            collapsedMenuClass: 'sidebar collapsed sidebar-left leaflet-touch',
-            notCollapsedMenuClass: 'sidebar sidebar-left leaflet-touch',
-            currentMenuClass: '',
-            lightSpeedIn: 'animated lightSpeedIn',
-            lightSpeedOut: 'animated lightSpeedOut'
+            lightSpeedIn: 'animated flipInY',
+            lightSpeedOut: ''
         }
     },
 
@@ -274,7 +271,8 @@ export default
            addBarToSubs: 'addBarToSubsAction',
            removeBarFromSubs: 'removeBarFromSubs',
            claimModal: 'claimModalAction',
-           menuAction: 'menuAction'
+            sideBarAction: 'sideBarAction'
+
         }),
 
         addBarToSubsIfLoggedIn: function (bar)
@@ -286,8 +284,8 @@ export default
             }
 
             this.updateModal(false);
-            this.menuAction(true);
 
+            this.sideBarAction('open');
             this.$router.push({
                 name:'login',
                 params: {
@@ -298,7 +296,6 @@ export default
 
         plotRoute: function(profile)
         {
-            this.menuAction(false);
 
             this.updateModal(false);
 
@@ -309,6 +306,7 @@ export default
 
             this.plotRouteAction(options);
             // this.updateBarDetails('');
+            this.sideBarAction('close');
 
 
         },
@@ -325,7 +323,6 @@ export default
                 console.log('enter pressed')
                 this.$store.dispatch('updateKeywordsAction', event.target.value);
                 this.updateBarsAndRoute();
-                this.menuAction(true);
                 event.preventDefault();
 
             }
@@ -335,14 +332,12 @@ export default
         {
             this.updateBars();
             this.$router.push({name: 'bar_list'});
-            this.menuAction(true);
         },
 
         setBarDetails: function(details)
         {
             this.updateBarDetails(details);
             this.updateModal(true);
-            this.menuAction(true);
 
         },
 
@@ -372,14 +367,6 @@ export default
                 isFavOrNot: 'currentIsBarInUserList',
                 user: 'currentUser'
             }),
-
-
-
-        menuClass: function ()
-        {
-            return this.menuStatus ? this.notCollapsedMenuClass : this.collapsedMenuClass;
-        },
-
         modalAnimation: function ()
         {
             return this.modal ? this.lightSpeedIn : this.lightSpeedOut;

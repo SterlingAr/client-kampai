@@ -1,7 +1,7 @@
 
 <template>
    <div id="login-form">
-       <div v-if="roles.includes('nouser')" class="login-card">
+       <div v-if="roles.includes('nouser')" class="login-card  animated slideInLeft">
            <h1>Entrar</h1><br>
            <form>
                <input v-validate="{required: true, email:true}"   type="text" name="email" placeholder="Email" @input="updateEmail">

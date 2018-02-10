@@ -179,6 +179,9 @@ const actions =
 
                 commit('updateUser','');
 
+                let emptySub = [];
+                commit('updateSubscriptions',emptySub);
+
                 App.$router.push({
                     name:'home'
                 });

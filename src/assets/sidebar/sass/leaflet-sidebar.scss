@@ -1,7 +1,7 @@
 $sidebar-margins: 10px !default;
 $sidebar-border-radius: 4px !default;
 $sidebar-touch-border: 2px solid rgba(0, 0, 0, 0.2) !default;
-$sidebar-shadow: 0 1px 5px rgba(0, 0, 0, 0.65) !default;
+$sidebar-shadow: 0 1px 10px rgba(0, 0, 0, 0.65) !default;
 
 $tab-fg: #333 !default;
 $tabs-bg: #fff !default;
@@ -24,7 +24,7 @@ $tab-active-bg: #BF4633!default;
         border-radius: $sidebar-border-radius;
 
         &.leaflet-touch {
-            border: $sidebar-touch-border;
+            //border: $sidebar-touch-border;
         }
     }
 }

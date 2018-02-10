@@ -1,7 +1,7 @@
 <template>
 
     <div id="login-form">
-        <div class="login-card">
+        <div class="login-card  animated slideInLeft">
             <h1>Registro</h1><br>
             <form>
                 <input v-validate="{required: true,alpha:true}" type="text" name="name" placeholder="Nombre" @input="updateName">

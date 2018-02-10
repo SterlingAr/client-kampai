@@ -1,6 +1,14 @@
 <template>
 
-    <div class="sidebar-content">
+    <div class="sidebar-content animated slideInLeft">
+        <h1 class="sidebar-header ">
+        Kampai
+        <span class="sidebar-close">
+        <a @click="sideBarAction('close')">
+        <img  class="close-icon animated slideInTop" src="static/icons/menu/close.svg" alt="">
+        </a>
+        </span>
+        </h1>
 
         <router-view></router-view>
 
@@ -20,29 +28,6 @@
         <!--<router-view name="admin_view"></router-view>-->
 
 
-
-        <!--<div class="sidebar-pane" id="home">-->
-
-            <!--<h1 class="sidebar-header">-->
-                <!--sidebar-v2-->
-                <!--<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>-->
-            <!--</h1>-->
-        <!--</div>-->
-
-        <!--<div class="sidebar-pane" id="profile">-->
-             <!--<h1 class="sidebar-header">Profile<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>-->
-            <!--<router-view name="user-profile"></router-view>-->
-        <!--</div>-->
-
-        <!--<div class="sidebar-pane" id="messages">-->
-            <!--<h1 class="sidebar-header">Messages<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>-->
-        <!--</div>-->
-
-        <!--<div class="sidebar-pane" id="settings">-->
-            <!--<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>-->
-        <!--</div>-->
-
-
     </div>
 
 </template>
@@ -50,10 +35,15 @@
 
 <script>
 
+    import {mapActions} from 'vuex';
 
     export default
     {
-
+        methods:{
+            ...mapActions({
+                sideBarAction: 'sideBarAction'
+            }),
+        }
     }
 
 </script>

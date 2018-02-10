@@ -54,7 +54,6 @@
                 barDetails.coord.lat = bar.lat;
                 barDetails.coord.lon = bar.lon;
 
-                this.menuAction(false);
                 this.barDetails(barDetails);
 
             },
@@ -62,7 +61,6 @@
             ...mapActions({
                 barDetails: 'updateBarDetailsAction',
                 updateModal: 'updateModalAction',
-                menuAction: 'menuAction',
             })
 
         },

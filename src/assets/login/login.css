@@ -10,7 +10,7 @@
 /*}*/
 
 .login-card {
-    margin-top:5%;
+    margin-top:5% !important;
     padding: 25px;
     /*width: 274px;*/
     background-color: #F7F7F7;
@@ -87,7 +87,7 @@
 
 .login-card a {
     text-decoration: none;
-    color: #666;
+    color: #582222;
     font-weight: 400;
     text-align: center;
     display: inline-block;

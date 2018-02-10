@@ -1,7 +1,6 @@
 const state =
     {
         keywords: 'pizza',
-        menu: false,
 
     }
 
@@ -11,11 +10,6 @@ const getters =
         {
             return state.keywords;
         },
-
-        currentMenu: state =>
-        {
-            return state.menu;
-        }
 
     }
 
@@ -27,11 +21,6 @@ const mutations =
             state.keywords = payload;
         },
 
-        updateMenu: (state,menuStatus) =>
-        {
-            state.menu = menuStatus;
-        }
-
     }
 
 const actions =
@@ -42,9 +31,21 @@ const actions =
             commit('updateKeywords',payload);
         },
 
-        menuAction: ({commit}, menuStatus) =>
+        sideBarAction: ({rootState},action) =>
         {
-            commit('updateMenu', menuStatus);
+
+            switch(action)
+            {
+                case 'open':
+                    rootState.map_storage.sidebar.open();
+                    break;
+
+                case 'close':
+                    rootState.map_storage.sidebar.close();
+                    break;
+
+            }
+
         }
 
     }

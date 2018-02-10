@@ -1,13 +1,6 @@
 <template>
     <div class="sidebar-pane" >
-        <h1 class="sidebar-header">
-            Kampai
-        <span class="sidebar-close">
-            <a @click="closeMenuWithAnimation">
-                <img  class="close-icon" src="static/icons/menu/close.svg" alt="">
-            </a>
-        </span>
-        </h1>
+
         <p class="description text-justify">
             Kampai es una aplicación que dada una palabra clave como(pizza, kebab),
             te muestra los bares cercanos a ti que tienen lo que deseas beber o comer.
@@ -50,16 +43,6 @@
 
         methods:
             {
-                ...mapActions({
-                    menuAction: 'menuAction'
-                }),
-
-                closeMenuWithAnimation: function()
-                {
-                    this.close = true;
-                    this.menuAction(false);
-
-                },
 
             },
 

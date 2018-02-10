@@ -78,3 +78,6 @@ ul li a i
     color: #8C795B;
 }
 
+li.active {
+    color: #912f2a !important;
+}

@@ -11,6 +11,8 @@ const state =
     routingControl: '',
     routingProfile: '',
     userLocation: '',
+    toolbar: '',
+    sidebar: ''
 
 }
 
@@ -54,6 +56,15 @@ const getters =
     {
         return state.routingControl;
     },
+
+    currentToolBar: state =>
+    {
+        return state.currentToolBar;
+    },
+    currentSideBar: state =>
+    {
+        return state.sidebar;
+    }
 
 
 }
@@ -101,7 +112,15 @@ const mutations =
     {
         state.routingProfile = routingProfile;
     },
+    updateToolBar: (state,toolbar) =>
+    {
+        state.toolbar = toolbar;
+    },
 
+    updateSideBar: (state,sidebar) =>
+    {
+        state.sidebar = sidebar;
+    }
 
 
 }
@@ -238,6 +257,9 @@ const actions =
         //SIDEBAR PLUGIN
         // let marker = L.marker([51.2, 7]).addTo(map);
         let sidebar = L.control.sidebar('sidebar').addTo(map);
+        commit('updateSideBar',sidebar);
+
+
 
         // SEARCH BOX
         L.control.custom({
@@ -265,11 +287,17 @@ const actions =
                 drawCircle: false,
             }
         );
+
+
+
+
+
         commit('updateLocationControl', locationControl);
         locationControl.addTo(map);
 
-        //update userLocation object in storage every time the event is triggered.
 
+
+        //update userLocation object in storage every time the event is triggered.
         commit('updateFeatureLayer', featureLayer);
         commit('updateMap', map);
 
@@ -340,6 +368,7 @@ const actions =
                 .on('locationfound',function(e){
                     commit('updateUserLocation',e.latlng);
                     // resolve(e.latlng);
+                    resolve();
                 });
         });
     },
@@ -400,7 +429,7 @@ const actions =
 
             if(state.userLocation === '')
             {
-                dispatch('locateUserPromise').then((location) =>
+                dispatch('locateUserPromise').then(() =>
                 {
                     dispatch('plotAtoB',options);
                 });
@@ -411,8 +440,42 @@ const actions =
                 dispatch('plotAtoB',options);
             }
 
+            dispatch('createToolBar');
+
     },
 
+    createToolBar: ({commit,state,dispatch}) =>
+    {
+        let clearRouteAction =  L.Toolbar2.Action.extend({
+            options:
+                {
+                    toolbarIcon: {
+                        html: '<img class="map-icons animated slideInUp" src="static/icons/map/clear-routes.svg"> </img>',
+                        className: 'tool-bar'
+                    }
+                },
+            addHooks: function()
+            {
+                // state.routingControl.remove(map);
+                dispatch('removeRoutingControl');
+            }
+        });
+
+        let toolbar = new L.Toolbar2.Control({
+            position: 'bottomleft',
+            actions: [
+                clearRouteAction
+            ]
+        });
+        commit('updateToolBar', toolbar);
+        toolbar.addTo(state.map);
+    },
+
+    removeRoutingControl: ({state}) =>
+    {
+        state.routingControl.remove(map);
+        state.toolbar.remove(map);
+    }
 
 
 
