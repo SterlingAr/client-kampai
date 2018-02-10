@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <h3 class="h1" >Results</h3>
+        <h3 class="h1" >Resultados de su búsqueda</h3>
 
         <div id="bar-items" class="list-group">
             <div v-for="bar in bars"  class="animated fadeInLeft">

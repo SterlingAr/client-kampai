@@ -112,7 +112,7 @@
                                           <p>
                                               <img class="map-icons " src="static/icons/modal/facebook.svg" alt="facebook">
 
-                                              <a v-bind:href="linkFB">
+                                              <a v-bind:href="linkFB" target="_blank">
                                                   Me gusta!.
                                               </a>
 
@@ -123,7 +123,7 @@
                                       <td >
                                           <p>
                                               <img class="map-icons " src="static/icons/modal/website.svg" alt="website">
-                                              <a v-bind:href="linkWS">
+                                              <a v-bind:href="linkWS" target="_blank">
                                                   Visita nuestra página web.
                                               </a>
                                           </p>
@@ -133,8 +133,28 @@
                                       <td >
                                           <p>
                                               <img class="map-icons animated hinge infinite " src="static/icons/modal/phone.svg" alt="phone">
-                                              <a  v-bind:href="tlf">
-                                                  Llámanos
+                                              <a  v-bind:href="tlf" target="_blank">
+                                                  Llámanos!
+                                              </a>
+                                          </p>
+                                      </td>
+                                  </tr>
+                                  <tr v-if="bar.email">
+                                      <td >
+                                          <p>
+                                              <img class="map-icons animated jackInTheBox " src="static/icons/modal/email.svg" alt="phone">
+                                              <a  v-bind:href="email" target="_blank">
+                                                  Escríbenos!
+                                              </a>
+                                          </p>
+                                      </td>
+                                  </tr>
+                                  <tr v-if="bar.cuisine">
+                                      <td >
+                                          <p>
+                                              <img class="map-icons animated jackInTheBox " src="static/icons/modal/cuisine.svg" alt="phone">
+                                              <a  v-bind:href="cuisine" target="_blank">
+                                                  {{bar.cuisine}} cuisine.
                                               </a>
                                           </p>
                                       </td>
@@ -266,6 +286,7 @@ export default
             }
 
             this.updateModal(false);
+            this.menuAction(true);
 
             this.$router.push({
                 name:'login',
@@ -305,6 +326,7 @@ export default
                 this.$store.dispatch('updateKeywordsAction', event.target.value);
                 this.updateBarsAndRoute();
                 this.menuAction(true);
+                event.preventDefault();
 
             }
         },
@@ -367,9 +389,8 @@ export default
         linkFB: function(){ return this.bar['contact:facebook'];},
         linkWS: function(){ return this.bar.website;},
         tlf: function(){return 'tel:'+this.bar.phone;},
-        
-
-
+        email: function(){return 'mailto:' + this.bar.email},
+        cuisine: function(){return 'http://lmgtfy.com/?q='+this.bar.cuisine+'+cuisine';}
 
     },
 
