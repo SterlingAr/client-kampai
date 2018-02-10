@@ -2,6 +2,10 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
 // import 'leaflet'
+// import '@/assets/common/css/bootstrap.min.css'
+
+import '@/assets/common/js/jquery.min.js'
+import '@/assets/common/js/bootstrap.min.js'
 
 import '@/assets/sidebar/sass/leaflet-sidebar.scss'
 import '@/assets/leaflet/leaflet.css'
@@ -27,6 +31,10 @@ import '@/assets/leaflet/plugins/credits/leaflet-control-credits.css'
 import 'animate.css'
 import 'leaflet-toolbar'
 import '@/assets/leaflet/css/toolbar/tool-bar.css'
+
+
+
+
 
 import Vue from 'vue'
 import VueJWT from 'vuejs-jwt'
