@@ -1,7 +1,7 @@
 const state =
 {
-    MAP_API_PROVIDER: 'https://api.mapbox.com/styles/v1/marborav/cjb7ndf2q3olg2qk50cpyzvy0/tiles/256/{z}/{x}/{y}?access_token=',
-    API_TOKEN: 'pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q',
+    MAP_API_PROVIDER: 'https://api.mapbox.com/styles/v1/rincewind/cjdhzh9lf0fu82sl4ai418ugs/tiles/256/{z}/{x}/{y}?access_token=',
+    API_TOKEN: 'pk.eyJ1IjoicmluY2V3aW5kIiwiYSI6ImNqZGh5b3RqbjA0eHMyd3E5cTNiM2lnbzAifQ.oTnYCe-yN4nTSwWMshpzew',
     MAP_STYLE: 'streets',
     bbox: '',
     map: '',
@@ -192,26 +192,26 @@ const actions =
 
         let dinnerIcon = L.icon({
             iconUrl: 'static/images/dinner.png',
-            iconSize: [25, 28],
-            iconAnchor: [16, 37],
+            iconSize: [40, 45],
+            iconAnchor: [20, 35],
         });
 
         let pubIcon = L.icon({
             iconUrl: 'static/images/beer.png',
-            iconSize: [25, 28],
-            iconAnchor: [16, 37],
+            iconSize: [40, 45],
+            iconAnchor: [20, 35],
         });
 
         let cafeIcon = L.icon({
-            iconUrl: 'static/images/coffee-cup.png',
-            iconSize: [25, 28],
-            iconAnchor: [16, 37],
+            iconUrl: 'static/images/coffee.png',
+            iconSize: [40, 45],
+            iconAnchor: [20, 35],
         });
 
         let fastIcon = L.icon({
-            iconUrl: 'static/images/fries.png',
-            iconSize: [25, 28],
-            iconAnchor: [16, 37],
+            iconUrl: 'static/images/burger.png',
+            iconSize: [40, 45],
+            iconAnchor: [20, 35],
         });
 
 
@@ -373,7 +373,7 @@ const actions =
         });
     },
 
-    plotAtoB: ({commit,state,rootState,dispatch},options) =>
+    plotAtoB: ({commit,state,rootState,dispatch},uProfile) =>
     {
         let barLocation = rootState.bar_storage.barDetails.coord;
         let routingControl;
@@ -387,7 +387,7 @@ const actions =
         {
             routingControl =  L.Routing.control({
                 router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
-                    profile: options.profile,
+                    profile: uProfile,
                     language:'es'
                 })
             });
@@ -395,23 +395,23 @@ const actions =
             routingControl.spliceWaypoints(0,1, state.userLocation);
             routingControl.spliceWaypoints(1,1,barLocation);
             routingControl.addTo(state.map);
-            commit('updateRoutingProfile',options.profile);
+            commit('updateRoutingProfile',uProfile);
             commit('updateRoutingControl', routingControl);
             dispatch('updateModalAction',false);
             return;
         }
 
-        if(profile !== options.profile)
+        if(profile !== uProfile)
         {
             state.routingControl.remove(state.map);
             routingControl = L.Routing.control({
                 router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
-                    profile: options.profile,
+                    profile: uProfile,
                     language:'es'
                 })
             });
             routingControl.addTo(state.map);
-            commit('updateRoutingProfile',options.profile);
+            commit('updateRoutingProfile',uProfile);
 
         }
 
@@ -424,20 +424,20 @@ const actions =
         dispatch('updateModalAction',false);
     },
 
-    plotRouteAction: ({state,dispatch},options) => //add another param options.
+    plotRouteAction: ({state,dispatch},uProfile) => //add another param options.
     {
 
             if(state.userLocation === '')
             {
                 dispatch('locateUserPromise').then(() =>
                 {
-                    dispatch('plotAtoB',options);
+                    dispatch('plotAtoB',uProfile);
                 });
             }
 
             else
             {
-                dispatch('plotAtoB',options);
+                dispatch('plotAtoB',uProfile);
             }
 
             dispatch('createToolBar');
@@ -461,12 +461,78 @@ const actions =
             }
         });
 
+
+        let carRouteAction = L.Toolbar2.Action.extend({
+            options:
+                {
+                    toolbarIcon: {
+                        html: '<img class="tool-bar-icons animated slideInUp" src="static/icons/transport/car.svg"> </img>',
+                        className: 'tool-bar'
+                    }
+                },
+            addHooks: function()
+            {
+                // state.routingControl.remove(map);
+                dispatch('plotRouteAction','mapbox/driving');
+            }
+        });
+
+        let bikeRouteAction = L.Toolbar2.Action.extend({
+            options:
+                {
+                    toolbarIcon: {
+                        html: '<img class="tool-bar-icons animated slideInUp" src="static/icons/transport/cycle.svg"> </img>',
+                        className: 'tool-bar'
+                    }
+                },
+            addHooks: function()
+            {
+                // state.routingControl.remove(map);
+                dispatch('plotRouteAction','mapbox/cycling');
+            }
+        });
+
+        let walkingRouteAction = L.Toolbar2.Action.extend({
+            options:
+                {
+                    toolbarIcon: {
+                        html: '<img class="tool-bar-icons animated slideInUp" src="static/icons/transport/walk.svg"> </img>',
+                        className: 'tool-bar'
+                    }
+                },
+            addHooks: function()
+            {
+                // state.routingControl.remove(map);
+                dispatch('plotRouteAction','mapbox/walking');
+            }
+        });
+
+        let trafficRouteAction = L.Toolbar2.Action.extend({
+            options:
+                {
+                    toolbarIcon: {
+                        html: '<img class="tool-bar-icons animated slideInUp" src="static/icons/transport/traffic.svg"> </img>',
+                        className: 'tool-bar'
+                    }
+                },
+            addHooks: function()
+            {
+                // state.routingControl.remove(map);
+                dispatch('plotRouteAction','mapbox/driving-traffic');
+            }
+        });
+
         let toolbar = new L.Toolbar2.Control({
             position: 'bottomleft',
             actions: [
-                clearRouteAction
+                trafficRouteAction,
+                carRouteAction,
+                walkingRouteAction,
+                bikeRouteAction,
+                clearRouteAction,
             ]
         });
+
         commit('updateToolBar', toolbar);
         toolbar.addTo(state.map);
     },

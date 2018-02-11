@@ -33,11 +33,11 @@
                   </li>
 
 
-                  <li>
-                      <a href="#" @click="claimModal(true)">
-                          <img class="menu" src="static/icons/dev/compass.svg" alt="">
-                      </a>
-                  </li>
+                  <!--<li>-->
+                      <!--<a href="#" @click="claimModal(true)">-->
+                          <!--<img class="menu" src="static/icons/dev/compass.svg" alt="">-->
+                      <!--</a>-->
+                  <!--</li>-->
 
                   <!--<li v-if="roles.includes('admin')">-->
                       <!--<router-link role="tab"  :to="{name: 'admin'}">-->
@@ -59,7 +59,6 @@
           </div>
           <side-bar></side-bar>
 
-          <!--<flash-view></flash-view>-->
 
       </div>
 
@@ -76,15 +75,28 @@
           </h2>
 
           <h3 slot="header">{{bar.name}}
-          <span>
+              <hr>
               <i v-if="bar.internet_access" class="fa fa-wifi" aria-hidden="true"></i>
+              <i class="fa fa-wifi fa-disabled" aria-hidden="true" v-else></i>
 
               <i v-if="bar.wheelchair === 'yes'" class="fa fa-wheelchair-alt" aria-hidden="true"></i>
-          </span>
+              <i class="fa fa-wheelchair fa-disabled" aria-hidden="true" v-else></i>
+              <br>
+              <hr>
+              <i v-if="bar['payment:visa']" class="fa fa-cc-visa"></i>
+              <i class="fa fa-cc-visa fa-disabled"  v-else></i>
+              <i v-if="bar['payment:mastercard']" class="fa fa-cc-mastercard"></i>
+              <i class="fa fa-cc-mastercard fa-disabled"  v-else></i>
+              <i v-if="bar['payment:american_express']" class="fa fa-cc-amex"></i>
+              <i class="fa fa-cc-amex fa-disabled"  v-else></i>
+              <i v-if="bar['payment:discover_card']" class="fa fa-cc-discover"></i>
+              <i class="fa fa-cc-discover fa-disabled"  v-else></i>
 
           </h3>
 
+
           <div slot="body">
+
               <div role="tabpanel">
                       <!-- Nav tabs -->
                       <ul class="nav nav-tabs" role="tablist">
@@ -299,12 +311,9 @@ export default
 
             this.updateModal(false);
 
-            let options =
-            {
-              profile: profile
-            }
 
-            this.plotRouteAction(options);
+
+            this.plotRouteAction(profile);
             // this.updateBarDetails('');
             this.sideBarAction('close');
 
@@ -331,6 +340,7 @@ export default
         updateBarsAndRoute: function ()
         {
             this.updateBars();
+            this.sideBarAction('open');
             this.$router.push({name: 'bar_list'});
         },
 

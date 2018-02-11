@@ -58,3 +58,15 @@
     width: 30px;
     height: 30px;
 }
+
+
+.fa-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.tool-bar-icons
+{
+    width: 35px;
+    height: 35px;
+}
