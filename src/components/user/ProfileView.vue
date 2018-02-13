@@ -21,8 +21,9 @@
                 </button>
             </div>
 
+
             <div class="btn-group" role="group">
-                <button type="button" id="favorites" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <button type="button" id="owned-bars" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
                     <div class="hidden-xs">Favorites</div>
                 </button>
             </div>
@@ -35,9 +36,12 @@
                         <router-link :to="{name:'newbar'}">Añade tu bar</router-link>
                     </p>
                 </div>
+
+
+
                 <div class="tab-pane fade in" id="tab2">
                     <h3>Favorites</h3>
-                    <div id="bar-items" class="list-group">
+                    <div id="bar-items" class="list-group animated fadeInLeft">
                         <div v-for="bar in subscriptions" >
                             <a @click="showModal(bar)" v-if="bar.tags.name !== '' " class="list-group-item active">
                                 <img v-if="bar.tags.amenity === 'cafe'"  class="bar-list pull-right" src="static/icons/list/coffee.svg" alt="" >
@@ -51,6 +55,12 @@
                             </a>
                         </div>
                     </div>
+                </div>
+
+                <div class="tab-pane fade in active" id="tab3">
+                    <p>
+                        <router-link :to="{name:'newbar'}">Añade tu bar</router-link>
+                    </p>
                 </div>
 
             </div>

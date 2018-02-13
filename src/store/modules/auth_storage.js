@@ -140,6 +140,8 @@ const actions =
                 });
 
                 commit('updateRole', roles);
+                commit('updateOwnedBars', response.data.user.bars_owned);
+
 
                 //chapuza... :(
                 App.$router.push({

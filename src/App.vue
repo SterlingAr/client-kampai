@@ -33,11 +33,12 @@
                   </li>
 
 
-                  <!--<li>-->
-                      <!--<a href="#" @click="claimModal(true)">-->
-                          <!--<img class="menu" src="static/icons/dev/compass.svg" alt="">-->
-                      <!--</a>-->
-                  <!--</li>-->
+                  <li v-if="roles.includes('owner')">
+                      <router-link role="tab"  :to="{name: 'owned_bars'}">
+                          <img class="menu" src="static/icons/menu/bars.svg" alt="">
+
+                      </router-link>
+                  </li>
 
                   <!--<li v-if="roles.includes('admin')">-->
                       <!--<router-link role="tab"  :to="{name: 'admin'}">-->
@@ -100,11 +101,16 @@
               <div role="tabpanel">
                       <!-- Nav tabs -->
                       <ul class="nav nav-tabs" role="tablist">
+
                           <li role="presentation" class="active"><a href="#uploadTab" aria-controls="uploadTab" role="tab" data-toggle="tab">Details</a>
                           </li>
-                          <li role="presentation"><a href="#browseTab" aria-controls="browseTab" role="tab" data-toggle="tab">King dishes</a>
+
+                          <li v-if="roles.includes('owner')"  role="presentation"><a href="#browseTab" aria-controls="browseTab" role="tab" data-toggle="tab">Editar </a>
                           </li>
+
                       </ul>
+
+
                       <!-- Tab panes -->
                       <div class="tab-content" >
                           <div role="tabpanel" class="tab-pane active" id="uploadTab">
@@ -112,7 +118,7 @@
                                   <tr v-if="bar['addr:street']">
                                       <td>
                                           <p>
-                                              <img class="map-icons " src="static/icons/map/map.svg" alt="address">
+                                              <img class="map-icons animated bounceInDown" src="static/icons/map/map.svg" alt="address">
 
                                               {{bar['addr:street']}} <span v-if="bar['addr:housenumber']">{{bar['addr:housenumber']}}</span>
                                           </p>
@@ -132,7 +138,7 @@
                                       </td>
                                   </tr>
                                   <tr v-if="bar.website">
-                                      <td >
+                                      <td>
                                           <p>
                                               <img class="map-icons " src="static/icons/modal/website.svg" alt="website">
                                               <a v-bind:href="linkWS" target="_blank">
@@ -144,7 +150,7 @@
                                   <tr v-if="bar.phone">
                                       <td >
                                           <p>
-                                              <img class="map-icons animated hinge infinite " src="static/icons/modal/phone.svg" alt="phone">
+                                              <img class="map-icons animated tada" src="static/icons/modal/phone.svg" alt="phone">
                                               <a  v-bind:href="tlf" target="_blank">
                                                   Llámanos!
                                               </a>
@@ -171,10 +177,24 @@
                                           </p>
                                       </td>
                                   </tr>
+
+
+                                  <tr>
+                                      <p>
+                                          <img src="static/icons/modal/owner.svg" class="map-icons animated swing" alt="">
+                                          <a @click="claimModal(true)">
+                                              Reclamar bar
+                                          </a>
+                                      </p>
+                                  </tr>
                               </table>
                           </div>
-                          <div role="tabpanel" class="tab-pane" id="browseTab">
-                              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque beatae consectetur deserunt doloribus ipsum neque quas recusandae rem repellendus, sit! Dignissimos dolor, dolorem eligendi error fugiat id obcaecati quaerat reprehenderit.
+                          <div  v-if="roles.includes('owner')" role="tabpanel" class="tab-pane" id="browseTab">
+                                <table>
+                                    <tr>
+                                        <td>Edit keywords.</td>
+                                    </tr>
+                                </table>
                           </div>
                       </div>
               </div>
@@ -202,19 +222,24 @@
                   </a>
               </div>
 
-              <button class="btn btn-danger" @click="updateModal(false)">
-                  Close
+
+
+
+              <button class="btn btn-danger" @click="closeModalAction">
+                  Cerrar
               </button>
+              <br>
+              <br>
+
           </div>
       </modal-view>
 
 
-      <modal-view v-if="claimModalStatus" @close="claimModal = false">
-
+      <modal-view v-bind:class="claimModalAnimation" v-if="claimModalStatus" @close="claimModal = false">
+          <div slot="header">
+              <h1>Reclamar establecimiento</h1><br>
+          </div>
           <div slot="body" v-if="claimSent === false">
-              <div slot="header">
-                  <h1>Reclamar establecimiento</h1><br>
-              </div>
               <div id="newbar-form">
                   <div class="newbar-content">
                       <form v-if="claimSent === false">
@@ -227,7 +252,7 @@
                           <label for="exampleInputFile">Documentación</label>
                           <input type="file" id="exampleInputFile">
                           <br>
-                          <input @click="claimSent = true" type="button" class="newbar newbar-button" value="Añadir bar" name="newbar">
+                          <input @click="sendClaim"  type="button" class="newbar newbar-button" value="Añadir bar" name="newbar">
                       </form>
                   </div>
               </div>
@@ -266,8 +291,8 @@ export default
     {
         return {
             claimSent: false,
-            lightSpeedIn: 'animated flipInY',
-            lightSpeedOut: ''
+            flipIn: 'animated flipInY',
+            rotateIn: 'animated rotateIn'
         }
     },
 
@@ -282,8 +307,9 @@ export default
            odLayer: 'openDataLayerAction',
            addBarToSubs: 'addBarToSubsAction',
            removeBarFromSubs: 'removeBarFromSubs',
-           claimModal: 'claimModalAction',
-            sideBarAction: 'sideBarAction'
+           claimModalAction: 'claimModalAction',
+            sideBarAction: 'sideBarAction',
+           claimBarAction: 'claimBarAction'
 
         }),
 
@@ -295,7 +321,30 @@ export default
                 return;
             }
 
-            this.updateModal(false);
+            this.pushLoginRequired('bar');
+
+        },
+
+        closeModal: function (modal)
+        {
+            switch(modal){
+                case 'bar':
+                    this.updateModal(false);
+                    break;
+                case 'claim':
+                    this.claimModalAction(false);
+                    break;
+                case 'all':
+                    this.claimModalAction(false);
+                    this.updateModal(false);
+                    break;
+            }
+        },
+
+        //close modal and open login with error flash.
+        pushLoginRequired: function(modal)
+        {
+            this.closeModal(modal);
 
             this.sideBarAction('open');
             this.$router.push({
@@ -309,14 +358,39 @@ export default
         plotRoute: function(profile)
         {
 
-            this.updateModal(false);
-
-
+            // this.updateModal(false);
+            this.closeModalAction('bar');
 
             this.plotRouteAction(profile);
             // this.updateBarDetails('');
             this.sideBarAction('close');
+        },
 
+        claimModal: function(bool)
+        {
+            this.claimSent = false;
+            this.claimModalAction(bool);
+        },
+
+        sendClaim: function()
+        {
+
+            if(this.user !== '')
+            {
+                this.claimSent = true;
+                this.claimBarAction();
+                return;
+            }
+
+            this.pushLoginRequired('all');
+
+
+        },
+
+        closeModalAction : function()
+        {
+            this.updateModal(false);
+            this.sideBarAction('open');
 
         },
 
@@ -348,6 +422,8 @@ export default
         {
             this.updateBarDetails(details);
             this.updateModal(true);
+            this.sideBarAction('close');
+
 
         },
 
@@ -379,7 +455,12 @@ export default
             }),
         modalAnimation: function ()
         {
-            return this.modal ? this.lightSpeedIn : this.lightSpeedOut;
+            return this.modal ? this.flipIn : '';
+        },
+
+        claimModalAnimation: function()
+        {
+            return this.claimModalStatus ? this.rotateIn : '';
         },
 
         //Social network links.

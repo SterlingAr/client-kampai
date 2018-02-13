@@ -48,6 +48,7 @@ import VeeValidate from 'vee-validate';
 Vue.config.productionTip = false
 Vue.component('osm-map', require('./components/OsmMap.vue'));
 Vue.component('user-profile', require('./components/user/ProfileView.vue'));
+Vue.component('owned-bars', require('./components/user/OwnedBarsView.vue'));
 Vue.component('side-bar', require('./components/SideBar.vue'));
 Vue.component('side-bar-content', require('./components/SideBarContent.vue'));
 Vue.component('home', require('./components/Home.vue'));

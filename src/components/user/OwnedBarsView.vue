@@ -1,9 +1,8 @@
 <template>
     <div>
-
-        <h3 class="h1" >Resultados de su búsqueda</h3>
+        <h3 class="h1" >Mis establecimientos</h3>
         <div id="bar-items" class="list-group">
-            <div v-for="bar in bars"  class="animated fadeInLeft">
+            <div v-for="bar in owned_bars"  class="animated fadeInLeft">
                 <a @click="showModal(bar)" v-if="bar.tags.name !== '' "  class="list-group-item active">
                     <img v-if="bar.tags.amenity === 'cafe'"  class="bar-list pull-right" src="static/icons/list/coffee.svg" alt="" >
                     <img v-if="bar.tags.amenity === 'bar'"  class="bar-list pull-right" src="static/icons/list/beer.svg" alt="" >
@@ -19,28 +18,14 @@
     </div>
 </template>
 
+
 <script>
-
-
     import {mapGetters,mapActions} from 'vuex';
-    export default
-    {
-        name: 'bar_list',
+    export default {
 
-        mounted() {
 
-        },
-
-        data () {
-            return {
-
-                active: false,
-
-            }
-        },
-
-        methods: {
-
+        methods:
+        {
             showModal: function(bar)
             {
                 //update store object
@@ -56,21 +41,22 @@
                 this.sideBarAction('close');
             },
 
+
             ...mapActions({
                 barDetails: 'updateBarDetailsAction',
                 updateModal: 'updateModalAction',
                 sideBarAction: 'sideBarAction',
-
             })
-
         },
-
-        computed: {
+        computed:
+        {
 
             ...mapGetters({
-                bars: 'currentBars',
-            }),
+                owned_bars : 'currentOwnedBars'
+            })
 
         }
+
     }
+
 </script>

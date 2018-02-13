@@ -4,6 +4,7 @@ const state =
 {
     user: '',
     subscriptions: [],
+    owned_bars: []
 
 
 }
@@ -20,6 +21,11 @@ const getters =
         return state.subscriptions;
     },
 
+    currentOwnedBars: state =>
+    {
+        return state.owned_bars;
+    }
+
 
 
 }
@@ -34,6 +40,11 @@ const mutations =
     updateSubscriptions: (state,subscriptions) =>
     {
         state.subscriptions = subscriptions;
+    },
+
+    updateOwnedBars: (state, owned_bars) =>
+    {
+        state.owned_bars = owned_bars;
     }
 
 
@@ -87,8 +98,6 @@ const actions =
     removeBarFromSubs: ({commit,dispatch,state,rootState},bar) =>
     {
 
-
-
         axios.delete(rootState.api_base_uri + '/api/auth/subscription/bar/remove/'+bar.node+'/'+state.user.id,
 
             {
@@ -113,6 +122,34 @@ const actions =
         {
             console.log(error);
         });
+    },
+
+    claimBarAction: ({commit,state,rootState,dispatch}) =>
+    {
+
+        axios.post(rootState.api_base_uri + '/api/auth/claim',
+            {
+                node: rootState.bar_storage.barDetails.node,
+                user_id: state.user.id,
+            },
+            {
+                headers: {
+                    Authorization: ' Bearer ' + rootState.auth_storage.token,
+                },
+
+            }).then((response) =>
+            {
+                console.log(response);
+                if(response.status === 200)
+                {
+                    commit('updateOwnedBars', response.data.bars_owned);
+                }
+
+
+            }).catch((error)=>
+            {
+                console.log(error);
+            });
 
     }
 
