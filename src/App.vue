@@ -1,13 +1,12 @@
 <template>
   <div id="app-container">
       <!-- Change menu value in storage every time i need toggle the menu-->
-      <div id="sidebar"  clasS="animated fadeInLeft sidebar  sidebar-left leaflet-touch collapsed">
+      <div id="sidebar"  class="animated fadeInLeft sidebar  sidebar-left leaflet-touch collapsed">
 
           <!-- Nav tabs -->
           <div class="sidebar-tabs">
               <ul role="tablist">
 
-                  <!--<li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>-->
                   <li>
                       <router-link role="tab"  :to="{name: 'home'}">
                           <img class="menu" src="static/icons/menu/house.svg" alt="">
@@ -36,20 +35,9 @@
                   <li v-if="roles.includes('owner')">
                       <router-link role="tab"  :to="{name: 'owned_bars'}">
                           <img class="menu" src="static/icons/menu/bars.svg" alt="">
-
                       </router-link>
                   </li>
 
-                  <!--<li v-if="roles.includes('admin')">-->
-                      <!--<router-link role="tab"  :to="{name: 'admin'}">-->
-                          <!--<i class="fa fa-lock"></i>-->
-                      <!--</router-link>-->
-                  <!--</li>-->
-
-
-                  <!--<li class="disabled"><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>-->
-                  <!--<li><a href="https://github.com/Turbo87/sidebar-v2" role="tab" target="_blank"><i class="fa fa-github"></i></a></li>-->
-            <!---->
               </ul>
 
               <ul role="tablist">
@@ -92,25 +80,20 @@
               <i class="fa fa-cc-amex fa-disabled"  v-else></i>
               <i v-if="bar['payment:discover_card']" class="fa fa-cc-discover"></i>
               <i class="fa fa-cc-discover fa-disabled"  v-else></i>
-
           </h3>
 
-
           <div slot="body">
-
               <div role="tabpanel">
                       <!-- Nav tabs -->
                       <ul class="nav nav-tabs" role="tablist">
 
-                          <li role="presentation" class="active"><a href="#uploadTab" aria-controls="uploadTab" role="tab" data-toggle="tab">Details</a>
+                          <li role="presentation" class="active"><a href="#uploadTab" aria-controls="uploadTab" role="tab" data-toggle="tab">Detalles</a>
                           </li>
 
-                          <li v-if="roles.includes('owner')"  role="presentation"><a href="#browseTab" aria-controls="browseTab" role="tab" data-toggle="tab">Editar </a>
+                          <li v-if="roles.includes('owner') && isOwnedOrNot"  role="presentation"><a href="#browseTab" aria-controls="browseTab" role="tab" data-toggle="tab">Editar </a>
                           </li>
 
                       </ul>
-
-
                       <!-- Tab panes -->
                       <div class="tab-content" >
                           <div role="tabpanel" class="tab-pane active" id="uploadTab">
@@ -190,18 +173,15 @@
                               </table>
                           </div>
                           <div  v-if="roles.includes('owner')" role="tabpanel" class="tab-pane" id="browseTab">
-                                <table>
-                                    <tr>
-                                        <td>Edit keywords.</td>
-                                    </tr>
-                                </table>
+
+                              <input-tag :on-change="test" :tags.sync="keys"></input-tag>
+
                           </div>
                       </div>
               </div>
           </div>
 
           <div slot="footer">
-
               <div class="pull-left">
                   <a @click="plotRoute('mapbox/driving')">
                       <img class="transport" src="static/icons/transport/car.svg" alt="">
@@ -212,7 +192,6 @@
 
                   </a>
 
-
                   <a @click="plotRoute('mapbox/cycling')">
                       <img class="transport" src="static/icons/transport/cycle.svg" alt="">
                   </a>
@@ -221,10 +200,6 @@
                       <img class="transport" src="static/icons/transport/traffic-light.svg" alt="">
                   </a>
               </div>
-
-
-
-
               <button class="btn btn-danger" @click="closeModalAction">
                   Cerrar
               </button>
@@ -237,7 +212,13 @@
 
       <modal-view v-bind:class="claimModalAnimation" v-if="claimModalStatus" @close="claimModal = false">
           <div slot="header">
+              <a class="pull-right" @click="closeModal('claim')">
+                  <img  class="close-icon animated slideInTop" src="static/icons/menu/close.svg" alt="">
+              </a>
+              <br>
               <h1>Reclamar establecimiento</h1><br>
+                  Kampai
+
           </div>
           <div slot="body" v-if="claimSent === false">
               <div id="newbar-form">
@@ -247,12 +228,12 @@
                           <input type="text" name="nombre" placeholder="Name"><br>
                           <label>Direccion:</label><br>
                           <input type="text" name="direccion" placeholder="Direction"><br>
-                          <label>Number:</label><br>
-                          <input type="number" placeholder="Number" name="number"><br>
                           <label for="exampleInputFile">Documentación</label>
                           <input type="file" id="exampleInputFile">
                           <br>
                           <input @click="sendClaim"  type="button" class="newbar newbar-button" value="Añadir bar" name="newbar">
+
+                          <label v-if="alreadyClaimed" >El establecimiento ya pertenece a otro usuario.</label>
                       </form>
                   </div>
               </div>
@@ -277,14 +258,16 @@
 
 
 import {mapGetters,mapActions} from 'vuex';
+import store  from './store/store.js'
 
 import OsmMap from './components/OsmMap.vue';
 import SideBar from './components/SideBar.vue';
+import InputTag from 'vue-input-tag'
 
 export default
 {
     name: 'App',
-    components: {OsmMap,SideBar},
+    components: {OsmMap,SideBar,InputTag},
 
 
     data ()
@@ -292,12 +275,15 @@ export default
         return {
             claimSent: false,
             flipIn: 'animated flipInY',
-            rotateIn: 'animated rotateIn'
+            rotateIn: 'animated rotateIn',
+            alreadyClaimed: false,
+            bar_keywords: ['test']
         }
     },
 
     methods:
     {
+        test: function(){console.log('all');},
 
         ...mapActions({
            updateBars : 'updateBarsAction',
@@ -308,7 +294,7 @@ export default
            addBarToSubs: 'addBarToSubsAction',
            removeBarFromSubs: 'removeBarFromSubs',
            claimModalAction: 'claimModalAction',
-            sideBarAction: 'sideBarAction',
+           sideBarAction: 'sideBarAction',
            claimBarAction: 'claimBarAction'
 
         }),
@@ -374,11 +360,36 @@ export default
 
         sendClaim: function()
         {
-
             if(this.user !== '')
             {
-                this.claimSent = true;
-                this.claimBarAction();
+                this.claimBarAction().then((res_code) =>
+                {
+                    this.claimSent = true;
+                    console.log('From app then: ' + res_code);
+                    this.closeModalAction('all');
+                    this.sideBarAction('open');
+                    this.$router.push({name:'owned_bars'})
+                }).catch((err_res_code) =>
+                {
+                    console.log('From app err: ' + err_res_code);
+                    switch(err_res_code)
+                    {
+                        case 401:
+                            this.alreadyClaimed = true;
+                            break;
+                        case 409:
+                            this.closeModal('all');
+                            this.sideBarAction('open');
+                            this.$router.push({
+                                name:'owned_bars',
+                                params: {
+                                    youOwnIt: true
+                                }
+                            });
+
+                            break;
+                    }
+                });
                 return;
             }
 
@@ -399,6 +410,8 @@ export default
             this.$store.dispatch('updateKeywordsAction', event.target.value);
         },
 
+
+
         updateBarsOnEnter: function (event)
         {
             if(event.keyCode  === 13)
@@ -407,7 +420,6 @@ export default
                 this.$store.dispatch('updateKeywordsAction', event.target.value);
                 this.updateBarsAndRoute();
                 event.preventDefault();
-
             }
         },
 
@@ -433,8 +445,11 @@ export default
             this.odLayer();
         },
 
+    },
 
-
+    watch:
+    {
+        barKeywords: function(){console.log('changed');}
     },
 
     computed:
@@ -451,7 +466,9 @@ export default
                 subscriptions: 'currentSubscriptions',
                 menuStatus: 'currentMenu',
                 isFavOrNot: 'currentIsBarInUserList',
-                user: 'currentUser'
+                isOwnedOrNot: 'currentIsBarOwned',
+                user: 'currentUser',
+                barKeywords: 'currentBarKeywords'
             }),
         modalAnimation: function ()
         {
@@ -462,13 +479,35 @@ export default
         {
             return this.claimModalStatus ? this.rotateIn : '';
         },
+        //custom get and set , must studie in detail very preciousss
+        //this binds my tag manager with the storage value.
+        keys: {
+          get: function()
+          {
+              return store.state.bar_owner_storage.barKeywords;
+          },
+
+          set: function(array)
+          {
+              store.dispatch('updateCurrentAndMerge', array)
+          }
+
+        },
+
+        // barKeywords: function()
+        // {
+        //     if(this.bar.keywords !== null)
+        //     {
+        //         return this.bar.keywords.split(';');
+        //     }
+        // },
 
         //Social network links.
         linkFB: function(){ return this.bar['contact:facebook'];},
         linkWS: function(){ return this.bar.website;},
         tlf: function(){return 'tel:'+this.bar.phone;},
         email: function(){return 'mailto:' + this.bar.email},
-        cuisine: function(){return 'http://lmgtfy.com/?q='+this.bar.cuisine+'+cuisine';}
+        cuisine: function(){return 'https://www.google.es/?q='+this.bar.cuisine+'+cuisine';}
 
     },
 

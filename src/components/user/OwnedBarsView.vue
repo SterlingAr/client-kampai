@@ -1,6 +1,13 @@
 <template>
     <div>
         <h3 class="h1" >Mis establecimientos</h3>
+
+        <div v-if="youOwnIt">
+            <div class="alert alert-danger animated slideInLeft">
+                <strong>El establecimiento ya te pertenece.</strong>
+            </div>
+        </div>
+
         <div id="bar-items" class="list-group">
             <div v-for="bar in owned_bars"  class="animated fadeInLeft">
                 <a @click="showModal(bar)" v-if="bar.tags.name !== '' "  class="list-group-item active">
@@ -36,7 +43,15 @@
                 barDetails.coord.lat = bar.lat;
                 barDetails.coord.lon = bar.lon;
                 barDetails.node = bar.id;
-
+                barDetails.keywords = bar.keywords;
+                if(bar.keywords !== null)
+                {
+                    this.splitKeywords(bar.keywords);
+                }
+                else
+                {
+                    this.splitKeywords('');
+                }
                 this.barDetails(barDetails);
                 this.sideBarAction('close');
             },
@@ -46,6 +61,7 @@
                 barDetails: 'updateBarDetailsAction',
                 updateModal: 'updateModalAction',
                 sideBarAction: 'sideBarAction',
+                splitKeywords: 'barKeywordsSplitAction'
             })
         },
         computed:
@@ -55,7 +71,9 @@
                 owned_bars : 'currentOwnedBars'
             })
 
-        }
+        },
+
+        props: ['youOwnIt']
 
     }
 

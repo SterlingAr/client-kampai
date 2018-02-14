@@ -24,21 +24,17 @@
 
             <div class="btn-group" role="group">
                 <button type="button" id="owned-bars" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                    <div class="hidden-xs">Favorites</div>
+                    <div class="hidden-xs">Favoritos</div>
                 </button>
             </div>
         </div>
 
         <div class="well">
             <div class="tab-content">
-                <div class="tab-pane fade in active" id="tab1">
-                    <p>
-                        <router-link :to="{name:'newbar'}">Añade tu bar</router-link>
-                    </p>
+
+                <div class="tab-pane fade in" id="tab1">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dicta doloribus dolorum, earum facere facilis impedit magnam necessitatibus omnis reprehenderit veniam voluptate! Dolorum ea iusto nam nesciunt provident quae unde!
                 </div>
-
-
-
                 <div class="tab-pane fade in" id="tab2">
                     <h3>Favorites</h3>
                     <div id="bar-items" class="list-group animated fadeInLeft">
@@ -56,13 +52,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="tab-pane fade in active" id="tab3">
-                    <p>
-                        <router-link :to="{name:'newbar'}">Añade tu bar</router-link>
-                    </p>
-                </div>
-
             </div>
         </div>
         <div id="login-form">
@@ -73,7 +62,6 @@
 
     </div>
 </template>
-
 <script>
 
     import {mapGetters, mapActions} from 'vuex'

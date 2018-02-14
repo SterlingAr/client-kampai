@@ -41,9 +41,8 @@ export default new Router({
               {
                   owned_bars_view: OwnedBarsView,
               },
-          props:
-              {
-                  default: true,
+          props: {
+                  owned_bars_view: true
               }
       },
 
