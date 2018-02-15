@@ -56,7 +56,7 @@
         </div>
         <div id="login-form">
             <form>
-                <input type="button" name="login" class="login login-button" value="logout" @click="logoutorFail()">
+                <input id="logout" type="button" name="login" class="login login-button" value="Salir" @click="logoutorFail()">
             </form>
         </div>
 

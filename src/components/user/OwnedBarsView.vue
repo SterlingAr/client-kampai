@@ -37,7 +37,6 @@
             {
                 //update store object
                 this.updateModal(true);
-                this.active = true;
                 let barDetails = bar.tags;
                 barDetails.coord = {};
                 barDetails.coord.lat = bar.lat;
@@ -54,6 +53,8 @@
                 }
                 this.barDetails(barDetails);
                 this.sideBarAction('close');
+                this.isOwned();
+
             },
 
 
@@ -61,7 +62,8 @@
                 barDetails: 'updateBarDetailsAction',
                 updateModal: 'updateModalAction',
                 sideBarAction: 'sideBarAction',
-                splitKeywords: 'barKeywordsSplitAction'
+                splitKeywords: 'barKeywordsSplitAction',
+                isOwned: 'isBarOwnedByUserAction'
             })
         },
         computed:

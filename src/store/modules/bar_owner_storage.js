@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const state =
 {
     claimModal: false,
@@ -39,32 +41,46 @@ const actions =
         commit('updateClaimModal', modalStatus);
     },
 
-    barKeywordsUpdateAction:({commit},barKeywords)=>
-    {
-
-    },
 
     barKeywordsSplitAction:({commit},barKeywords) =>
     {
-
         commit('updateBarKeywords',barKeywords.split(';'));
     },
 
-    updateCurrentAndMerge: ({commit,state},barKeywords) =>
+    updateCurrentAndMerge: ({commit,state,dispatch},barKeywords) =>
     {
         commit('updateBarKeywords',barKeywords);
 
         let mergedKeys = '';
         for (let k of barKeywords)
         {
-            mergedKeys += k+";";
+            mergedKeys += k + ";";
         }
-        console.log(mergedKeys);
+        dispatch('updateKeywordsOnServer',mergedKeys);
     },
 
 
-    updateKeywordsOnServer: ({state},mergedKeywords) =>
+    updateKeywordsOnServer: ({state,rootState},mergedKeywords) =>
     {
+
+        axios.post(rootState.api_base_uri+ "/api/auth/keywords",
+        {
+            node: rootState.bar_storage.barDetails.node,
+            keywords: mergedKeywords
+        },
+
+        {
+            headers:
+            {
+                Authorization: ' Bearer ' + rootState.auth_storage.token,
+            },
+        }).then((response) =>
+        {
+            console.log(response);
+        }).catch((error) =>
+        {
+            console.log(error);
+        });
 
     }
 

@@ -151,7 +151,8 @@ const actions =
                     user_id: state.user.id,
                 },
                 {
-                    headers: {
+                    headers:
+                    {
                         Authorization: ' Bearer ' + rootState.auth_storage.token,
                     },
 

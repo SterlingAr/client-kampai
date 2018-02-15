@@ -41,7 +41,9 @@
               </ul>
 
               <ul role="tablist">
-                  <li><a @click="openDataLayer" role="tab"><i class="fa fa-gear"></i></a></li>
+                  <li><a @click="openDataLayer" role="tab">
+                      <img class="menu" src="static/icons/menu/cider.svg" alt="">
+                  </a></li>
               </ul>
 
 
@@ -166,7 +168,7 @@
                                       <p>
                                           <img src="static/icons/modal/owner.svg" class="map-icons animated swing" alt="">
                                           <a @click="claimModal(true)">
-                                              Reclamar bar
+                                             Vincular propiedad
                                           </a>
                                       </p>
                                   </tr>
@@ -216,8 +218,7 @@
                   <img  class="close-icon animated slideInTop" src="static/icons/menu/close.svg" alt="">
               </a>
               <br>
-              <h1>Reclamar establecimiento</h1><br>
-                  Kampai
+              <h1>Vincular propiedad</h1><br>
 
           </div>
           <div slot="body" v-if="claimSent === false">
@@ -225,9 +226,9 @@
                   <div class="newbar-content">
                       <form v-if="claimSent === false">
                           <label>Nombre:</label><br>
-                          <input type="text" name="nombre" placeholder="Name"><br>
-                          <label>Direccion:</label><br>
-                          <input type="text" name="direccion" placeholder="Direction"><br>
+                          <input type="text" name="nombre" placeholder="Nombre"><br>
+                          <label>Email:</label><br>
+                          <input type="text" name="direccion" placeholder="Email"><br>
                           <label for="exampleInputFile">Documentación</label>
                           <input type="file" id="exampleInputFile">
                           <br>
@@ -447,10 +448,6 @@ export default
 
     },
 
-    watch:
-    {
-        barKeywords: function(){console.log('changed');}
-    },
 
     computed:
     {
@@ -494,13 +491,6 @@ export default
 
         },
 
-        // barKeywords: function()
-        // {
-        //     if(this.bar.keywords !== null)
-        //     {
-        //         return this.bar.keywords.split(';');
-        //     }
-        // },
 
         //Social network links.
         linkFB: function(){ return this.bar['contact:facebook'];},

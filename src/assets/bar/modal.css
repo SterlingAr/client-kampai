@@ -81,3 +81,16 @@ ul li a i
 li.active {
     color: #912f2a !important;
 }
+
+.input-tag
+{
+    background-color: #d75a4a !important;
+    border-radius: 2px !important;
+    border: 1px solid #d75a4a !important;
+    color: white !important;
+}
+
+.remove
+{
+ color: white !important;
+}
