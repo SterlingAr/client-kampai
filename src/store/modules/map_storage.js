@@ -450,7 +450,7 @@ const actions =
             options:
                 {
                     toolbarIcon: {
-                        html: '<img class="map-icons animated slideInUp" src="static/icons/map/clear-routes.svg"> </img>',
+                        html: '<img class="tool-bar-icons" src="static/icons/map/clear-routes.svg"> </img>',
                         className: 'tool-bar'
                     }
                 },
@@ -466,7 +466,7 @@ const actions =
             options:
                 {
                     toolbarIcon: {
-                        html: '<img class="tool-bar-icons animated slideInUp" src="static/icons/transport/car.svg"> </img>',
+                        html: '<img class="tool-bar-icons" src="static/icons/transport/car.svg"> </img>',
                         className: 'tool-bar'
                     }
                 },
@@ -481,7 +481,7 @@ const actions =
             options:
                 {
                     toolbarIcon: {
-                        html: '<img class="tool-bar-icons animated slideInUp" src="static/icons/transport/cycle.svg"> </img>',
+                        html: '<img class="tool-bar-icons " src="static/icons/transport/cycle.svg"> </img>',
                         className: 'tool-bar'
                     }
                 },
@@ -496,7 +496,7 @@ const actions =
             options:
                 {
                     toolbarIcon: {
-                        html: '<img class="tool-bar-icons animated slideInUp" src="static/icons/transport/walk.svg"> </img>',
+                        html: '<img class="tool-bar-icons " src="static/icons/transport/walk.svg"> </img>',
                         className: 'tool-bar'
                     }
                 },
@@ -511,7 +511,7 @@ const actions =
             options:
                 {
                     toolbarIcon: {
-                        html: '<img class="tool-bar-icons animated slideInUp" src="static/icons/transport/traffic.svg"> </img>',
+                        html: '<img class="tool-bar-icons " src="static/icons/transport/traffic.svg"> </img>',
                         className: 'tool-bar'
                     }
                 },

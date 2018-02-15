@@ -31,6 +31,11 @@ const actions =
     openDataLayerAction: ({commit,state,rootState,dispatch}) =>
     {
 
+        let ciderIcon = L.icon({
+            iconUrl: 'static/icons/menu/cider.svg',
+            iconSize: [40, 45],
+            iconAnchor: [20, 35],
+        });
 
 
         let od_layer = L.geoJSON(false,{
@@ -40,15 +45,19 @@ const actions =
 
             onEachFeature: onEachFeature,
 
+            // pointToLayer: function (feature, latlng) {
+            //     return L.circleMarker(latlng, {
+            //         radius: 8,
+            //         fillColor: "#ff7800",
+            //         color: "#000",
+            //         weight: 1,
+            //         opacity: 1,
+            //         fillOpacity: 0.8
+            //     });
+            // }
+
             pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {
-                    radius: 8,
-                    fillColor: "#ff7800",
-                    color: "#000",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                });
+                return L.marker(latlng, {icon: ciderIcon});
             }
         }).addTo(rootState.map_storage.map);
 

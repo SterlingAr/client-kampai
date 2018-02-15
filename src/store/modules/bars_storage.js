@@ -5,7 +5,7 @@ const state =
         bars: [
             {
                 tags: {
-                    name: 'Fulencio'
+                    name: "Quark's bar"
                 }
             }
         ],

@@ -2,11 +2,11 @@
     <div class="col-lg-12 col-sm-12 animated fadeInLeft">
         <div class="card hovercard">
             <div class="card-background">
-                <img class="card-bkimg" alt="" src="https://lorempixel.com/100/100/people/9/">
+                <img class="card-bkimg" alt="" src="static/icons/profile/photo.svg">
             </div>
             <div class="useravatar">
 
-                <img alt="" src="https://lorempixel.com/100/100/people/3/">
+                <img alt="" src="static/icons/profile/photo.svg">
 
 </div>
             <div class="card-info"> <span class="card-title">{{user.name}}</span>
@@ -21,23 +21,23 @@
                 </button>
             </div>
 
+
             <div class="btn-group" role="group">
-                <button type="button" id="favorites" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                    <div class="hidden-xs">Favorites</div>
+                <button type="button" id="owned-bars" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                    <div class="hidden-xs">Favoritos</div>
                 </button>
             </div>
         </div>
 
         <div class="well">
             <div class="tab-content">
-                <div class="tab-pane fade in active" id="tab1">
-                    <p>
-                        <router-link :to="{name:'newbar'}">Añade tu bar</router-link>
-                    </p>
+
+                <div class="tab-pane fade in" id="tab1">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dicta doloribus dolorum, earum facere facilis impedit magnam necessitatibus omnis reprehenderit veniam voluptate! Dolorum ea iusto nam nesciunt provident quae unde!
                 </div>
                 <div class="tab-pane fade in" id="tab2">
                     <h3>Favorites</h3>
-                    <div id="bar-items" class="list-group">
+                    <div id="bar-items" class="list-group animated fadeInLeft">
                         <div v-for="bar in subscriptions" >
                             <a @click="showModal(bar)" v-if="bar.tags.name !== '' " class="list-group-item active">
                                 <img v-if="bar.tags.amenity === 'cafe'"  class="bar-list pull-right" src="static/icons/list/coffee.svg" alt="" >
@@ -52,18 +52,16 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <div id="login-form">
             <form>
-                <input type="button" name="login" class="login login-button" value="logout" @click="logoutorFail()">
+                <input id="logout" type="button" name="login" class="login login-button" value="Salir" @click="logoutorFail()">
             </form>
         </div>
 
     </div>
 </template>
-
 <script>
 
     import {mapGetters, mapActions} from 'vuex'

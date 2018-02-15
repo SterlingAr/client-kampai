@@ -81,6 +81,9 @@
     -webkit-border-radius:0 !important;
 }
 
+#logout{
+    width: 100%;
+}
 
 
 /* BOOTSTRAP OVERRIDE*/

@@ -105,7 +105,17 @@ const actions =
             });
     },
 
-    loginAction:({commit,state,rootState}) =>
+    updateRolesAction: ({commit},response_roles) =>
+    {
+        let roles = [];
+        response_roles.forEach(function (role)
+        {
+            roles.push(role.name);
+        });
+        commit('updateRole', roles);
+    },
+
+    loginAction:({commit,state,rootState,dispatch}) =>
     {
 
         axios.post(rootState.api_base_uri + '/api/auth/login', {
@@ -133,13 +143,10 @@ const actions =
                     commit('updateSubscriptions',response.data.user.subscription.elements);
                     //empty form fields.
                 }
-                let roles = [];
-                response.data.user.roles.forEach(function (role)
-                {
-                    roles.push(role.name);
-                });
 
-                commit('updateRole', roles);
+                dispatch('updateRolesAction',response.data.user.roles);
+                commit('updateOwnedBars', response.data.user.bars_owned);
+
 
                 //chapuza... :(
                 App.$router.push({

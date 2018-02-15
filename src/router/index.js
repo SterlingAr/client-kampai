@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import App from '../App.vue'
 import BarList from '../components/bar/BarList.vue'
 import ProfileView from '../components/user/ProfileView.vue'
+import OwnedBarsView from '../components/user/OwnedBarsView.vue'
 import SideBar from '../components/SideBar.vue'
 import SideBarContent from '../components/SideBarContent.vue'
 import Home from '../components/Home.vue'
@@ -33,17 +34,29 @@ export default new Router({
                   profile_view: ProfileView,
               }
       },
+      {
+          path: '/owned-bars',
+          name: 'owned_bars',
+          components:
+              {
+                  owned_bars_view: OwnedBarsView,
+              },
+          props: {
+                  owned_bars_view: true
+              }
+      },
 
       {
-      path: '/bars',
-      name: 'bar_list',
-      components:
-          {
-              bar_list_view: BarList,
-          },
-      props: {
-          default: true,
-      }
+          path: '/bars',
+          name: 'bar_list',
+          components:
+              {
+                  bar_list_view: BarList,
+              },
+          props:
+              {
+                  default: true,
+              }
 
       },
 

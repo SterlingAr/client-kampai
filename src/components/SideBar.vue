@@ -19,6 +19,8 @@
 
         <router-view name="profile_view"></router-view>
 
+        <router-view name="owned_bars_view"></router-view>
+
         <router-view name="register_view"></router-view>
 
         <router-view name="contact_view"></router-view>

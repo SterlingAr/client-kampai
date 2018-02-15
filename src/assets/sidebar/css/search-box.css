@@ -68,12 +68,12 @@ a {
 
 .form-wrapper button {
     overflow: visible;
-    position: relative;
+    /*position: relative;*/
     float: left;
     border: 0;
     padding: 0;
     cursor: pointer;
-    height: 40px;
+    height: 38px;
     width: 80px;
     font: bold 12px/30px 'lucida sans', 'trebuchet MS', 'Tahoma';
     color: #fff;

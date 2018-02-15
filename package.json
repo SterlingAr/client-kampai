@@ -26,6 +26,7 @@
     "style-loader": "^0.20.1",
     "vee-validate": "^2.0.3",
     "vue": "^2.5.2",
+    "vue-input-tag": "^1.0.1",
     "vue-router": "^3.0.1",
     "vuejs-jwt": "^1.0.0",
     "vuex": "^3.0.1"
