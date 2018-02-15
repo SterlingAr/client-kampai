@@ -2,11 +2,11 @@
     <div class="col-lg-12 col-sm-12 animated fadeInLeft">
         <div class="card hovercard">
             <div class="card-background">
-                <img class="card-bkimg" alt="" src="https://lorempixel.com/100/100/people/9/">
+                <img class="card-bkimg" alt="" src="static/icons/profile/photo.svg">
             </div>
             <div class="useravatar">
 
-                <img alt="" src="https://lorempixel.com/100/100/people/3/">
+                <img alt="" src="static/icons/profile/photo.svg">
 
 </div>
             <div class="card-info"> <span class="card-title">{{user.name}}</span>
