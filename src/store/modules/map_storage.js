@@ -20,7 +20,6 @@ const state =
 const getters =
 {
 
-
     currentBBOX: state =>
     {
         return state.bbox;

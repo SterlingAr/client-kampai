@@ -1,12 +1,10 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
-// import 'leaflet'
-// import '@/assets/common/css/bootstrap.min.css'
 
+import 'font-awesome/css/font-awesome.css'
 import '@/assets/common/js/jquery.min.js'
-import '@/assets/common/js/bootstrap.min.js'
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 import '@/assets/sidebar/sass/leaflet-sidebar.scss'
 import '@/assets/leaflet/leaflet.css'
 import '@/assets/map.css'
