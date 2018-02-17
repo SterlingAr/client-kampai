@@ -3,8 +3,9 @@
 
 
 import 'font-awesome/css/font-awesome.css'
-import '@/assets/common/js/jquery.min.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.min.js'
+
 import '@/assets/sidebar/sass/leaflet-sidebar.scss'
 import '@/assets/leaflet/leaflet.css'
 import '@/assets/map.css'
@@ -20,8 +21,6 @@ import '@/assets/leaflet/plugins/location/L.Control.Locate.min.css'
 import '@/assets/leaflet/plugins/location/L.Control.Locate.min.js'
 import '@/assets/contact/contact.scss'
 import '@/assets/newbar/newbar.scss'
-// import '@/assets/leaflet/plugins/routing/leaflet-routing-machine.css'
-// import '@/assets/leaflet/plugins/routing/leaflet-routing-machine.js'
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.min.js'
 import '@/assets/bar/icons.css'
@@ -31,9 +30,6 @@ import '@/assets/leaflet/plugins/credits/leaflet-control-credits.css'
 import 'animate.css'
 import 'leaflet-toolbar'
 import '@/assets/leaflet/css/toolbar/tool-bar.css'
-
-
-
 
 
 import Vue from 'vue'
