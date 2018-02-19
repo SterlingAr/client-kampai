@@ -3,7 +3,8 @@
 
         <h3 class="h1" >Resultados de su búsqueda</h3>
         <div id="bar-items" class="list-group">
-            <div v-for="bar in bars"  class="animated fadeInLeft">
+            <!--class="animated fadeInLeft"-->
+            <div v-for="bar in bars" >
                 <a @click="showModal(bar)" v-if="bar.tags.name !== '' "  class="list-group-item active">
                     <img v-if="bar.tags.amenity === 'cafe'"  class="bar-list pull-right" src="static/icons/list/coffee.svg" alt="" >
                     <img v-if="bar.tags.amenity === 'bar'"  class="bar-list pull-right" src="static/icons/list/beer.svg" alt="" >

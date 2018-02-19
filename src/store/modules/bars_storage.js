@@ -76,10 +76,10 @@ const actions =
                 axios.get(state.bars_resource_uri)
                     .then((response) =>
                     {
-
+                        console.log(response);
                         let bars = [];
 
-                        for(let bar of response.data.elements)
+                        for(let bar of response.data.bars.elements)
                         {
                             if(typeof bar.tags === 'undefined')
                                 continue;
@@ -90,7 +90,9 @@ const actions =
                         console.log(bars);
                         commit('updateBars', bars);
 
-                        dispatch('addFeaturesAction',bars);
+                        // dispatch('addFeaturesAction',bars);
+                        commit('updateFeatureCollection',response.data.features);
+                        dispatch('addFeaturesToLayer',response.data.features);
 
 
                     }).catch((error) =>

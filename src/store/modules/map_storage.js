@@ -288,13 +288,8 @@ const actions =
         );
 
 
-
-
-
         commit('updateLocationControl', locationControl);
         locationControl.addTo(map);
-
-
 
         //update userLocation object in storage every time the event is triggered.
         commit('updateFeatureLayer', featureLayer);
@@ -302,49 +297,7 @@ const actions =
 
     },
 
-    /**
-     * receives an array of node objects, commits a FeatureCollection  holding all nodes
-     * @param commit
-     * @param dispatch
-     * @param bars
-     */
-    addFeaturesAction: ({commit,dispatch}, bars) =>
-    {
 
-        let featuresArray = [];
-        let featureCollection = new Object();
-
-        for(let bar of bars)
-        {
-            // if(bar.tags === null || bar.tags === '')
-            //     continue;
-            // change with {} in the future
-            let feature = new Object();
-            let featureProperties = new Object();
-            let featureGeometry = new Object();
-            // featureProperties.popupContent =  "Establecimiento";
-            featureGeometry.type = "Point";
-
-            featureGeometry.coordinates = [bar.lon,bar.lat];
-
-            feature.type = "Feature";
-            feature.properties = featureProperties;
-            feature.geometry = featureGeometry;
-            feature.amenity = bar.tags.amenity;
-            feature.details = bar.tags;
-            feature.details.node = bar.id;
-            feature.details.coord = {};
-            feature.details.coord.lat  = bar.lat;
-            feature.details.coord.lon  = bar.lon;
-
-            featuresArray.push(feature);
-        }
-
-        featureCollection.type = "FeatureCollection";
-        featureCollection.features = featuresArray;
-        commit('updateFeatureCollection',featureCollection);
-        dispatch('addFeaturesToLayer',featureCollection);
-    },
 
     addFeaturesToLayer: ({commit}, featureCollection) =>
     {

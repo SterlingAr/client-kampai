@@ -33,7 +33,6 @@ import '@/assets/leaflet/css/toolbar/tool-bar.css'
 
 
 import Vue from 'vue'
-import VueJWT from 'vuejs-jwt'
 import router from './router'
 import store  from './store/store.js'
 import App from './App.vue'
@@ -53,7 +52,6 @@ Vue.component('register', require('./components/auth/Register.vue'));
 Vue.component('contact', require('./components/Contact.vue'));
 Vue.component('newbar', require('./components/NewBar.vue'));
 Vue.component('admin', require('./components/Admin.vue'));
-// Vue.component('modal-view', require('./components/bar/BarModalView.vue'));
 Vue.component('modal-view', {
     template: '#modal-view',
 })
