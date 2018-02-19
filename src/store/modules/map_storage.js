@@ -302,7 +302,6 @@ const actions =
     addFeaturesToLayer: ({commit}, featureCollection) =>
     {
 
-
             let layer = state.featureLayer;
 
             layer.clearLayers();
@@ -408,7 +407,6 @@ const actions =
                 },
             addHooks: function()
             {
-                // state.routingControl.remove(map);
                 dispatch('removeRoutingControl');
             }
         });
