@@ -50,7 +50,7 @@ const actions =
          * @param rootState
          * @param dispatch
          */
-        updateBarsAction: ({state,rootState,dispatch}) =>
+        updateBarsAction: ({state,commit,rootState,dispatch}) =>
         {
 
             dispatch('updateBBOXAction');
@@ -78,7 +78,13 @@ const actions =
                     {
                         console.log(response);
 
+                        // console.log(bars);
+                        commit('updateBars', response.data.bars.elements);
+
+                        // dispatch('addFeaturesAction',bars);
+                        // commit('updateFeatureCollection',response.data.features);
                         dispatch('addFeaturesToLayer',response.data.features);
+
 
                     }).catch((error) =>
 
@@ -87,6 +93,8 @@ const actions =
                 });
 
             }
+            // this.$root.router.push({name:'bar_list'});
+
         }
 
     }
