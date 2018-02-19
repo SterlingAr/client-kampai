@@ -83,15 +83,15 @@ export default new Router({
                   contact_view: Contact,
               },
       },
-      {
-          path: '/newbar',
-          name: 'newbar',
-          components:
-              {
-                  newbar_view: NewBar,
-              },
-      },
       // {
+      //     path: '/newbar',
+      //     name: 'newbar',
+      //     components:
+      //         {
+      //             newbar_view: NewBar,
+      //         },
+      // },
+      // // {
       //     path: '/admin',
       //     name: 'admin',
       //     components:
