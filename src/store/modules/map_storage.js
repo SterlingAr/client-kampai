@@ -337,11 +337,13 @@ const actions =
         if(state.routingControl  === '' )
         {
             routingControl =  L.Routing.control({
-                router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
+                router: L.Routing.mapbox('pk.eyJ1IjoicmluY2V3aW5kIiwiYSI6ImNqZGh5b3RqbjA0eHMyd3E5cTNiM2lnbzAifQ.oTnYCe-yN4nTSwWMshpzew', {
                     profile: uProfile,
                     language:'es'
                 })
             });
+            console.log(routingControl);
+
             //splice syntax, replace 1 element at position 0
             routingControl.spliceWaypoints(0,1, state.userLocation);
             routingControl.spliceWaypoints(1,1,barLocation);
@@ -356,17 +358,18 @@ const actions =
         {
             state.routingControl.remove(state.map);
             routingControl = L.Routing.control({
-                router: L.Routing.mapbox('pk.eyJ1IjoibWFyYm9yYXYiLCJhIjoiY2o5eDJrbTV0N2NncjJxcXljeDR3cXNhMiJ9.igTamTLm4nLiAN6w8NFS6Q', {
+                router: L.Routing.mapbox('pk.eyJ1IjoicmluY2V3aW5kIiwiYSI6ImNqZGh5b3RqbjA0eHMyd3E5cTNiM2lnbzAifQ.oTnYCe-yN4nTSwWMshpzew', {
                     profile: uProfile,
                     language:'es'
                 })
             });
+            console.log(routingControl);
             routingControl.addTo(state.map);
             commit('updateRoutingProfile',uProfile);
 
         }
 
-        console.log(profile);
+        console.log(routingControl);
         //splice syntax, replace 1 element at position 0
         routingControl.spliceWaypoints(0,1, state.userLocation);
         routingControl.spliceWaypoints(1,1,barLocation);

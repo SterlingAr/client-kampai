@@ -24,7 +24,7 @@ const store = new Vuex.Store(
         },
 
 
-        api_base_uri: 'http://kampai.local',
+        api_base_uri: 'http://api.kampai',
         // api_base_uri: 'https://api.tiendasoutlet.es',
 
     },
