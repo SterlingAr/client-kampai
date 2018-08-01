@@ -24,7 +24,7 @@ const store = new Vuex.Store(
         },
 
 
-        api_base_uri: 'http://improbabilitydrive.online:8080',
+        api_base_uri: 'https://api-kampai.marius-cv.com/',
 
     },
 

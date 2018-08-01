@@ -12,3 +12,4 @@ docker-compose/logs
 *.ntvs*
 *.njsproj
 *.sln
+docker/logs/caddy/access.log
